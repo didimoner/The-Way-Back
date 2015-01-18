@@ -11,7 +11,7 @@ Game::~Game(void)
 
 void Game::initialize(void)
 {
-	_window.create(sf::VideoMode(640, 640), "The Maze");
+	_window.create(sf::VideoMode(640, 640), "The Way Back");
 	_window.setFramerateLimit(60);
 	_window.setKeyRepeatEnabled(false);
 	_window.setVerticalSyncEnabled(true);

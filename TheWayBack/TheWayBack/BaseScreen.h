@@ -5,6 +5,7 @@
 #include "AnimationManager.h"
 #include "SpriteManager.h"
 #include "SoundManager.h"
+#include "Animation.h"
 
 class BaseScreen
 {

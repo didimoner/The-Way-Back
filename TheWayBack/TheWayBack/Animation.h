@@ -2,25 +2,19 @@
 #include "SFML\Graphics.hpp"
 #include "SFML\System.hpp"
 
-enum RepeatMode
-{
-	LOOP = 0,
-	ROUND_TRIP = 1
-};
-
-class AnimatedSprite :
+class Animation :
 	public sf::Sprite
 {
 public:
-	AnimatedSprite();
-	AnimatedSprite(short line, short firstFrame, short lastFrame, float delay, 
-		short tileSize, RepeatMode repeatMode, bool isLooped);
-	~AnimatedSprite();
+	Animation();
+	Animation(short rows, short firstFrame, short lastFrame, 
+		float delay, sf::Vector2i tileSize, bool isRoundUp, bool isLooped);
+	~Animation();
 
 	void update(float gameTime);
 
-	void setLine(short line);
-	short getLine();
+	void setRows(short rows);
+	short getRows();
 
 	void setFirstFrame(short frame);
 	short getFirstFrame();
@@ -31,11 +25,11 @@ public:
 	void setDelay(float delay);
 	float getDelay();
 
-	void setTileSize(short tileSize);
-	short getTileSize();
+	void setTileSize(sf::Vector2i tileSize);
+	sf::Vector2i getTileSize();
 
-	void setRepeatMode(RepeatMode repeatMode);
-	RepeatMode getRepeatMode();
+	void setRepeatMode(bool isRoundUp);
+	bool getRepeatMode();
 
 	void looped();
 	void linear();
@@ -44,15 +38,17 @@ public:
 	void play();
 
 private:
-	short _line;
+	short _rows;
+	short _currentRow;
 	short _firstFrame;
 	short _currentFrame;
 	float _tempFrame;
 	short _lastFrame;
 	float _delay;
-	short _tileSize;
+	sf::Vector2i _tileSize;
 	bool _isPlaying;
-	RepeatMode _repeatMode;
+	bool _isRoundUp;
 	bool _isLooped;
 	short _direction;
 };
+

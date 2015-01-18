@@ -19,10 +19,12 @@ void ContentManager::loadContent()
 	addTexture("newchar02-2.png", "char1");
 	addTexture("actor001.png", "char2");
 	addTexture("newchar01-1.png", "char3");
-	addTexture("newchar05-5.png", "char4"); 
+	addTexture("newchar05-5.png", "char4");
+	addTexture("dark_effect_001.png", "loading");
+	addTexture("slash_effect_002.png", "loading2");
+
 
 	addSound("collect.ogg", "collect");
-	addSound("footsteps.ogg", "footsteps");
 
 	addFont("default.ttf", "mini");
 }

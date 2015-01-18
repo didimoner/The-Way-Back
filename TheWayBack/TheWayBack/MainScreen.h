@@ -17,4 +17,5 @@ public:
 
 private:
 	Player *_player;
+	Animation *_animation;
 };

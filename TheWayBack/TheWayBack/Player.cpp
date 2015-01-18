@@ -12,8 +12,6 @@ Player::Player(AnimationManager animationManager, SoundManager soundManager, flo
 	_state = STAY;
 	_tileSize = tileSize;
 	_bounds = sf::FloatRect(_position.x, _position.y, (float)_size.x, (float)_size.y);
-
-	_sounds.setVolume("footsteps", 40);
 }
 
 Player::~Player(void)

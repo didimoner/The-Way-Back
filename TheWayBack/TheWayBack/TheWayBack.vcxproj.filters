@@ -13,53 +13,53 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Managers">
+      <UniqueIdentifier>{5d239f7e-f544-40be-ae38-fb2dd550391c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Screens">
+      <UniqueIdentifier>{5ed1cbe5-b3e2-4085-907c-aa7f95cb6147}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BaseScreen.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ContentManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Entity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MainScreen.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Player.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ScreenManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SoundManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SpriteManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AnimatedSprite.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SpriteManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="ScreenManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
     <ClInclude Include="AnimationManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="ContentManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseScreen.h">
+      <Filter>Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="MainScreen.h">
+      <Filter>Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AnimatedSprite.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AnimationManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BaseScreen.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ContentManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Entity.cpp">
@@ -71,19 +71,31 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MainScreen.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AnimationManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
     <ClCompile Include="ScreenManager.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Managers</Filter>
     </ClCompile>
     <ClCompile Include="SoundManager.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Managers</Filter>
     </ClCompile>
     <ClCompile Include="SpriteManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="ContentManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="MainScreen.cpp">
+      <Filter>Screens</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseScreen.cpp">
+      <Filter>Screens</Filter>
+    </ClCompile>
+    <ClCompile Include="Animation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
