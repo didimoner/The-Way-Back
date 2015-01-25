@@ -2,6 +2,7 @@
 
 #include "basescreen.h"
 #include "Player.h"
+#include "TileMapLoader.h"
 
 class MainScreen :
 	public BaseScreen

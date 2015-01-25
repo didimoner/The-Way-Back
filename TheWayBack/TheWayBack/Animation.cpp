@@ -75,7 +75,7 @@ void Animation::update(float gameTime)
 				else
 				{
 					_currentRow--;
-					_tempFrame = _lastFrame + 1;
+					_tempFrame = (float)_lastFrame + 1;
 				}
 					
 			}
@@ -88,7 +88,7 @@ void Animation::update(float gameTime)
 	if (_currentFrame > _lastFrame)
 		_currentFrame = _lastFrame;
 
-	std::cout << "Current frame and line: " << _currentFrame << " " << _currentRow << std::endl;
+	//std::cout << "Current frame and line: " << _currentFrame << " " << _currentRow << std::endl;
 
 	if (_currentFrame < _firstFrame)
 		_currentFrame = _firstFrame;

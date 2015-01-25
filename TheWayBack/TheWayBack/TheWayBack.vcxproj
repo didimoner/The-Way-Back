@@ -82,6 +82,7 @@
     <ClInclude Include="ScreenManager.h" />
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="SpriteManager.h" />
+    <ClInclude Include="TileMapLoader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AnimatedSprite.cpp" />
@@ -97,6 +98,7 @@
     <ClCompile Include="ScreenManager.cpp" />
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="SpriteManager.cpp" />
+    <ClCompile Include="TileMapLoader.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
