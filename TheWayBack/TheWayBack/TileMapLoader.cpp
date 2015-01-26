@@ -1,6 +1,7 @@
 #include "TileMapLoader.h"
 
 #include <iostream>
+#include <fstream>
 
 TileMapLoader::TileMapLoader()
 {
@@ -19,8 +20,12 @@ void TileMapLoader::load(std::string name)
 
 	tinyxml2::XMLDocument tmxMap;
 	tmxMap.LoadFile(charPath);
-	std::cout << tmxMap.ErrorID() << std::endl;
 
+	if (tmxMap.ErrorID() != 0)
+	{
+		std::cout << "Error while opening " << path << " file!" << std::endl;
+		return;
+	}
 
 	tinyxml2::XMLElement* pRoot = tmxMap.FirstChildElement("map");
 
@@ -30,30 +35,54 @@ void TileMapLoader::load(std::string name)
 	_tileSize.y = pRoot->IntAttribute("tileheight");
 
 	tinyxml2::XMLElement* pLayer = pRoot->FirstChildElement("layer");
-	tinyxml2::XMLElement* pTile = pLayer->FirstChildElement("data")->FirstChildElement("tile");
+	tinyxml2::XMLElement* pData = pLayer->FirstChildElement("data");
+	tinyxml2::XMLElement* pTile;
 
-
-	int a = 0;
-	int b = 0;
+	std::vector<int> tempTiles;
 
 	while (pLayer != nullptr)
 	{
+		pData = pLayer->FirstChildElement("data");
+		pTile = pData->FirstChildElement("tile");
+		std::cout << "Layer name: " << pLayer->Attribute("name") << std::endl;
+
 		while (pTile != nullptr)
 		{
 			int value;
 			pTile->QueryIntAttribute("gid", &value);
-
+			tempTiles.push_back(value);
 			pTile = pTile->NextSiblingElement("tile");
-			b++;
 		}
 
-		std::cout << "NumberOfTiles: " << b << std::endl;
+		//std::cout << "NumberOfTiles: " << b << std::endl;
+		_currentMap.push_back(tempTiles);
+
+		//std::cout << "current layer " << tempTiles[256] << std::endl;
 
 		pLayer = pLayer->NextSiblingElement("layer");
-		a++;
+		tempTiles.clear();
 	}
 
-	std::cout << "NumberOfLayers: " << a << std::endl;
+	
+
+	//std::cout << "NumberOfLayers: " << a << std::endl;
+
+	std::cout << "Random numbers: " << _currentMap.size() << std::endl;
+	std::cout << "Random numbers: " << _currentMap[0].size() << std::endl;
+	std::cout << "Random numbers: " << _currentMap[1].size() << std::endl;
+
+	std::ofstream fout;
+	fout.open("Content/test.txt");
+
+	for (int i = 0; i < _currentMap.size(); i++)
+	{
+		for (int j = 0; j < _currentMap[i].size(); j++)
+		{
+			fout << i << ":" << j << " " << _currentMap[i][j] << std::endl;
+		}
+	}
+
+	fout.close();
 }
 
 //TODO: заполнить вектора
