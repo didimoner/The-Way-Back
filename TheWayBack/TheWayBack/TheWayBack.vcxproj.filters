@@ -19,6 +19,9 @@
     <Filter Include="Screens">
       <UniqueIdentifier>{5ed1cbe5-b3e2-4085-907c-aa7f95cb6147}</UniqueIdentifier>
     </Filter>
+    <Filter Include="TinyXML">
+      <UniqueIdentifier>{df0a4991-6554-4363-90fa-a76fa560c892}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entity.h">
@@ -59,6 +62,9 @@
     </ClInclude>
     <ClInclude Include="TileMapLoader.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tinyxml\tinyxml2.h">
+      <Filter>TinyXML</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -103,6 +109,9 @@
     </ClCompile>
     <ClCompile Include="TileMapLoader.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxml\tinyxml2.cpp">
+      <Filter>TinyXML</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -18,8 +18,8 @@ MainScreen::MainScreen(ContentManager* contentManager)
 
 	_player = new Player(playerOne, playerSounds, 0.004f, sf::Vector2f(0, 0), sf::Vector2i(32, 32), _tileSize);
 
-	_animation = new Animation(6, 1, 5, 0.009f, sf::Vector2i(192, 192), false, true);
-	_animation->setTexture((*_pTextures)["loading2"]);
+	_animation = new Animation(6, 1, 5, 0.01f, sf::Vector2i(192, 192), true, true);
+	_animation->setTexture((*_pTextures)["loading"]);
 	_animation->setPosition(sf::Vector2f((float)7 * _tileSize, (float)7 * _tileSize));
 
 	/*SpriteManager spriteOne((*_pTextures)["char4"], _pContentManager->getTileSize());
@@ -30,6 +30,8 @@ MainScreen::MainScreen(ContentManager* contentManager)
 	_spriteManagers["justSprite"] = spriteOne;*/
 
 	TileMapLoader tileMap;
+	tileMap.setMapsDir("Content/Maps");
+	tileMap.load("map.tmx");
 }
 
 MainScreen::~MainScreen()

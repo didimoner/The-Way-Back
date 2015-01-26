@@ -30,10 +30,10 @@ public:
 	unsigned short getTileSize();
 
 private:
-	std::string _rootFolder;
-	std::string _imagesFolder;
-	std::string _fontsFolder;
-	std::string _soundsFolder;
+	std::string _rootDir;
+	std::string _imagesDir;
+	std::string _fontsDir;
+	std::string _soundsDir;
 
 	std::map<std::string, sf::Texture> _textures;
 	std::map<std::string, sf::SoundBuffer> _sounds;

@@ -2,10 +2,10 @@
 
 ContentManager::ContentManager()
 {
-	_rootFolder = "";
-	_soundsFolder = "";
-	_fontsFolder = "";
-	_imagesFolder = "";
+	_rootDir = "";
+	_soundsDir = "";
+	_fontsDir = "";
+	_imagesDir = "";
 	_tileSize = 32;
 }
 
@@ -33,9 +33,9 @@ void ContentManager::addTexture(std::string file, std::string name)
 {
 	sf::Texture texture;
 
-	if (!texture.loadFromFile(_imagesFolder + file))
+	if (!texture.loadFromFile(_imagesDir + file))
 	{
-		texture.loadFromFile(_imagesFolder + "unknown.png");
+		texture.loadFromFile(_imagesDir + "unknown.png");
 	}
 
 	_textures[name] = texture;
@@ -45,9 +45,9 @@ void ContentManager::addTexture(std::string file, std::string name, sf::IntRect 
 {
 	sf::Texture texture;
 
-	if (!texture.loadFromFile(_imagesFolder + file, rect))
+	if (!texture.loadFromFile(_imagesDir + file, rect))
 	{
-		texture.loadFromFile(_imagesFolder + "unknown.png");
+		texture.loadFromFile(_imagesDir + "unknown.png");
 	}
 
 	_textures[name] = texture;
@@ -57,9 +57,9 @@ void ContentManager::addSound(std::string file, std::string name)
 {
 	sf::SoundBuffer soundBuffer;
 
-	if (!soundBuffer.loadFromFile(_soundsFolder + file))
+	if (!soundBuffer.loadFromFile(_soundsDir + file))
 	{
-		soundBuffer.loadFromFile(_soundsFolder + "unknown.ogg");
+		soundBuffer.loadFromFile(_soundsDir + "unknown.ogg");
 	}
 
 	_sounds[name] = soundBuffer;
@@ -69,9 +69,9 @@ void ContentManager::addFont(std::string file, std::string name)
 {
 	sf::Font font;
 
-	if (!font.loadFromFile(_fontsFolder + file))
+	if (!font.loadFromFile(_fontsDir + file))
 	{
-		font.loadFromFile(_fontsFolder + "default.ttf");
+		font.loadFromFile(_fontsDir + "default.ttf");
 	}
 
 	_font = font;
@@ -94,14 +94,14 @@ sf::Font* ContentManager::getFont()
 
 void ContentManager::setRootFolder(std::string folder)
 {
-	_rootFolder = folder + "/";
-	_soundsFolder = _rootFolder + "Sounds/";
-	_fontsFolder = _rootFolder + "Fonts/";
-	_imagesFolder = _rootFolder + "Images/";
+	_rootDir = folder + "/";
+	_soundsDir = _rootDir + "Sounds/";
+	_fontsDir = _rootDir + "Fonts/";
+	_imagesDir = _rootDir + "Images/";
 }
 std::string ContentManager::getRootFolder()
 {
-	return _rootFolder;
+	return _rootDir;
 }
 
 void ContentManager::setTileSize(unsigned short size)
