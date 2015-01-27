@@ -34,6 +34,21 @@ void TileMapLoader::load(std::string name)
 	_tileSize.x = pRoot->IntAttribute("tilewidth");
 	_tileSize.y = pRoot->IntAttribute("tileheight");
 
+	// TILESET!
+	// <tileset firstgid="257" name="tilea2" tilewidth="32" tileheight="32">
+	// <image source="../../../../../../TheWayBack Files/ТайлСеты/tilea2.png" width="512" height="384"/>
+	tinyxml2::XMLElement* pTileset = pRoot->FirstChildElement("tileset");
+	tinyxml2::XMLElement* pImage;
+
+	while (pTileset != nullptr)
+	{
+		pImage = pTileset->FirstChildElement("image");
+		// Додумать это место...
+		pTileset = pTileset->NextSiblingElement("tileset");
+	}
+
+	// получение layer and tile
+
 	tinyxml2::XMLElement* pLayer = pRoot->FirstChildElement("layer");
 	tinyxml2::XMLElement* pData = pLayer->FirstChildElement("data");
 	tinyxml2::XMLElement* pTile;
@@ -44,49 +59,48 @@ void TileMapLoader::load(std::string name)
 	{
 		pData = pLayer->FirstChildElement("data");
 		pTile = pData->FirstChildElement("tile");
-		std::cout << "Layer name: " << pLayer->Attribute("name") << std::endl;
 
 		while (pTile != nullptr)
 		{
-			int value;
-			pTile->QueryIntAttribute("gid", &value);
-			tempTiles.push_back(value);
+			tempTiles.push_back(pTile->IntAttribute("gid"));
 			pTile = pTile->NextSiblingElement("tile");
 		}
 
-		//std::cout << "NumberOfTiles: " << b << std::endl;
 		_currentMap.push_back(tempTiles);
-
-		//std::cout << "current layer " << tempTiles[256] << std::endl;
 
 		pLayer = pLayer->NextSiblingElement("layer");
 		tempTiles.clear();
 	}
 
-	
+	// получение objectgroup
 
-	//std::cout << "NumberOfLayers: " << a << std::endl;
+	tinyxml2::XMLElement* pObjectgroup = pRoot->FirstChildElement("objectgroup");
+	std::string objectgroupName = "";
 
-	std::cout << "Random numbers: " << _currentMap.size() << std::endl;
-	std::cout << "Random numbers: " << _currentMap[0].size() << std::endl;
-	std::cout << "Random numbers: " << _currentMap[1].size() << std::endl;
+	tinyxml2::XMLElement* pObject;
 
-	std::ofstream fout;
-	fout.open("Content/test.txt");
-
-	for (int i = 0; i < _currentMap.size(); i++)
+	while (pObjectgroup != nullptr)
 	{
-		for (int j = 0; j < _currentMap[i].size(); j++)
+		objectgroupName = pObjectgroup->Attribute("name");
+
+		pObject = pObjectgroup->FirstChildElement("object");
+
+		while (pObject != nullptr)
 		{
-			fout << i << ":" << j << " " << _currentMap[i][j] << std::endl;
+			MapObject mapObject;
+			mapObject.x = pObject->IntAttribute("x");
+			mapObject.y = pObject->IntAttribute("y");
+			mapObject.height = pObject->IntAttribute("height");
+			mapObject.width = pObject->IntAttribute("width");
+
+			_currentObjects[objectgroupName].push_back(mapObject);
+
+			pObject = pObject->NextSiblingElement("object");
 		}
+
+		pObjectgroup = pObjectgroup->NextSiblingElement("objectgroup");
 	}
-
-	fout.close();
 }
-
-//TODO: заполнить вектора
-
 
 void TileMapLoader::draw(sf::RenderWindow &window)
 {
