@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="3" height="3" tilewidth="32" tileheight="32" nextobjectid="1">
+ <tileset firstgid="1" name="japanese" tilewidth="32" tileheight="32">
+  <image source="../../../../../../TheWayBack Files/ТайлСеты/japanese.png" width="384" height="256"/>
+ </tileset>
+ <tileset firstgid="97" name="tilea4" tilewidth="32" tileheight="32">
+  <image source="../../../../../../TheWayBack Files/ТайлСеты/tilea4.png" width="512" height="480"/>
+ </tileset>
+ <layer name="Слой тайлов 1" width="3" height="3">
+  <data>
+   <tile gid="108"/>
+   <tile gid="108"/>
+   <tile gid="108"/>
+   <tile gid="108"/>
+   <tile gid="108"/>
+   <tile gid="108"/>
+   <tile gid="108"/>
+   <tile gid="108"/>
+   <tile gid="108"/>
+  </data>
+ </layer>
+ <layer name="Слой тайлов 2" width="3" height="3">
+  <data>
+   <tile gid="28"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="40"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+  </data>
+ </layer>
+ <layer name="Слой тайлов 3" width="3" height="3">
+  <data>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="9"/>
+   <tile gid="10"/>
+  </data>
+ </layer>
+</map>
