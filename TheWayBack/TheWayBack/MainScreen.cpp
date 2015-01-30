@@ -16,7 +16,7 @@ MainScreen::MainScreen(ContentManager* contentManager)
 	_player = new Player(playerOne, playerSounds, 0.004f, sf::Vector2f(0, 0), sf::Vector2i(32, 32), _tileSize);
 
 	_tileMapLoader = new TileMapLoader("Content/Maps");
-	//_tileMapLoader->load("megamap.tmx", _pTextures);
+	_tileMapLoader->load("megamap.tmx", _pTextures);
 }
 
 MainScreen::~MainScreen()
@@ -46,6 +46,6 @@ void MainScreen::update(float gameTime)
 
 void MainScreen::draw(sf::RenderWindow &window)
 {
-	//_tileMapLoader->draw(window);
+	_tileMapLoader->draw(window);
 	_player->draw(window);
 }

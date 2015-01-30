@@ -41,8 +41,8 @@ public:
 private:
 	std::map <std::string, sf::Texture>* _pTextures;
 	std::string _mapsDir;
-	std::vector<std::vector<std::vector<unsigned short>>> _currentMapTiles;
-	//std::vector<std::vector<std::vector<sf::Sprite>>> _currentMapSprites;
+	//std::vector<std::vector<std::vector<unsigned short>>> _currentMapTiles;
+	std::vector<std::vector<std::vector<sf::Sprite>>> _currentMapSprites;
 	std::map<std::string, std::vector<MapObject>> _currentObjects;
 	std::vector<Tileset> _currentTilesets;
 	Map _currentMap;

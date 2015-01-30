@@ -13,6 +13,7 @@ TileMapLoader::~TileMapLoader()
 
 void TileMapLoader::load(std::string name, std::map<std::string, sf::Texture>* pTextures)
 {
+	std::cout << "LET'S LOAD THIS SHIT!" << std::endl;
 	_pTextures = pTextures;
 
 	std::string path = _mapsDir + name;
@@ -34,7 +35,7 @@ void TileMapLoader::load(std::string name, std::map<std::string, sf::Texture>* p
 	_currentMap.tileWidth = pRoot->IntAttribute("tilewidth");
 	_currentMap.tileHeight = pRoot->IntAttribute("tileheight");
 
-	// TILESET!
+	// Load tilesets
 	tinyxml2::XMLElement* pTileset = pRoot->FirstChildElement("tileset");
 	tinyxml2::XMLElement* pImage;
 
@@ -55,41 +56,94 @@ void TileMapLoader::load(std::string name, std::map<std::string, sf::Texture>* p
 		pTileset = pTileset->NextSiblingElement("tileset");
 	}
 
-	// получение layer and tile
-
+	// load layers and tiles
 	tinyxml2::XMLElement* pLayer = pRoot->FirstChildElement("layer");
 	tinyxml2::XMLElement* pData = pLayer->FirstChildElement("data");
 	tinyxml2::XMLElement* pTile;
 
-	std::vector<std::vector<unsigned short>> tempTilesI;
-	std::vector<unsigned short> tempTilesJ;
+	//std::vector<std::vector<unsigned short>> tempTilesI;
+	//std::vector<unsigned short> tempTilesJ;
+
+	std::ofstream fout;
+	fout.open("Content/test.txt");
+
+	std::vector<std::vector<sf::Sprite>> tempSpritesI;
+	std::vector<sf::Sprite> tempSpritesJ;
+	unsigned short tempGid;
+	unsigned short tilesetIndex;
 	
 	while (pLayer != nullptr)
 	{
 		pData = pLayer->FirstChildElement("data");
 		pTile = pData->FirstChildElement("tile");
 
-		for (int i = 0; i < _currentMap.width; i++)
+		for (int i = 0; i < _currentMap.height; i++)
 		{
-			for (int j = 0; j < _currentMap.height; j++)
+			for (int j = 0; j < _currentMap.width; j++)
 			{
-				tempTilesJ.push_back(pTile->IntAttribute("gid"));
+				tempGid = pTile->IntAttribute("gid");
+				sf::Sprite tempSprite;
+
+				if (tempGid == 0)
+				{
+					tempSprite.setColor(sf::Color::Transparent);
+					tempSpritesJ.push_back(tempSprite);
+					pTile = pTile->NextSiblingElement("tile");
+					continue;
+				}
+
+				for (unsigned int l = 0; l < _currentTilesets.size(); l++)
+				{
+					if (_currentTilesets[l].firstgid >= tempGid)
+						break;
+
+					tilesetIndex = l;
+				}
+
+				tempSprite.setTexture((*_pTextures)[_currentTilesets[tilesetIndex].name]);
+
+				short trueGid = tempGid - _currentTilesets[tilesetIndex].firstgid;
+				fout << "temp and tileset_firstgid: " << tempGid << "-" << _currentTilesets[tilesetIndex].firstgid << std::endl;
+				fout << "trueGid: " << trueGid << std::endl;
+
+				short tilesetWidth = _currentTilesets[tilesetIndex].width / _currentTilesets[tilesetIndex].tileWidth;
+				short tilesetHeight = _currentTilesets[tilesetIndex].height / _currentTilesets[tilesetIndex].tileHeight;
+
+				short spritePositionX = (trueGid - tilesetWidth * ((trueGid - 1) / tilesetWidth)) * _currentTilesets[tilesetIndex].tileWidth;
+				short spritePositionY = (trueGid / tilesetWidth) * _currentTilesets[tilesetIndex].tileHeight;
+				short spriteWidth = _currentTilesets[tilesetIndex].tileWidth;
+				short spriteHeight = _currentTilesets[tilesetIndex].tileHeight;
+				fout << "spritePosition: " << spritePositionX << ":" << spritePositionY << std::endl;
+				fout << "spriteSize: " << spriteWidth << ":" << spriteHeight << std::endl;
+
+				tempSprite.setTextureRect(sf::IntRect(spritePositionX, spritePositionY, spriteWidth, spriteHeight));
+
+				short tileSizeW = _currentTilesets[tilesetIndex].tileWidth;
+				short tileSizeH = _currentTilesets[tilesetIndex].tileHeight;
+
+				tempSprite.setPosition(sf::Vector2f((float)j * tileSizeW, (float)i * tileSizeH));
+				fout << "setPosition: " << j * tileSizeW << ":" << i * tileSizeH << std::endl;
+				fout << std::endl;
+
+
+				tempSpritesJ.push_back(tempSprite);
 				pTile = pTile->NextSiblingElement("tile");
 			}
 
-			tempTilesI.push_back(tempTilesJ);
-			tempTilesJ.clear();
+			tempSpritesI.push_back(tempSpritesJ);
+			tempSpritesJ.clear();
 
 		}
 
-		_currentMapTiles.push_back(tempTilesI);
-		tempTilesI.clear();
-
+		_currentMapSprites.push_back(tempSpritesI);
+		tempSpritesI.clear();
+		std::cout << "_currentMapSprites size: " << _currentMapSprites.size() << std::endl;
 		pLayer = pLayer->NextSiblingElement("layer");
 	}
 
-	// получение objectgroup
+	fout.close();
 
+	// load objectgroups
 	tinyxml2::XMLElement* pObjectgroup = pRoot->FirstChildElement("objectgroup");
 	std::string objectgroupName = "";
 
@@ -118,49 +172,19 @@ void TileMapLoader::load(std::string name, std::map<std::string, sf::Texture>* p
 	}
 }
 
+
 void TileMapLoader::draw(sf::RenderWindow &window)
 {
-	sf::Sprite tempSprite;
-
-	for (unsigned int k = 0; k < _currentMapTiles.size(); k++)
+	for (unsigned int layer = 0; layer < _currentMapSprites.size(); layer++)
 	{
-		for (int i = 0; i < _currentMap.width; i++)
+		for (int tilesH = 0; tilesH < _currentMap.height; tilesH++)
 		{
-			for (int j = 0; j < _currentMap.height; j++)
+			for (int tilesW = 0; tilesW < _currentMap.width; tilesW++)
 			{
-				if (_currentMapTiles[k][i][j] == 0)
+				if (_currentMapSprites[layer][tilesH][tilesW].getColor() == sf::Color::Transparent)
 					continue;
 
-				int tilesetIndex = 0;
-
-				for (unsigned int l = 0; l < _currentTilesets.size(); l++)
-				{
-					if (_currentTilesets[l].firstgid >= _currentMapTiles[k][i][j])
-						break;
-
-					tilesetIndex = l;
-				}
-
-				tempSprite.setTexture((*_pTextures)[_currentTilesets[tilesetIndex].name]);
-
-				short tempGid = _currentMapTiles[k][i][j] - _currentTilesets[tilesetIndex].firstgid;
-
-				short tilesetWidth = _currentTilesets[tilesetIndex].width / _currentTilesets[tilesetIndex].tileWidth;
-				short tilesetHeight = _currentTilesets[tilesetIndex].height / _currentTilesets[tilesetIndex].tileHeight;
-
-				short spritePositionX = (tempGid - tilesetWidth * ((tempGid - 1) / tilesetWidth)) * _currentTilesets[tilesetIndex].tileWidth;
-				short spritePositionY = (tempGid / tilesetWidth) * _currentTilesets[tilesetIndex].tileHeight;
-				short spriteWidth = _currentTilesets[tilesetIndex].tileWidth;
-				short spriteHeight = _currentTilesets[tilesetIndex].tileHeight;
-
-				tempSprite.setTextureRect(sf::IntRect(spritePositionX, spritePositionY, spriteWidth, spriteHeight));
-
-				short tileSizeW = _currentTilesets[tilesetIndex].tileWidth;
-				short tileSizeH = _currentTilesets[tilesetIndex].tileHeight;
-
-				tempSprite.setPosition(sf::Vector2f((float)j * tileSizeW, (float)i * tileSizeH));
-
-				window.draw(tempSprite);
+				window.draw(_currentMapSprites[layer][tilesH][tilesW]);
 			}
 		}
 	}
