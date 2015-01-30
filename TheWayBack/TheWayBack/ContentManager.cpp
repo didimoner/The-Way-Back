@@ -22,6 +22,11 @@ void ContentManager::loadContent()
 	addTexture("newchar05-5.png", "char4");
 	addTexture("dark_effect_001.png", "loading");
 	addTexture("slash_effect_002.png", "loading2");
+	// map tilesets
+	addTexture("tile21.png", "tile21");
+	addTexture("tilea2.png", "tilea2");
+	addTexture("japanese.png", "japanese");
+	addTexture("tilea4.png", "tilea4");
 
 
 	addSound("collect.ogg", "collect");

@@ -17,6 +17,7 @@ public:
 	virtual void draw(sf::RenderWindow &window);
 
 private:
-	Player *_player;
-	Animation *_animation;
+	Player* _player;
+	Animation* _animation;
+	TileMapLoader* _tileMapLoader;
 };
