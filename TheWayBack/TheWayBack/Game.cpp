@@ -10,10 +10,14 @@ Game::~Game(void)
 
 void Game::initialize(void)
 {
-	_window.create(sf::VideoMode(640, 640), "The Way Back");
+	_view.setCenter(360, 180);
+	_view.setSize(854, 480);
+
+	_window.create(sf::VideoMode(960, 540), "The Way Back");
 	_window.setFramerateLimit(60);
 	_window.setKeyRepeatEnabled(false);
 	_window.setVerticalSyncEnabled(true);
+	_window.setView(_view);
 }
 
 void Game::loadContent(void)

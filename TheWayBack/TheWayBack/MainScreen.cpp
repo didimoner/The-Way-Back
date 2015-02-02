@@ -14,9 +14,14 @@ MainScreen::MainScreen(ContentManager* contentManager)
 	playerSounds.addSound((*_pSounds)["collect"], "jump");
 
 	_player = new Player(playerOne, playerSounds, 0.004f, sf::Vector2f(0, 0), sf::Vector2i(32, 32), _tileSize);
+	_entites.push_back(_player);
 
-	_tileMapLoader = new TileMapLoader("Content/Maps");
+	_tileMapLoader = new TileMapLoader("Content/Maps", 2);
 	_tileMapLoader->load("megamap.tmx", _pTextures);
+
+	//_animation = new Animation(6, 1, 5, 0.009f, sf::Vector2i(192, 192), false, true);
+	//_animation->setTexture((* _pTextures)["loading2"]);
+	//_animation->setPosition(sf::Vector2f((float)7 * _tileSize, (float)7 * _tileSize));
 }
 
 MainScreen::~MainScreen()
@@ -38,14 +43,15 @@ void MainScreen::handleKeyPress(sf::Keyboard::Key key, bool isPressed)
 void MainScreen::update(float gameTime)
 {
 	_player->update(gameTime);
+	//_animation->update(gameTime);
 }
 
 // -----------------------------------------------------
 // DRAW FUNCTION----------------------------------------
 // -----------------------------------------------------
 
-void MainScreen::draw(sf::RenderWindow &window)
+void MainScreen::draw(sf::RenderWindow& window)
 {
-	_tileMapLoader->draw(window);
-	_player->draw(window);
+	_tileMapLoader->draw(window, _entites);
+	//window.draw(* _animation);
 }

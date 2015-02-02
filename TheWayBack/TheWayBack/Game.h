@@ -19,6 +19,7 @@ public:
 
 private:
 	sf::RenderWindow _window;
+	sf::View _view;
 	sf::Event _event;
 	sf::Clock _clock;
 	float _gameTime;

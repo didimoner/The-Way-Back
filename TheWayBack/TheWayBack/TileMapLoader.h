@@ -1,7 +1,9 @@
 #pragma once
 #include "SFML\Graphics.hpp"
 #include "tinyxml\tinyxml2.h"
+
 #include "ContentManager.h"
+#include "Entity.h"
 
 struct Map
 {
@@ -32,20 +34,19 @@ struct Tileset
 class TileMapLoader
 {
 public:
-	TileMapLoader(std::string mapsDir);
+	TileMapLoader(std::string mapsDir, short entitiesLayer);
 	~TileMapLoader();
 
 	void load(std::string name, std::map<std::string, sf::Texture>* pTextures);
-	void draw(sf::RenderWindow &window);
+	void draw(sf::RenderWindow& window, std::vector<Entity*>& entities);
 
 private:
 	std::map <std::string, sf::Texture>* _pTextures;
 	std::string _mapsDir;
-	//std::vector<std::vector<std::vector<unsigned short>>> _currentMapTiles;
 	std::vector<std::vector<std::vector<sf::Sprite>>> _currentMapSprites;
 	std::map<std::string, std::vector<MapObject>> _currentObjects;
 	std::vector<Tileset> _currentTilesets;
 	Map _currentMap;
-	
+	short _entitiesLayer;
 };
 
