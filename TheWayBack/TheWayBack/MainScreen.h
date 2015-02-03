@@ -20,5 +20,5 @@ private:
 	Player *_player;
 	Animation *_animation;
 	TileMapLoader *_tileMapLoader;
-	std::vector<Entity *> _entites;
+	std::vector<Entity *> _entities;
 };

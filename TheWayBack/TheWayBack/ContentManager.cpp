@@ -27,6 +27,8 @@ void ContentManager::loadContent()
 	addTexture("tilea2.png", "tilea2");
 	addTexture("japanese.png", "japanese");
 	addTexture("tilea4.png", "tilea4");
+	addTexture("RPGmakerXPMegaTilesetByLmnopguy7.png", "RPGmakerXPMegaTilesetByLmnopguy7");
+	
 
 
 	addSound("collect.ogg", "collect");

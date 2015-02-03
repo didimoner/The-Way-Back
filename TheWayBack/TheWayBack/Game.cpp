@@ -10,13 +10,16 @@ Game::~Game(void)
 
 void Game::initialize(void)
 {
-	_view.setCenter(360, 180);
-	_view.setSize(854, 480);
+	_view.setSize(768, 480);
+	_view.setCenter(384, 240);
 
-	_window.create(sf::VideoMode(960, 540), "The Way Back");
-	_window.setFramerateLimit(60);
+	//_view.setCenter(768, 480);
+	//_view.zoom(2);
+
+	_window.create(sf::VideoMode(960, 600), "The Way Back");
+	_window.setFramerateLimit(100);
 	_window.setKeyRepeatEnabled(false);
-	_window.setVerticalSyncEnabled(true);
+	_window.setVerticalSyncEnabled(false);
 	_window.setView(_view);
 }
 
@@ -60,7 +63,7 @@ void Game::update()
 
 void Game::draw()
 {
-	_window.clear();
+	//_window.clear();
 	_screenManager.draw(_window);
 	_window.display();
 }

@@ -1,7 +1,7 @@
 //#include <C:\Program Files (x86)\Visual Leak Detector\include\vld.h>
 
 #include <SFML/Graphics.hpp>
-#include <SFML\System.hpp>
+#include <SFML/System.hpp>
 
 #include "Game.h"
 

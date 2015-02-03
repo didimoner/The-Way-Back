@@ -7,6 +7,7 @@ TileMapLoader::TileMapLoader(std::string mapsDir, short entitiesLayer)
 {
 	_mapsDir = mapsDir + "/";
 	_entitiesLayer = entitiesLayer;
+
 }
 TileMapLoader::~TileMapLoader()
 {
@@ -65,7 +66,7 @@ void TileMapLoader::load(std::string name, std::map<std::string, sf::Texture>* p
 	std::vector<std::vector<sf::Sprite>> tempSpritesI;
 	std::vector<sf::Sprite> tempSpritesJ;
 	unsigned short tempGid;
-	unsigned short tilesetIndex;
+	unsigned short tilesetIndex = 0;
 	
 	while (pLayer != nullptr)
 	{
@@ -102,7 +103,7 @@ void TileMapLoader::load(std::string name, std::map<std::string, sf::Texture>* p
 				short tilesetWidth = _currentTilesets[tilesetIndex].width / _currentTilesets[tilesetIndex].tileWidth;
 				short tilesetHeight = _currentTilesets[tilesetIndex].height / _currentTilesets[tilesetIndex].tileHeight;
 
-				short spritePositionX = (trueGid - tilesetWidth * ((trueGid - 1) / tilesetWidth)) * _currentTilesets[tilesetIndex].tileWidth;
+				short spritePositionX = (trueGid - tilesetWidth * (trueGid / tilesetWidth)) * _currentTilesets[tilesetIndex].tileWidth;
 				short spritePositionY = (trueGid / tilesetWidth) * _currentTilesets[tilesetIndex].tileHeight;
 				short spriteWidth = _currentTilesets[tilesetIndex].tileWidth;
 				short spriteHeight = _currentTilesets[tilesetIndex].tileHeight;
@@ -160,6 +161,7 @@ void TileMapLoader::load(std::string name, std::map<std::string, sf::Texture>* p
 
 void TileMapLoader::draw(sf::RenderWindow& window, std::vector<Entity*>& entities)
 {
+
 	for (unsigned int layer = 0; layer < _currentMapSprites.size(); layer++)
 	{
 		for (int tilesH = 0; tilesH < _currentMap.height; tilesH++)

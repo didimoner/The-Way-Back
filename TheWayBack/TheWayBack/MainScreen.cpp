@@ -14,10 +14,10 @@ MainScreen::MainScreen(ContentManager* contentManager)
 	playerSounds.addSound((*_pSounds)["collect"], "jump");
 
 	_player = new Player(playerOne, playerSounds, 0.004f, sf::Vector2f(0, 0), sf::Vector2i(32, 32), _tileSize);
-	_entites.push_back(_player);
+	_entities.push_back(_player);
 
 	_tileMapLoader = new TileMapLoader("Content/Maps", 2);
-	_tileMapLoader->load("megamap.tmx", _pTextures);
+	_tileMapLoader->load("bigmap_notready.tmx", _pTextures);
 
 	//_animation = new Animation(6, 1, 5, 0.009f, sf::Vector2i(192, 192), false, true);
 	//_animation->setTexture((* _pTextures)["loading2"]);
@@ -52,6 +52,6 @@ void MainScreen::update(float gameTime)
 
 void MainScreen::draw(sf::RenderWindow& window)
 {
-	_tileMapLoader->draw(window, _entites);
+	_tileMapLoader->draw(window, _entities);
 	//window.draw(* _animation);
 }
