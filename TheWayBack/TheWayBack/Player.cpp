@@ -102,6 +102,8 @@ void Player::handleKeyRelease(sf::Keyboard::Key key)
 
 void Player::move(float x, float y, float gameTime)
 {
+	_lastPosition = sf::Vector2f(_position.x * _tileSize, _position.y * _tileSize);
+
 	_position.x += x * _movementSpeed * gameTime;
 	_position.y += y * _movementSpeed * gameTime;
 }
@@ -133,9 +135,13 @@ void Player::handleLiveInput()
 	}
 }
 
-sf::Vector2f Player::getPosition()
+sf::Vector2f Player::getCurrentPosition()
 {
 	return _character.getPosition();
+}
+sf::Vector2f Player::getLastPosition()
+{
+	return _lastPosition;
 }
 
 bool Player::intersects(sf::FloatRect bounds)
@@ -144,4 +150,16 @@ bool Player::intersects(sf::FloatRect bounds)
 		return true;
 	else
 		return false;
+}
+
+bool Player::isMoving()
+{
+	if (_state == STAY)
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
 }

@@ -12,7 +12,6 @@ struct Map
 	unsigned short width;
 	unsigned short height;
 };
-
 struct MapObject
 {
 	unsigned short x;
@@ -20,7 +19,6 @@ struct MapObject
 	unsigned short width;
 	unsigned short height;
 };
-
 struct Tileset
 {
 	std::string name;

@@ -21,7 +21,10 @@ public:
 
 	bool intersects(sf::FloatRect bounds);
 
-	sf::Vector2f getPosition();
+	sf::Vector2f getCurrentPosition();
+	sf::Vector2f getLastPosition();
+
+	bool isMoving();
 
 private:
 	void handleLiveInput();
@@ -33,4 +36,5 @@ private:
 	bool _isAlive;
 	enum { STAY, WALK_UP, WALK_DOWN, WALK_LEFT, WALK_RIGHT } _state;
 	short _tileSize;
+	sf::Vector2f _lastPosition;
 };

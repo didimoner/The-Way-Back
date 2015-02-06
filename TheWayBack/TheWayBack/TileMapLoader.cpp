@@ -46,7 +46,7 @@ void TileMapLoader::load(std::string name, std::map<std::string, sf::Texture>* p
 	while (pTileset != nullptr)
 	{
 		pImage = pTileset->FirstChildElement("image");
-		
+
 		tempTileset.firstgid = pTileset->IntAttribute("firstgid");
 		tempTileset.name = pTileset->Attribute("name");
 		tempTileset.tileWidth = pTileset->IntAttribute("tilewidth");
@@ -67,7 +67,7 @@ void TileMapLoader::load(std::string name, std::map<std::string, sf::Texture>* p
 	std::vector<sf::Sprite> tempSpritesJ;
 	unsigned short tempGid;
 	unsigned short tilesetIndex = 0;
-	
+
 	while (pLayer != nullptr)
 	{
 		pData = pLayer->FirstChildElement("data");
@@ -158,10 +158,8 @@ void TileMapLoader::load(std::string name, std::map<std::string, sf::Texture>* p
 	}
 }
 
-
 void TileMapLoader::draw(sf::RenderWindow& window, std::vector<Entity*>& entities)
 {
-
 	for (unsigned int layer = 0; layer < _currentMapSprites.size(); layer++)
 	{
 		for (int tilesH = 0; tilesH < _currentMap.height; tilesH++)

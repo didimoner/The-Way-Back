@@ -53,5 +53,6 @@ void MainScreen::update(float gameTime)
 void MainScreen::draw(sf::RenderWindow& window)
 {
 	_tileMapLoader->draw(window, _entities);
+	//_player->draw(window);
 	//window.draw(* _animation);
 }
