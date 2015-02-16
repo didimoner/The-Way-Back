@@ -36,7 +36,9 @@ public:
 	~TileMapLoader();
 
 	void load(std::string name, std::map<std::string, sf::Texture>* pTextures);
-	void draw(sf::RenderWindow& window, std::vector<Entity*>& entities);
+	void draw(sf::RenderWindow& window, std::vector<Entity*>& entities, sf::View& camera);
+
+	sf::Vector2i getSize();
 
 private:
 	std::map <std::string, sf::Texture>* _pTextures;

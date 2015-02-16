@@ -7,7 +7,6 @@ TileMapLoader::TileMapLoader(std::string mapsDir, short entitiesLayer)
 {
 	_mapsDir = mapsDir + "/";
 	_entitiesLayer = entitiesLayer;
-
 }
 TileMapLoader::~TileMapLoader()
 {
@@ -15,7 +14,6 @@ TileMapLoader::~TileMapLoader()
 
 void TileMapLoader::load(std::string name, std::map<std::string, sf::Texture>* pTextures)
 {
-	std::cout << "LET'S LOAD THIS SHIT!" << std::endl;
 	_pTextures = pTextures;
 
 	std::string path = _mapsDir + name;
@@ -158,14 +156,32 @@ void TileMapLoader::load(std::string name, std::map<std::string, sf::Texture>* p
 	}
 }
 
-void TileMapLoader::draw(sf::RenderWindow& window, std::vector<Entity*>& entities)
+void TileMapLoader::draw(sf::RenderWindow& window, std::vector<Entity*>& entities, sf::View& camera)
 {
+	sf::Vector2f cameraSizeT = sf::Vector2f(std::ceil(camera.getSize().x / _currentMap.tileHeight),
+		std::ceil(camera.getSize().y / _currentMap.tileWidth));
+
+	sf::Vector2f leftTop = sf::Vector2f(std::floor((camera.getCenter().x - camera.getSize().x / 2) / _currentMap.tileHeight),
+		std::floor((camera.getCenter().y - camera.getSize().y / 2) / _currentMap.tileWidth));
+	sf::Vector2f bottomRight = sf::Vector2f(std::ceil((camera.getCenter().x + camera.getSize().x / 2) / _currentMap.tileHeight),
+		std::ceil((camera.getCenter().y + camera.getSize().y / 2) / _currentMap.tileWidth));
+
 	for (unsigned int layer = 0; layer < _currentMapSprites.size(); layer++)
 	{
-		for (int tilesH = 0; tilesH < _currentMap.height; tilesH++)
+		for (int tilesH = (int)leftTop.y; tilesH < (int)bottomRight.y; tilesH++)
 		{
-			for (int tilesW = 0; tilesW < _currentMap.width; tilesW++)
+			if (tilesH < 0 || tilesH >= _currentMap.height)
 			{
+				continue;
+			}
+
+			for (int tilesW = (int)leftTop.x; tilesW < (int)bottomRight.x; tilesW++)
+			{
+				if (tilesW < 0 || tilesW >= _currentMap.width)
+				{
+					continue;
+				}
+				
 				if (_currentMapSprites[layer][tilesH][tilesW].getColor() == sf::Color::Transparent)
 					continue;
 
@@ -181,4 +197,9 @@ void TileMapLoader::draw(sf::RenderWindow& window, std::vector<Entity*>& entitie
 			}
 		}
 	}
+}
+
+sf::Vector2i TileMapLoader::getSize()
+{
+	return sf::Vector2i(_currentMap.width * _currentMap.tileWidth, _currentMap.height * _currentMap.tileHeight);
 }

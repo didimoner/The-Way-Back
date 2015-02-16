@@ -24,6 +24,7 @@ void ScreenManager::handleKeyPress(sf::Keyboard::Key key, bool isPressed)
 
 void ScreenManager::update(float gameTime)
 {
+
 	_currentScreen->update(gameTime);
 }
 

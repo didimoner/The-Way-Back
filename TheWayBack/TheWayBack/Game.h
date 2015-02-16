@@ -8,7 +8,7 @@
 class Game
 {
 public:
-	Game(void);
+	Game(sf::Vector2i resolution, std::string title, bool isFullscreen);
 	~Game(void);
 
 	void initialize(void);
@@ -18,6 +18,10 @@ public:
 	void run(void);
 
 private:
+	sf::Vector2i _screenResolution;
+	std::string _title;
+	bool _isFullscreen;
+
 	sf::RenderWindow _window;
 	sf::View _view;
 	sf::Event _event;

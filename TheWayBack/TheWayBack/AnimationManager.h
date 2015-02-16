@@ -17,6 +17,9 @@ public:
 	void addAnimation(std::string name, short line, short firstFrame, short lastFrame,
 		float delay, RepeatMode repeatMode, bool isLooped);
 
+	void move(float x, float y);
+	void move(std::string name, float x, float y);
+
 	void setCurrentAnimation(std::string name);
 	std::string getCurrentAnimation();
 
@@ -25,14 +28,19 @@ public:
 	void setPosition(std::string name, float x, float y);
 	sf::Vector2f getPosition(std::string name);
 
-	void setOffset(std::string name, float x, float y);
+	void setGlobalPosition(float x, float y);
+	sf::Vector2f getGlobalPosition();
+
+	
 
 	void pauseAnimation(std::string name);
 	void playAnimation(std::string name);
+	void stopAnimation(std::string name);
 
 private:
 	AnimatedSprite _animatedSprite;
 	std::map <std::string, AnimatedSprite> _animations;
 	std::string _currentSprite;
 	short _tileSize;
+	sf::Vector2f _globalPosition;
 };

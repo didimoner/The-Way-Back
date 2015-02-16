@@ -1,7 +1,11 @@
 #include "Game.h"
+#include <iostream>
 
-Game::Game(void)
+Game::Game(sf::Vector2i resolution, std::string title, bool isFullscreen)
 {
+	_screenResolution = resolution;
+	_title = title;
+	_isFullscreen = isFullscreen;
 }
 
 Game::~Game(void)
@@ -10,17 +14,13 @@ Game::~Game(void)
 
 void Game::initialize(void)
 {
-	_view.setSize(768, 480);
-	_view.setCenter(384, 240);
-
-	//_view.setCenter(768, 480);
-	//_view.zoom(2);
-
-	_window.create(sf::VideoMode(960, 600), "The Way Back");
-	_window.setFramerateLimit(100);
+	_window.create(sf::VideoMode(_screenResolution.x, _screenResolution.y), _title,
+		_isFullscreen ? sf::Style::Fullscreen : sf::Style::Default);
+	//_window.create(sf::VideoMode(854, 480), "The Way Back", sf::Style::Fullscreen);
+	_window.setFramerateLimit(60);
 	_window.setKeyRepeatEnabled(false);
 	_window.setVerticalSyncEnabled(false);
-	_window.setView(_view);
+	_window.setMouseCursorVisible(false);
 }
 
 void Game::loadContent(void)
@@ -30,12 +30,13 @@ void Game::loadContent(void)
 void Game::update()
 {
 	_gameTime = (float)_clock.getElapsedTime().asMicroseconds();
-	_clock.restart();
+	//std::cout << "FPS: " << 1000000.0f / _clock.getElapsedTime().asMicroseconds() << std::endl;
+	
 
 	_gameTime /= 500;
 
-	if (_gameTime > 40)
-		_gameTime = 40;
+	if (_gameTime > 20)
+		_gameTime = 20;
 
 	while (_window.pollEvent(_event))
 	{
@@ -59,6 +60,7 @@ void Game::update()
 	}
 
 	_screenManager.update(_gameTime);
+	_clock.restart();
 }
 
 void Game::draw()

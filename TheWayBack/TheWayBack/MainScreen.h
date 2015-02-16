@@ -21,4 +21,6 @@ private:
 	Animation* _animation;
 	TileMapLoader* _tileMapLoader;
 	std::vector<Entity*> _entities;
+	sf::View _camera;
+	sf::Vector2f _cameraSpeed;
 };

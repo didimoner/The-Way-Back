@@ -32,7 +32,10 @@ AnimatedSprite::~AnimatedSprite(void)
 void AnimatedSprite::update(float gameTime)
 {
 	if (!_isPlaying)
+	{
+		setTextureRect(sf::IntRect(_currentFrame * _tileSize, _line * _tileSize, _tileSize, _tileSize));
 		return;
+	}
 
 	if (_repeatMode == LOOP)
 	{
@@ -140,6 +143,11 @@ void AnimatedSprite::pause()
 void AnimatedSprite::play()
 {
 	_isPlaying = true;
+}
+void AnimatedSprite::stop()
+{
+	_isPlaying = false;
+	_currentFrame = _firstFrame;
 }
 
 void AnimatedSprite::looped()

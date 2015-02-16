@@ -2,6 +2,7 @@
 #include "entity.h"
 #include "AnimationManager.h"
 #include "SoundManager.h"
+#include "TileMapLoader.h"
 
 class Player :
 	public Entity
@@ -11,8 +12,8 @@ public:
 		float speed, sf::Vector2f position, sf::Vector2i size, short tileSize);
 	~Player(void);
 
-	virtual void update(float gameTime);
-	virtual void draw(sf::RenderWindow &window);
+	virtual void update(float gameTime, sf::View& camera, TileMapLoader& tileMapLoader);
+	virtual void draw(sf::RenderWindow& window);
 
 	void handleKeyPress(sf::Keyboard::Key key);
 	void handleKeyRelease(sf::Keyboard::Key key);
@@ -20,6 +21,8 @@ public:
 	void move(float x, float y, float gameTime);
 
 	bool intersects(sf::FloatRect bounds);
+
+	short getState();
 
 	sf::Vector2f getCurrentPosition();
 	sf::Vector2f getLastPosition();
@@ -37,4 +40,5 @@ private:
 	enum { STAY, WALK_UP, WALK_DOWN, WALK_LEFT, WALK_RIGHT } _state;
 	short _tileSize;
 	sf::Vector2f _lastPosition;
+	sf::Vector2f _cameraMovementSpeed;
 };

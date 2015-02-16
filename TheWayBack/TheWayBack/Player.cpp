@@ -11,7 +11,9 @@ Player::Player(AnimationManager animationManager, SoundManager soundManager, flo
 	_size = size;
 	_state = STAY;
 	_tileSize = tileSize;
-	_bounds = sf::FloatRect(_position.x, _position.y, (float)_size.x, (float)_size.y);
+	_currentAnimation = _character.getCurrentAnimation();
+	_character.setPosition(_position.x, _position.y);
+	_bounds = sf::FloatRect(_position.x * _tileSize, _position.y * _tileSize, (float)_size.x, (float)_size.y);
 }
 
 Player::~Player(void)
@@ -22,14 +24,14 @@ Player::~Player(void)
 // UPDATE FUNCTION--------------------------------------
 // -----------------------------------------------------
 
-void Player::update(float gameTime)
+void Player::update(float gameTime, sf::View& camera, TileMapLoader& tileMapLoader)
 {
 	handleLiveInput();
 
 	switch (_state)
 	{
 	case STAY:
-		_character.pauseAnimation(_currentAnimation);
+		_character.stopAnimation(_currentAnimation);
 		break;
 
 	case WALK_UP:
@@ -62,8 +64,52 @@ void Player::update(float gameTime)
 	}
 
 	_currentAnimation = _character.getCurrentAnimation();
-	_character.setPosition(_position.x * _tileSize, _position.y * _tileSize);
+	_character.setPosition(_position.x, _position.y);
 	_bounds = sf::FloatRect(_position.x * _tileSize, _position.y * _tileSize, (float)_size.x, (float)_size.y);
+
+	/***********************************************************************************/
+
+	// устанавливаем вьюху и не пускаем ее за границы карты (иначе рисовальщик выйдет за границы массива)
+	sf::Vector2f cameraCenter = sf::Vector2f(_character.getPosition().x + _size.x / 2, _character.getPosition().y + _size.y / 2);
+
+	if (tileMapLoader.getSize().x < camera.getSize().x)
+	{
+		cameraCenter.x = camera.getSize().x / 2 - (camera.getSize().x - tileMapLoader.getSize().x) / 2;
+	}
+	else
+	{
+		if ((cameraCenter.x - camera.getSize().x / 2) < 0)
+		{
+			cameraCenter.x = camera.getSize().x / 2;
+		}
+
+		if ((cameraCenter.x + camera.getSize().x / 2) >= tileMapLoader.getSize().x)
+		{
+			cameraCenter.x = tileMapLoader.getSize().x - camera.getSize().x / 2;
+		}
+		
+	}
+
+	if (tileMapLoader.getSize().y < camera.getSize().y)
+	{
+		cameraCenter.y = camera.getSize().y / 2 - (camera.getSize().y - tileMapLoader.getSize().y) / 2;
+	}
+	else
+	{
+		
+		if ((cameraCenter.y - camera.getSize().y / 2) < 0)
+		{
+			cameraCenter.y = camera.getSize().y / 2;
+		}
+
+		if ((cameraCenter.y + camera.getSize().y / 2) >= tileMapLoader.getSize().y)
+		{
+			cameraCenter.y = tileMapLoader.getSize().y - camera.getSize().y / 2;
+		}
+	}
+
+
+	camera.setCenter(cameraCenter.x, cameraCenter.y);
 	_character.update(gameTime);
 }
 
@@ -71,7 +117,7 @@ void Player::update(float gameTime)
 // DRAW FUNCTION----------------------------------------
 // -----------------------------------------------------
 
-void Player::draw(sf::RenderWindow &window)
+void Player::draw(sf::RenderWindow& window)
 {
 	_character.draw(window);
 }
@@ -102,30 +148,33 @@ void Player::handleKeyRelease(sf::Keyboard::Key key)
 
 void Player::move(float x, float y, float gameTime)
 {
-	_lastPosition = sf::Vector2f(_position.x * _tileSize, _position.y * _tileSize);
+	//std::cout << "GT: " << gameTime << std::endl;
+	//std::cout << "X: " << x * _movementSpeed * gameTime << std::endl;
+	//std::cout << "Y: " << y * _movementSpeed * gameTime << std::endl;
 
+	_lastPosition = sf::Vector2f(_position.x * _tileSize, _position.y * _tileSize);
 	_position.x += x * _movementSpeed * gameTime;
 	_position.y += y * _movementSpeed * gameTime;
 }
 
 void Player::handleLiveInput()
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && _state != WALK_DOWN
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && _state != WALK_DOWN
 		&& (_state != WALK_LEFT && _state != WALK_RIGHT))
 	{
 		_state = WALK_UP;
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)
 		&& (_state != WALK_LEFT && _state != WALK_RIGHT))
 	{
 		_state = WALK_DOWN;
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)
 		&& _state != WALK_RIGHT)
 	{
 		_state = WALK_LEFT;
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 	{
 		_state = WALK_RIGHT;
 	}
@@ -137,7 +186,7 @@ void Player::handleLiveInput()
 
 sf::Vector2f Player::getCurrentPosition()
 {
-	return _character.getPosition();
+	return sf::Vector2f(_position.x * _tileSize, _position.y * _tileSize);
 }
 sf::Vector2f Player::getLastPosition()
 {
@@ -162,4 +211,9 @@ bool Player::isMoving()
 	{
 		return true;
 	}
+}
+
+short Player::getState()
+{
+	return _state;
 }

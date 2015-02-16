@@ -42,6 +42,7 @@ public:
 
 	void pause();
 	void play();
+	void stop();
 
 private:
 	short _line;

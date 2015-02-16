@@ -41,6 +41,15 @@ void AnimationManager::addAnimation(std::string name, short line, short firstFra
 	_currentSprite = name;
 }
 
+void AnimationManager::move(float x, float y)
+{
+	_animations[_currentSprite].move(x, y);
+}
+void AnimationManager::move(std::string name, float x, float y)
+{
+	_animations[name].move(x, y);
+}
+
 void AnimationManager::setCurrentAnimation(std::string name)
 {
 	_currentSprite = name;
@@ -68,11 +77,6 @@ sf::Vector2f AnimationManager::getPosition(std::string name)
 	return _animations[name].getPosition();
 }
 
-void AnimationManager::setOffset(std::string name, float x, float y)
-{
-	_animations[name].move(x, y);
-}
-
 void AnimationManager::pauseAnimation(std::string name)
 {
 	_animations[name].pause();
@@ -80,4 +84,8 @@ void AnimationManager::pauseAnimation(std::string name)
 void AnimationManager::playAnimation(std::string name)
 {
 	_animations[name].play();
+}
+void AnimationManager::stopAnimation(std::string name)
+{
+	_animations[name].stop();
 }
