@@ -141,13 +141,9 @@ void TileMapLoader::load(std::string name, std::map<std::string, sf::Texture>* p
 
 		while (pObject != nullptr)
 		{
-			MapObject mapObject;
-			mapObject.x = pObject->IntAttribute("x");
-			mapObject.y = pObject->IntAttribute("y");
-			mapObject.height = pObject->IntAttribute("height");
-			mapObject.width = pObject->IntAttribute("width");
-
-			_currentObjects[objectgroupName].push_back(mapObject);
+			sf::FloatRect tempRect = sf::FloatRect(pObject->FloatAttribute("x"), pObject->FloatAttribute("y"),
+				pObject->FloatAttribute("width"), pObject->FloatAttribute("height"));
+			_currentObjects[objectgroupName].push_back(tempRect);
 
 			pObject = pObject->NextSiblingElement("object");
 		}
@@ -202,4 +198,9 @@ void TileMapLoader::draw(sf::RenderWindow& window, std::vector<Entity*>& entitie
 sf::Vector2i TileMapLoader::getSize()
 {
 	return sf::Vector2i(_currentMap.width * _currentMap.tileWidth, _currentMap.height * _currentMap.tileHeight);
+}
+
+std::vector<sf::FloatRect>* TileMapLoader::getObjects(std::string name)
+{
+	return &(_currentObjects[name]);
 }

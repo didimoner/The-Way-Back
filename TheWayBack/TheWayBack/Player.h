@@ -18,7 +18,7 @@ public:
 	void handleKeyPress(sf::Keyboard::Key key);
 	void handleKeyRelease(sf::Keyboard::Key key);
 
-	void move(float x, float y, float gameTime);
+	void move(float x, float y, float gameTime, TileMapLoader& tileMapLoader);
 
 	bool intersects(sf::FloatRect bounds);
 
@@ -41,4 +41,5 @@ private:
 	short _tileSize;
 	sf::Vector2f _lastPosition;
 	sf::Vector2f _cameraMovementSpeed;
+	bool _isIntersecting;
 };

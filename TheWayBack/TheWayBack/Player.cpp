@@ -14,6 +14,7 @@ Player::Player(AnimationManager animationManager, SoundManager soundManager, flo
 	_currentAnimation = _character.getCurrentAnimation();
 	_character.setPosition(_position.x, _position.y);
 	_bounds = sf::FloatRect(_position.x * _tileSize, _position.y * _tileSize, (float)_size.x, (float)_size.y);
+	_isIntersecting = false;
 }
 
 Player::~Player(void)
@@ -26,36 +27,39 @@ Player::~Player(void)
 
 void Player::update(float gameTime, sf::View& camera, TileMapLoader& tileMapLoader)
 {
-	handleLiveInput();
+	_character.update(gameTime);
+	_currentAnimation = _character.getCurrentAnimation();
 
+	handleLiveInput();
+	
 	switch (_state)
 	{
 	case STAY:
 		_character.stopAnimation(_currentAnimation);
-		break;
+		return;
 
 	case WALK_UP:
 		_character.setCurrentAnimation("walk_up");
 		_character.playAnimation(_currentAnimation);
-		move(0, -1, gameTime);
+		move(0, -1, gameTime, tileMapLoader);
 		break;
 
 	case WALK_DOWN:
 		_character.setCurrentAnimation("walk_down");
 		_character.playAnimation(_currentAnimation);
-		move(0, 1, gameTime);
+		move(0, 1, gameTime, tileMapLoader);
 		break;
 
 	case WALK_LEFT:
 		_character.setCurrentAnimation("walk_left");
 		_character.playAnimation(_currentAnimation);
-		move(-1, 0, gameTime);
+		move(-1, 0, gameTime, tileMapLoader);
 		break;
 
 	case WALK_RIGHT:
 		_character.setCurrentAnimation("walk_right");
 		_character.playAnimation(_currentAnimation);
-		move(1, 0, gameTime);
+		move(1, 0, gameTime, tileMapLoader);
 		break;
 
 	default:
@@ -63,12 +67,7 @@ void Player::update(float gameTime, sf::View& camera, TileMapLoader& tileMapLoad
 		break;
 	}
 
-	_currentAnimation = _character.getCurrentAnimation();
-	_character.setPosition(_position.x, _position.y);
-	_bounds = sf::FloatRect(_position.x * _tileSize, _position.y * _tileSize, (float)_size.x, (float)_size.y);
-
-	/***********************************************************************************/
-
+	
 	// устанавливаем вьюху и не пускаем ее за границы карты (иначе рисовальщик выйдет за границы массива)
 	sf::Vector2f cameraCenter = sf::Vector2f(_character.getPosition().x + _size.x / 2, _character.getPosition().y + _size.y / 2);
 
@@ -108,9 +107,7 @@ void Player::update(float gameTime, sf::View& camera, TileMapLoader& tileMapLoad
 		}
 	}
 
-
 	camera.setCenter(cameraCenter.x, cameraCenter.y);
-	_character.update(gameTime);
 }
 
 // -----------------------------------------------------
@@ -146,15 +143,35 @@ void Player::handleKeyRelease(sf::Keyboard::Key key)
 		}*/
 }
 
-void Player::move(float x, float y, float gameTime)
+void Player::move(float x, float y, float gameTime, TileMapLoader& tileMapLoader)
 {
-	//std::cout << "GT: " << gameTime << std::endl;
-	//std::cout << "X: " << x * _movementSpeed * gameTime << std::endl;
-	//std::cout << "Y: " << y * _movementSpeed * gameTime << std::endl;
+	if (!_isIntersecting)
+	{
+		_lastPosition = sf::Vector2f(_position.x * _tileSize, _position.y * _tileSize);
+	}
 
-	_lastPosition = sf::Vector2f(_position.x * _tileSize, _position.y * _tileSize);
 	_position.x += x * _movementSpeed * gameTime;
 	_position.y += y * _movementSpeed * gameTime;
+
+	_bounds = sf::FloatRect(_position.x * _tileSize, _position.y * _tileSize + _tileSize / 2, (float)_size.x, (float)_size.y / 2);
+
+	static std::vector<sf::FloatRect>* pCollisionObjects = tileMapLoader.getObjects("collision");
+
+	for (unsigned int i = 0; i < pCollisionObjects->size(); i++)
+	{
+		if (_bounds.intersects((*pCollisionObjects)[i]))
+		{
+			_isIntersecting = true;
+			_position = sf::Vector2f(_lastPosition.x / _tileSize, _lastPosition.y / _tileSize);
+			break;
+		}
+		else
+		{
+			_isIntersecting = false;
+		}
+	}
+
+	_character.setPosition(_position.x, _position.y);
 }
 
 void Player::handleLiveInput()

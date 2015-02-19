@@ -12,13 +12,13 @@ struct Map
 	unsigned short width;
 	unsigned short height;
 };
-struct MapObject
-{
-	unsigned short x;
-	unsigned short y;
-	unsigned short width;
-	unsigned short height;
-};
+//struct MapObject
+//{
+//	float x;
+//	float y;
+//	float width;
+//	float height;
+//};
 struct Tileset
 {
 	std::string name;
@@ -39,12 +39,14 @@ public:
 	void draw(sf::RenderWindow& window, std::vector<Entity*>& entities, sf::View& camera);
 
 	sf::Vector2i getSize();
+	std::vector<sf::FloatRect>* getObjects(std::string name);
 
 private:
 	std::map <std::string, sf::Texture>* _pTextures;
 	std::string _mapsDir;
 	std::vector<std::vector<std::vector<sf::Sprite>>> _currentMapSprites;
-	std::map<std::string, std::vector<MapObject>> _currentObjects;
+	//std::map<std::string, std::vector<MapObject>> _currentObjects;
+	std::map<std::string, std::vector<sf::FloatRect>> _currentObjects;
 	std::vector<Tileset> _currentTilesets;
 	Map _currentMap;
 	short _entitiesLayer;

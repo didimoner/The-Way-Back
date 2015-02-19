@@ -18,7 +18,7 @@ MainScreen::MainScreen(ContentManager* contentManager)
 	SoundManager playerSounds;
 	playerSounds.addSound((*_pSounds)["collect"], "jump");
 
-	_player = new Player(playerOne, playerSounds, 0.24f, sf::Vector2f(0, 0),
+	_player = new Player(playerOne, playerSounds, 0.24f, sf::Vector2f(1, 2),
 		sf::Vector2i(32, 32), _tileSize);
 	_entities.push_back(_player);
 
