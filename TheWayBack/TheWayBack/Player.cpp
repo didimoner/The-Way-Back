@@ -27,8 +27,7 @@ Player::~Player(void)
 
 void Player::update(float gameTime, sf::View& camera, TileMapLoader& tileMapLoader)
 {
-	_character.update(gameTime);
-	_currentAnimation = _character.getCurrentAnimation();
+	
 
 	handleLiveInput();
 	
@@ -36,6 +35,7 @@ void Player::update(float gameTime, sf::View& camera, TileMapLoader& tileMapLoad
 	{
 	case STAY:
 		_character.stopAnimation(_currentAnimation);
+		_character.update(gameTime);
 		return;
 
 	case WALK_UP:
@@ -67,7 +67,9 @@ void Player::update(float gameTime, sf::View& camera, TileMapLoader& tileMapLoad
 		break;
 	}
 
-	
+	_character.update(gameTime);
+	_currentAnimation = _character.getCurrentAnimation();
+
 	// устанавливаем вьюху и не пускаем ее за границы карты (иначе рисовальщик выйдет за границы массива)
 	sf::Vector2f cameraCenter = sf::Vector2f(_character.getPosition().x + _size.x / 2, _character.getPosition().y + _size.y / 2);
 
