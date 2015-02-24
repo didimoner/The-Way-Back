@@ -1,0 +1,11 @@
+newchar02-2.png char1
+actor001.png char2
+newchar01-1.png char3
+newchar05-5.png char4
+dark_effect_001.png loading
+slash_effect_002.png loading2
+tile21.png tile21
+tilea2.png tilea2
+japanese.png japanese
+tilea4.png tilea4
+RPGmakerXPMegaTilesetByLmnopguy7.png RPGmakerXPMegaTilesetByLmnopguy7

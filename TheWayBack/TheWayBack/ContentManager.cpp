@@ -16,6 +16,9 @@ ContentManager::~ContentManager()
 
 void ContentManager::loadContent(std::string screenName)
 {
+	_textures.clear();
+	_sounds.clear();
+
 	std::ifstream file;
 	std::string realName;
 	std::string shortName;
