@@ -3,9 +3,6 @@
 BaseScreen::BaseScreen(ContentManager* contentManager)
 {
 	_pContentManager = contentManager;
-	_pTextures = _pContentManager->getTextures();
-	_pSounds = _pContentManager->getSounds();
-	_pFont = _pContentManager->getFont();
 	_tileSize = _pContentManager->getTileSize();
 }
 

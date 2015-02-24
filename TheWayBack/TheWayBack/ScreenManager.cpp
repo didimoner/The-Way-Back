@@ -4,7 +4,7 @@ ScreenManager::ScreenManager()
 {
 	_contentManager.setRootFolder("Content");
 	_contentManager.setTileSize(32);
-	_contentManager.loadContent();
+	//_contentManager.loadContent();
 
 	_pMainScreen = new MainScreen(&_contentManager);
 	_screens.push_back(_pMainScreen);

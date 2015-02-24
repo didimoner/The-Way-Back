@@ -1,4 +1,6 @@
 #pragma once
+#include <fstream>
+#include <iostream>
 #include "SFML\Graphics.hpp"
 #include "SFML\Audio.hpp"
 
@@ -17,7 +19,7 @@ public:
 
 	void addFont(std::string file, std::string name);
 
-	void loadContent(void);
+	void loadContent(std::string screenName);
 
 	std::map <std::string, sf::Texture>* getTextures();
 	std::map <std::string, sf::SoundBuffer>* getSounds();

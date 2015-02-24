@@ -14,26 +14,63 @@ ContentManager::~ContentManager()
 	_textures.clear();
 }
 
-void ContentManager::loadContent()
+void ContentManager::loadContent(std::string screenName)
 {
-	addTexture("newchar02-2.png", "char1");
-	addTexture("actor001.png", "char2");
-	addTexture("newchar01-1.png", "char3");
-	addTexture("newchar05-5.png", "char4");
-	addTexture("dark_effect_001.png", "loading");
-	addTexture("slash_effect_002.png", "loading2");
-	// map tilesets
-	addTexture("tile21.png", "tile21");
-	addTexture("tilea2.png", "tilea2");
-	addTexture("japanese.png", "japanese");
-	addTexture("tilea4.png", "tilea4");
-	addTexture("RPGmakerXPMegaTilesetByLmnopguy7.png", "RPGmakerXPMegaTilesetByLmnopguy7");
+	std::ifstream file;
+	std::string realName;
+	std::string shortName;
+
+	// —читываем текстуры
+	file.open(_rootDir + screenName + ".txl");
+	if (!file)
+	{
+		std::cout << "Can not open file: " << _rootDir + screenName + ".txl" << std::endl;
+	}
+	else
+	{
+		while (!file.eof())
+		{
+			file >> realName >> shortName;
+			addTexture(realName, shortName);
+		}
+
+		file.close();
+	}
+
+	// считываем звуки
+	file.open(_rootDir + screenName + ".txs");
+	if (!file)
+	{
+		std::cout << "Can not open file: " << _rootDir + screenName + ".txs" << std::endl;
+	}
+	else
+	{
+		while (!file.eof())
+		{
+			file >> realName >> shortName;
+			addSound(realName, shortName);
+		}
+
+		file.close();
+	}
+
+	// считываем шрифты
+	file.open(_rootDir + screenName + ".txf");
+	if (!file)
+	{
+		std::cout << "Can not open file: " << _rootDir + screenName + ".txf" << std::endl;
+	}
+	else
+	{
+		while (!file.eof())
+		{
+			file >> realName >> shortName;
+			addFont(realName, shortName);
+		}
+
+		file.close();
+	}
 	
-
-
-	addSound("collect.ogg", "collect");
-
-	addFont("default.ttf", "mini");
 }
 
 void ContentManager::addTexture(std::string file, std::string name)

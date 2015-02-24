@@ -4,7 +4,11 @@
 MainScreen::MainScreen(ContentManager* contentManager)
 	: BaseScreen(contentManager)
 {
-	
+	_pContentManager->loadContent("mainscreen");
+	_pTextures = _pContentManager->getTextures();
+	_pSounds = _pContentManager->getSounds();
+	_pFont = _pContentManager->getFont();
+
 	_camera.setSize(854, 480);
 	_camera.setCenter(_camera.getSize().x / 2, _camera.getSize().y / 2);
 	_cameraSpeed = sf::Vector2f(0.2f, 0.18f);
