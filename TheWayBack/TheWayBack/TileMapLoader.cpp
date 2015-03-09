@@ -204,3 +204,10 @@ std::vector<sf::FloatRect>* TileMapLoader::getObjects(std::string name)
 {
 	return &(_currentObjects[name]);
 }
+
+void TileMapLoader::clear()
+{
+	_currentMapSprites.clear();
+	//_currentObjects["collision"].clear();
+	_currentTilesets.clear();
+}

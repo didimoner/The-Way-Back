@@ -27,8 +27,6 @@ Player::~Player(void)
 
 void Player::update(float gameTime, sf::View& camera, TileMapLoader& tileMapLoader)
 {
-	
-
 	handleLiveInput();
 	
 	switch (_state)

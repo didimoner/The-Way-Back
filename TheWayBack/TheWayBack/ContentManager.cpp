@@ -6,28 +6,27 @@ ContentManager::ContentManager()
 	_soundsDir = "";
 	_fontsDir = "";
 	_imagesDir = "";
+	_resourcesDir = "";
 	_tileSize = 32;
 }
 
 ContentManager::~ContentManager()
 {
 	_textures.clear();
+	_sounds.clear();
 }
 
 void ContentManager::loadContent(std::string screenName)
 {
-	_textures.clear();
-	_sounds.clear();
-
 	std::ifstream file;
 	std::string realName;
 	std::string shortName;
 
 	// —читываем текстуры
-	file.open(_rootDir + screenName + ".txl");
+	file.open(_resourcesDir + screenName + ".txl");
 	if (!file)
 	{
-		std::cout << "Can not open file: " << _rootDir + screenName + ".txl" << std::endl;
+		std::cout << "Can not open file: " << _resourcesDir + screenName + ".txl" << std::endl;
 	}
 	else
 	{
@@ -41,10 +40,10 @@ void ContentManager::loadContent(std::string screenName)
 	}
 
 	// считываем звуки
-	file.open(_rootDir + screenName + ".txs");
+	file.open(_resourcesDir + screenName + ".snl");
 	if (!file)
 	{
-		std::cout << "Can not open file: " << _rootDir + screenName + ".txs" << std::endl;
+		std::cout << "Can not open file: " << _resourcesDir + screenName + ".snl" << std::endl;
 	}
 	else
 	{
@@ -58,10 +57,10 @@ void ContentManager::loadContent(std::string screenName)
 	}
 
 	// считываем шрифты
-	file.open(_rootDir + screenName + ".txf");
+	file.open(_resourcesDir + screenName + ".fnl");
 	if (!file)
 	{
-		std::cout << "Can not open file: " << _rootDir + screenName + ".txf" << std::endl;
+		std::cout << "Can not open file: " << _resourcesDir + screenName + ".fnl" << std::endl;
 	}
 	else
 	{
@@ -145,6 +144,7 @@ void ContentManager::setRootFolder(std::string folder)
 	_soundsDir = _rootDir + "Sounds/";
 	_fontsDir = _rootDir + "Fonts/";
 	_imagesDir = _rootDir + "Images/";
+	_resourcesDir = _rootDir + "Resources/";
 }
 std::string ContentManager::getRootFolder()
 {
@@ -158,4 +158,10 @@ void ContentManager::setTileSize(unsigned short size)
 unsigned short ContentManager::getTileSize()
 {
 	return _tileSize;
+}
+
+void ContentManager::clear()
+{
+	_textures.clear();
+	_sounds.clear();
 }

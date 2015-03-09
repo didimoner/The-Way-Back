@@ -78,9 +78,11 @@
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="MainScreen.h" />
+    <ClInclude Include="MenuScreen.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="ScreenManager.h" />
     <ClInclude Include="SoundManager.h" />
+    <ClInclude Include="SplashScreen.h" />
     <ClInclude Include="SpriteManager.h" />
     <ClInclude Include="TileMapLoader.h" />
     <ClInclude Include="tinyxml\tinyxml2.h" />
@@ -95,9 +97,11 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainScreen.cpp" />
+    <ClCompile Include="MenuScreen.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="ScreenManager.cpp" />
     <ClCompile Include="SoundManager.cpp" />
+    <ClCompile Include="SplashScreen.cpp" />
     <ClCompile Include="SpriteManager.cpp" />
     <ClCompile Include="TileMapLoader.cpp" />
     <ClCompile Include="tinyxml\tinyxml2.cpp" />

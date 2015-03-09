@@ -24,3 +24,16 @@ void BaseScreen::update(float gameTime)
 void BaseScreen::draw(sf::RenderWindow &window)
 {
 }
+
+void BaseScreen::activate()
+{
+}
+
+void BaseScreen::deactivate()
+{
+}
+
+bool BaseScreen::getState()
+{
+	return _isActivated;
+}

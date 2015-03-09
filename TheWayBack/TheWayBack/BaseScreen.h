@@ -17,6 +17,11 @@ public:
 
 	virtual void update(float gameTime);
 	virtual void draw(sf::RenderWindow &window);
+	
+	virtual void activate();
+	virtual void deactivate();
+
+	virtual bool getState();
 
 protected:
 	ContentManager* _pContentManager;
@@ -30,4 +35,5 @@ protected:
 	sf::Font* _pFont;
 
 	short _tileSize;
+	bool _isActivated;
 };

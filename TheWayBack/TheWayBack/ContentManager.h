@@ -31,11 +31,14 @@ public:
 	void setTileSize(unsigned short size);
 	unsigned short getTileSize();
 
+	void clear();
+
 private:
 	std::string _rootDir;
 	std::string _imagesDir;
 	std::string _fontsDir;
 	std::string _soundsDir;
+	std::string _resourcesDir;
 
 	std::map<std::string, sf::Texture> _textures;
 	std::map<std::string, sf::SoundBuffer> _sounds;

@@ -12,13 +12,7 @@ struct Map
 	unsigned short width;
 	unsigned short height;
 };
-//struct MapObject
-//{
-//	float x;
-//	float y;
-//	float width;
-//	float height;
-//};
+
 struct Tileset
 {
 	std::string name;
@@ -41,11 +35,12 @@ public:
 	sf::Vector2i getSize();
 	std::vector<sf::FloatRect>* getObjects(std::string name);
 
+	void clear();
+
 private:
 	std::map <std::string, sf::Texture>* _pTextures;
 	std::string _mapsDir;
 	std::vector<std::vector<std::vector<sf::Sprite>>> _currentMapSprites;
-	//std::map<std::string, std::vector<MapObject>> _currentObjects;
 	std::map<std::string, std::vector<sf::FloatRect>> _currentObjects;
 	std::vector<Tileset> _currentTilesets;
 	Map _currentMap;

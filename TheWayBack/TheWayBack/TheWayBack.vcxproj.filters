@@ -66,6 +66,12 @@
     <ClInclude Include="tinyxml\tinyxml2.h">
       <Filter>TinyXML</Filter>
     </ClInclude>
+    <ClInclude Include="MenuScreen.h">
+      <Filter>Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="SplashScreen.h">
+      <Filter>Screens</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AnimatedSprite.cpp">
@@ -112,6 +118,12 @@
     </ClCompile>
     <ClCompile Include="tinyxml\tinyxml2.cpp">
       <Filter>TinyXML</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuScreen.cpp">
+      <Filter>Screens</Filter>
+    </ClCompile>
+    <ClCompile Include="SplashScreen.cpp">
+      <Filter>Screens</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

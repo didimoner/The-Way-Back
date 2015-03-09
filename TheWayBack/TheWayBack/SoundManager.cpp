@@ -6,6 +6,7 @@ SoundManager::SoundManager(void)
 
 SoundManager::~SoundManager(void)
 {
+	_sounds.clear();
 }
 
 void SoundManager::addSound(sf::SoundBuffer &soundBuffer, std::string name)

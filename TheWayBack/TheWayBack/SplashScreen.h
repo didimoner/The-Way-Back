@@ -1,15 +1,11 @@
 #pragma once
-
-#include "basescreen.h"
-#include "Player.h"
-#include "TileMapLoader.h"
-
-class MainScreen :
+#include "BaseScreen.h"
+class SplashScreen :
 	public BaseScreen
 {
 public:
-	MainScreen(ContentManager *contentManager);
-	~MainScreen();
+	SplashScreen(ContentManager *contentManager);
+	~SplashScreen();
 
 	virtual void handleKeyPress(sf::Keyboard::Key key, bool isPressed);
 
@@ -22,9 +18,6 @@ public:
 	virtual bool getState();
 
 private:
-	Player* _player;
-	TileMapLoader* _tileMapLoader;
-	std::vector<Entity*> _entities;
-	sf::View _camera;
-	sf::Vector2f _cameraSpeed;
+	Animation* _animation;
 };
+
