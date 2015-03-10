@@ -25,7 +25,7 @@ void MainScreen::handleKeyPress(sf::Keyboard::Key key, bool isPressed)
 
 void MainScreen::update(float gameTime)
 {
-	_player->update(gameTime, _camera, *_tileMapLoader);
+	_player->update(gameTime, _camera, _tileMapLoader);
 	//_animation->update(gameTime);
 }
 
@@ -77,12 +77,10 @@ void MainScreen::activate()
 
 void MainScreen::deactivate()
 {
-	//delete _tileMapLoader;
-
+	delete _tileMapLoader;
 	delete _player;
 	_entities.clear();
 	_pContentManager->clear();
-	_tileMapLoader->clear();
 
 	std::cout << "MainScreen deactivated" << std::endl;
 	_isActivated = false;

@@ -35,8 +35,6 @@ public:
 	sf::Vector2i getSize();
 	std::vector<sf::FloatRect>* getObjects(std::string name);
 
-	void clear();
-
 private:
 	std::map <std::string, sf::Texture>* _pTextures;
 	std::string _mapsDir;

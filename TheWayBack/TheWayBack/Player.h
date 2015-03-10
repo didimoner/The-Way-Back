@@ -12,13 +12,13 @@ public:
 		float speed, sf::Vector2f position, sf::Vector2i size, short tileSize);
 	~Player(void);
 
-	virtual void update(float gameTime, sf::View& camera, TileMapLoader& tileMapLoader);
+	virtual void update(float gameTime, sf::View& camera, TileMapLoader* tileMapLoader);
 	virtual void draw(sf::RenderWindow& window);
 
 	void handleKeyPress(sf::Keyboard::Key key);
 	void handleKeyRelease(sf::Keyboard::Key key);
 
-	void move(float x, float y, float gameTime, TileMapLoader& tileMapLoader);
+	void move(float x, float y, float gameTime, TileMapLoader* tileMapLoader);
 
 	bool intersects(sf::FloatRect bounds);
 

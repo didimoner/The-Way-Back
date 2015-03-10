@@ -25,7 +25,7 @@ Player::~Player(void)
 // UPDATE FUNCTION--------------------------------------
 // -----------------------------------------------------
 
-void Player::update(float gameTime, sf::View& camera, TileMapLoader& tileMapLoader)
+void Player::update(float gameTime, sf::View& camera, TileMapLoader* pTileMapLoader)
 {
 	handleLiveInput();
 	
@@ -39,25 +39,25 @@ void Player::update(float gameTime, sf::View& camera, TileMapLoader& tileMapLoad
 	case WALK_UP:
 		_character.setCurrentAnimation("walk_up");
 		_character.playAnimation(_currentAnimation);
-		move(0, -1, gameTime, tileMapLoader);
+		move(0, -1, gameTime, pTileMapLoader);
 		break;
 
 	case WALK_DOWN:
 		_character.setCurrentAnimation("walk_down");
 		_character.playAnimation(_currentAnimation);
-		move(0, 1, gameTime, tileMapLoader);
+		move(0, 1, gameTime, pTileMapLoader);
 		break;
 
 	case WALK_LEFT:
 		_character.setCurrentAnimation("walk_left");
 		_character.playAnimation(_currentAnimation);
-		move(-1, 0, gameTime, tileMapLoader);
+		move(-1, 0, gameTime, pTileMapLoader);
 		break;
 
 	case WALK_RIGHT:
 		_character.setCurrentAnimation("walk_right");
 		_character.playAnimation(_currentAnimation);
-		move(1, 0, gameTime, tileMapLoader);
+		move(1, 0, gameTime, pTileMapLoader);
 		break;
 
 	default:
@@ -71,9 +71,9 @@ void Player::update(float gameTime, sf::View& camera, TileMapLoader& tileMapLoad
 	// устанавливаем вьюху и не пускаем ее за границы карты (иначе рисовальщик выйдет за границы массива)
 	sf::Vector2f cameraCenter = sf::Vector2f(_character.getPosition().x + _size.x / 2, _character.getPosition().y + _size.y / 2);
 
-	if (tileMapLoader.getSize().x < camera.getSize().x)
+	if (pTileMapLoader->getSize().x < camera.getSize().x)
 	{
-		cameraCenter.x = camera.getSize().x / 2 - (camera.getSize().x - tileMapLoader.getSize().x) / 2;
+		cameraCenter.x = camera.getSize().x / 2 - (camera.getSize().x - pTileMapLoader->getSize().x) / 2;
 	}
 	else
 	{
@@ -82,16 +82,16 @@ void Player::update(float gameTime, sf::View& camera, TileMapLoader& tileMapLoad
 			cameraCenter.x = camera.getSize().x / 2;
 		}
 
-		if ((cameraCenter.x + camera.getSize().x / 2) >= tileMapLoader.getSize().x)
+		if ((cameraCenter.x + camera.getSize().x / 2) >= pTileMapLoader->getSize().x)
 		{
-			cameraCenter.x = tileMapLoader.getSize().x - camera.getSize().x / 2;
+			cameraCenter.x = pTileMapLoader->getSize().x - camera.getSize().x / 2;
 		}
 		
 	}
 
-	if (tileMapLoader.getSize().y < camera.getSize().y)
+	if (pTileMapLoader->getSize().y < camera.getSize().y)
 	{
-		cameraCenter.y = camera.getSize().y / 2 - (camera.getSize().y - tileMapLoader.getSize().y) / 2;
+		cameraCenter.y = camera.getSize().y / 2 - (camera.getSize().y - pTileMapLoader->getSize().y) / 2;
 	}
 	else
 	{
@@ -101,9 +101,9 @@ void Player::update(float gameTime, sf::View& camera, TileMapLoader& tileMapLoad
 			cameraCenter.y = camera.getSize().y / 2;
 		}
 
-		if ((cameraCenter.y + camera.getSize().y / 2) >= tileMapLoader.getSize().y)
+		if ((cameraCenter.y + camera.getSize().y / 2) >= pTileMapLoader->getSize().y)
 		{
-			cameraCenter.y = tileMapLoader.getSize().y - camera.getSize().y / 2;
+			cameraCenter.y = pTileMapLoader->getSize().y - camera.getSize().y / 2;
 		}
 	}
 
@@ -143,7 +143,7 @@ void Player::handleKeyRelease(sf::Keyboard::Key key)
 		}*/
 }
 
-void Player::move(float x, float y, float gameTime, TileMapLoader& tileMapLoader)
+void Player::move(float x, float y, float gameTime, TileMapLoader* pTileMapLoader)
 {
 	if (!_isIntersecting)
 	{
@@ -155,11 +155,9 @@ void Player::move(float x, float y, float gameTime, TileMapLoader& tileMapLoader
 
 	_bounds = sf::FloatRect(_position.x * _tileSize, _position.y * _tileSize + _tileSize / 2, (float)_size.x, (float)_size.y / 2);
 
-	static std::vector<sf::FloatRect>* pCollisionObjects = tileMapLoader.getObjects("collision");
-
-	for (unsigned int i = 0; i < pCollisionObjects->size(); i++)
+	for (unsigned int i = 0; i < pTileMapLoader->getObjects("collision")->size(); i++)
 	{
-		if (_bounds.intersects((*pCollisionObjects)[i]))
+		if (_bounds.intersects((*pTileMapLoader->getObjects("collision"))[i]))
 		{
 			_isIntersecting = true;
 			_position = sf::Vector2f(_lastPosition.x / _tileSize, _lastPosition.y / _tileSize);
