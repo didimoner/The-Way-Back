@@ -19,8 +19,8 @@ ContentManager::~ContentManager()
 void ContentManager::loadContent(std::string screenName)
 {
 	std::ifstream file;
-	std::string realName;
-	std::string shortName;
+	std::string realName = "";
+	std::string shortName = "";
 
 	// —читываем текстуры
 	file.open(_resourcesDir + screenName + ".txl");
@@ -33,11 +33,15 @@ void ContentManager::loadContent(std::string screenName)
 		while (!file.eof())
 		{
 			file >> realName >> shortName;
-			addTexture(realName, shortName);
+			if (!realName.empty())
+				addTexture(realName, shortName);
 		}
 
 		file.close();
 	}
+
+	realName = "";
+	shortName = "";
 
 	// считываем звуки
 	file.open(_resourcesDir + screenName + ".snl");
@@ -50,11 +54,15 @@ void ContentManager::loadContent(std::string screenName)
 		while (!file.eof())
 		{
 			file >> realName >> shortName;
-			addSound(realName, shortName);
+			if (!realName.empty())
+				addSound(realName, shortName);
 		}
 
 		file.close();
 	}
+
+	realName = "";
+	shortName = "";
 
 	// считываем шрифты
 	file.open(_resourcesDir + screenName + ".fnl");
@@ -67,7 +75,8 @@ void ContentManager::loadContent(std::string screenName)
 		while (!file.eof())
 		{
 			file >> realName >> shortName;
-			addFont(realName, shortName);
+			if (!realName.empty())
+				addFont(realName, shortName);
 		}
 
 		file.close();
@@ -120,7 +129,7 @@ void ContentManager::addFont(std::string file, std::string name)
 		font.loadFromFile(_fontsDir + "default.ttf");
 	}
 
-	_font = font;
+	_fonts[name] = font;
 }
 
 std::map <std::string, sf::Texture>* ContentManager::getTextures()
@@ -133,9 +142,9 @@ std::map <std::string, sf::SoundBuffer>* ContentManager::getSounds()
 	return &_sounds;
 }
 
-sf::Font* ContentManager::getFont()
+std::map <std::string, sf::Font>* ContentManager::getFonts()
 {
-	return &_font;
+	return &_fonts;
 }
 
 void ContentManager::setRootFolder(std::string folder)

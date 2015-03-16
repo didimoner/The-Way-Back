@@ -12,11 +12,19 @@ MainScreen::~MainScreen()
 {
 	if (_isActivated) delete _player;
 	if (_isActivated) delete _tileMapLoader;
+
+	_animationManagers.clear();
+	_spriteManagers.clear();
+	_soundManagers.clear();
 }
 
-void MainScreen::handleKeyPress(sf::Keyboard::Key key, bool isPressed)
+void MainScreen::handleKeyboard(sf::Keyboard::Key key, bool pressed)
 {
-	isPressed ? _player->handleKeyPress(key) : _player->handleKeyRelease(key);
+	_player->handleKeyboard(key, pressed);
+}
+
+void MainScreen::handleMouse(sf::Keyboard::Key key, bool pressed)
+{
 }
 
 // -----------------------------------------------------
@@ -46,7 +54,7 @@ void MainScreen::activate()
 	_pContentManager->loadContent("mainscreen");
 	_pTextures = _pContentManager->getTextures();
 	_pSounds = _pContentManager->getSounds();
-	_pFont = _pContentManager->getFont();
+	_pFonts = _pContentManager->getFonts();
 
 	_camera.setSize(854, 480);
 	_camera.setCenter(_camera.getSize().x / 2, _camera.getSize().y / 2);

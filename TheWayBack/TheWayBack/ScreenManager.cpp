@@ -28,9 +28,9 @@ ScreenManager::~ScreenManager()
 	delete _pMainScreen;
 }
 
-void ScreenManager::handleKeyPress(sf::Keyboard::Key key, bool isPressed)
+void ScreenManager::handleKeyboard(sf::Keyboard::Key key, bool pressed)
 {
-	if (isPressed)
+	if (pressed)
 	{
 		if (_gameState != 0)
 		{
@@ -52,7 +52,34 @@ void ScreenManager::handleKeyPress(sf::Keyboard::Key key, bool isPressed)
 		}
 	}
 	
-	_currentScreen->handleKeyPress(key, isPressed);
+	_currentScreen->handleKeyboard(key, pressed);
+}
+
+void ScreenManager::handleMouse(sf::Keyboard::Key key, bool pressed)
+{
+	if (pressed)
+	{
+		if (_gameState != 0)
+		{
+			switch (key)
+			{
+			case sf::Keyboard::Escape:
+				_gameState = _gameState == 2 ? GameState::G_MENU : GameState::G_PLAY;
+				_isSwitched = true;
+				break;
+
+			default:
+				break;
+			}
+		}
+		else
+		{
+			_gameState = GameState::G_MENU;
+			_isSwitched = true;
+		}
+	}
+
+	_currentScreen->handleMouse(key, pressed);
 }
 
 void ScreenManager::update(float gameTime)

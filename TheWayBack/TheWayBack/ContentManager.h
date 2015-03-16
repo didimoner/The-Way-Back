@@ -23,7 +23,7 @@ public:
 
 	std::map <std::string, sf::Texture>* getTextures();
 	std::map <std::string, sf::SoundBuffer>* getSounds();
-	sf::Font* getFont();
+	std::map <std::string, sf::Font>* getFonts();
 
 	void setRootFolder(std::string folder);
 	std::string getRootFolder(void);
@@ -42,7 +42,7 @@ private:
 
 	std::map<std::string, sf::Texture> _textures;
 	std::map<std::string, sf::SoundBuffer> _sounds;
-	sf::Font _font;
+	std::map<std::string, sf::Font> _fonts;
 
 	unsigned short _tileSize;
 };

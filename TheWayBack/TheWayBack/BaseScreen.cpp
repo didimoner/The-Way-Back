@@ -8,12 +8,13 @@ BaseScreen::BaseScreen(ContentManager* contentManager)
 
 BaseScreen::~BaseScreen()
 {
-	_animationManagers.clear();
-	_spriteManagers.clear();
-	_soundManagers.clear();
 }
 
-void BaseScreen::handleKeyPress(sf::Keyboard::Key key, bool isPressed)
+void BaseScreen::handleKeyboard(sf::Keyboard::Key key, bool pressed)
+{
+}
+
+void BaseScreen::handleMouse(sf::Keyboard::Key key, bool pressed)
 {
 }
 

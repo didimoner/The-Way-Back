@@ -13,8 +13,9 @@ public:
 	BaseScreen(ContentManager* contentManager);
 	~BaseScreen();
 
-	virtual void handleKeyPress(sf::Keyboard::Key key, bool isPressed);
-
+	virtual void handleKeyboard(sf::Keyboard::Key key, bool pressed);
+	virtual void handleMouse(sf::Keyboard::Key key, bool pressed);
+	
 	virtual void update(float gameTime);
 	virtual void draw(sf::RenderWindow &window);
 	
@@ -26,13 +27,9 @@ public:
 protected:
 	ContentManager* _pContentManager;
 
-	std::map<std::string, AnimationManager> _animationManagers;
-	std::map<std::string, SpriteManager> _spriteManagers;
-	std::map<std::string, SoundManager> _soundManagers;
-
 	std::map <std::string, sf::Texture>* _pTextures;
 	std::map <std::string, sf::SoundBuffer>* _pSounds;
-	sf::Font* _pFont;
+	std::map <std::string, sf::Font>* _pFonts;
 
 	short _tileSize;
 	bool _isActivated;

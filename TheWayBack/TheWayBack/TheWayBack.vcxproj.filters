@@ -22,6 +22,27 @@
     <Filter Include="TinyXML">
       <UniqueIdentifier>{df0a4991-6554-4363-90fa-a76fa560c892}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GUI">
+      <UniqueIdentifier>{df7e1140-4455-40e3-b0de-4741d52496bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Managers\Headers">
+      <UniqueIdentifier>{35dd8a7a-4aca-42b2-9d0b-ea9002ca9e2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Managers\Source Files">
+      <UniqueIdentifier>{d1956081-2b11-4da6-83c9-37a0329f1569}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI\Headers">
+      <UniqueIdentifier>{2740ada5-6550-4fbc-ad93-e8bd8bd4318a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI\Source Files">
+      <UniqueIdentifier>{94ee9aa3-6db5-42af-a740-ead558360f15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Screens\Source Files">
+      <UniqueIdentifier>{3e4d1704-2599-4adc-a6ba-052424cdc903}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Screens\Headers">
+      <UniqueIdentifier>{a5287d02-58a2-4b3a-9c86-dfb968839720}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entity.h">
@@ -36,27 +57,6 @@
     <ClInclude Include="AnimatedSprite.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SpriteManager.h">
-      <Filter>Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="SoundManager.h">
-      <Filter>Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="ScreenManager.h">
-      <Filter>Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="AnimationManager.h">
-      <Filter>Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="ContentManager.h">
-      <Filter>Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="BaseScreen.h">
-      <Filter>Screens</Filter>
-    </ClInclude>
-    <ClInclude Include="MainScreen.h">
-      <Filter>Screens</Filter>
-    </ClInclude>
     <ClInclude Include="Animation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -66,11 +66,44 @@
     <ClInclude Include="tinyxml\tinyxml2.h">
       <Filter>TinyXML</Filter>
     </ClInclude>
+    <ClInclude Include="ContentManager.h">
+      <Filter>Managers\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationManager.h">
+      <Filter>Managers\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ScreenManager.h">
+      <Filter>Managers\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteManager.h">
+      <Filter>Managers\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundManager.h">
+      <Filter>Managers\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="UIObject.h">
+      <Filter>GUI\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseScreen.h">
+      <Filter>Screens\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="MainScreen.h">
+      <Filter>Screens\Headers</Filter>
+    </ClInclude>
     <ClInclude Include="MenuScreen.h">
-      <Filter>Screens</Filter>
+      <Filter>Screens\Headers</Filter>
     </ClInclude>
     <ClInclude Include="SplashScreen.h">
-      <Filter>Screens</Filter>
+      <Filter>Screens\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Window.h">
+      <Filter>GUI\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>GUI\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Checkbox.h">
+      <Filter>GUI\Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -89,27 +122,6 @@
     <ClCompile Include="Player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AnimationManager.cpp">
-      <Filter>Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="ScreenManager.cpp">
-      <Filter>Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="SoundManager.cpp">
-      <Filter>Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="SpriteManager.cpp">
-      <Filter>Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="ContentManager.cpp">
-      <Filter>Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="MainScreen.cpp">
-      <Filter>Screens</Filter>
-    </ClCompile>
-    <ClCompile Include="BaseScreen.cpp">
-      <Filter>Screens</Filter>
-    </ClCompile>
     <ClCompile Include="Animation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -119,11 +131,44 @@
     <ClCompile Include="tinyxml\tinyxml2.cpp">
       <Filter>TinyXML</Filter>
     </ClCompile>
+    <ClCompile Include="AnimationManager.cpp">
+      <Filter>Managers\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ContentManager.cpp">
+      <Filter>Managers\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ScreenManager.cpp">
+      <Filter>Managers\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundManager.cpp">
+      <Filter>Managers\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteManager.cpp">
+      <Filter>Managers\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UIObject.cpp">
+      <Filter>GUI\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MainScreen.cpp">
+      <Filter>Screens\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseScreen.cpp">
+      <Filter>Screens\Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="MenuScreen.cpp">
-      <Filter>Screens</Filter>
+      <Filter>Screens\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SplashScreen.cpp">
-      <Filter>Screens</Filter>
+      <Filter>Screens\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Window.cpp">
+      <Filter>GUI\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>GUI\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Checkbox.cpp">
+      <Filter>GUI\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

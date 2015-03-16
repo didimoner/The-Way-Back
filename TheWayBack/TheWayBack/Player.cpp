@@ -121,26 +121,25 @@ void Player::draw(sf::RenderWindow& window)
 
 // -----------------------------------------------------
 
-void Player::handleKeyPress(sf::Keyboard::Key key)
+void Player::handleKeyboard(sf::Keyboard::Key key, bool pressed)
 {
-	switch (key)
+	if (pressed)
 	{
-	case sf::Keyboard::B:
-		_sounds.play("jump");
-		break;
-
-	default:
-		break;
-	}
-}
-
-void Player::handleKeyRelease(sf::Keyboard::Key key)
-{
-	/*	switch (key)
+		switch (key)
 		{
+		case sf::Keyboard::B:
+			_sounds.play("jump");
+			break;
+
 		default:
-		break;
-		}*/
+			break;
+		}
+	}
+	else
+	{
+
+	}
+	
 }
 
 void Player::move(float x, float y, float gameTime, TileMapLoader* pTileMapLoader)

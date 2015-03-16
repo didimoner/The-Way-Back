@@ -17,9 +17,15 @@ MenuScreen::~MenuScreen()
 	if (_isActivated) delete _animation;
 }
 
-void MenuScreen::handleKeyPress(sf::Keyboard::Key key, bool isPressed)
+void MenuScreen::handleKeyboard(sf::Keyboard::Key key, bool pressed)
 {
-	
+	std::cout << "Button state: " << _button->getState() << std::endl;
+}
+
+void MenuScreen::handleMouse(sf::Keyboard::Key key, bool pressed)
+{
+	_button->handleMouse(key, pressed);
+
 }
 
 // -----------------------------------------------------
@@ -39,6 +45,7 @@ void MenuScreen::draw(sf::RenderWindow& window)
 {
 	window.setView(_camera);
 	window.draw(*_animation);
+	_button->draw(window);
 }
 
 
@@ -47,10 +54,21 @@ void MenuScreen::activate()
 	_pContentManager->loadContent("menuscreen");
 	_pTextures = _pContentManager->getTextures();
 	_pSounds = _pContentManager->getSounds();
+	_pFonts = _pContentManager->getFonts();
 
 	_animation = new Animation(6, 1, 5, 0.015f, sf::Vector2i(192, 192), false, true);
 	_animation->setTexture((*_pTextures)["ffloadding"]);
 	_animation->setPosition(sf::Vector2f((float)2 * _tileSize, (float)7 * _tileSize));
+
+	sf::Text* text = new sf::Text();
+	text->setFont((*_pFonts)["Visitor"]);
+	text->setScale(0.5f, 0.5f);
+	text->setCharacterSize(28 * 2);
+	text->setString(L"Новая игра");
+	text->setColor(sf::Color::Black);
+
+	_button = new ui::Button(120, 40, 180, 40, *text);
+	delete text;
 
 	std::cout << "MenuScreen activated" << std::endl;
 	_isActivated = true;
@@ -59,6 +77,7 @@ void MenuScreen::activate()
 void MenuScreen::deactivate()
 {
 	delete _animation;
+	delete _button;
 	_pContentManager->clear();
 
 	std::cout << "MenuScreen deactivated" << std::endl;

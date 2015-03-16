@@ -20,7 +20,7 @@ void Game::initialize(void)
 	_window.setFramerateLimit(60);
 	_window.setKeyRepeatEnabled(false);
 	_window.setVerticalSyncEnabled(false);
-	_window.setMouseCursorVisible(false);
+	_window.setMouseCursorVisible(true);
 }
 
 void Game::loadContent(void)
@@ -47,11 +47,19 @@ void Game::update()
 			break;
 
 		case sf::Event::KeyPressed:
-			_screenManager.handleKeyPress(_event.key.code, true);
+			_screenManager.handleKeyboard(_event.key.code, true);
 			break;
 
 		case sf::Event::KeyReleased:
-			_screenManager.handleKeyPress(_event.key.code, false);
+			_screenManager.handleKeyboard(_event.key.code, false);
+			break;
+
+		case sf::Event::MouseButtonPressed:
+			_screenManager.handleMouse(_event.key.code, true);
+			break;
+
+		case sf::Event::MouseButtonReleased:
+			_screenManager.handleMouse(_event.key.code, false);
 			break;
 
 		default:
@@ -65,7 +73,7 @@ void Game::update()
 
 void Game::draw()
 {
-	_window.clear();
+	_window.clear(sf::Color::White);
 	_screenManager.draw(_window);
 	_window.display();
 }

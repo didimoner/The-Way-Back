@@ -1,1 +1,0 @@
-default.ttf mini
