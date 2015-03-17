@@ -10,19 +10,21 @@
 class BaseScreen
 {
 public:
-	BaseScreen(ContentManager* contentManager);
+	BaseScreen(ContentManager* pContentManager);
 	~BaseScreen();
 
 	virtual void handleKeyboard(sf::Keyboard::Key key, bool pressed);
 	virtual void handleMouse(sf::Keyboard::Key key, bool pressed);
 	
 	virtual void update(float gameTime);
-	virtual void draw(sf::RenderWindow &window);
+	virtual void draw(sf::RenderWindow& window);
 	
 	virtual void activate();
 	virtual void deactivate();
 
-	virtual bool getState();
+	virtual bool isActivated();
+
+	virtual short getState();
 
 protected:
 	ContentManager* _pContentManager;
@@ -33,4 +35,5 @@ protected:
 
 	short _tileSize;
 	bool _isActivated;
+	short _screenState;
 };

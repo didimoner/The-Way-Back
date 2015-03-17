@@ -16,7 +16,6 @@ void Game::initialize(void)
 {
 	_window.create(sf::VideoMode(_screenResolution.x, _screenResolution.y), _title,
 		_isFullscreen ? sf::Style::Fullscreen : sf::Style::Default);
-	//_window.create(sf::VideoMode(854, 480), "The Way Back", sf::Style::Fullscreen);
 	_window.setFramerateLimit(60);
 	_window.setKeyRepeatEnabled(false);
 	_window.setVerticalSyncEnabled(false);
@@ -32,7 +31,6 @@ void Game::update()
 	_gameTime = (float)_clock.getElapsedTime().asMicroseconds();
 	//std::cout << "FPS: " << 1000000.0f / _clock.getElapsedTime().asMicroseconds() << std::endl;
 	
-
 	_gameTime /= 500;
 
 	if (_gameTime > 20)

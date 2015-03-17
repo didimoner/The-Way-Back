@@ -1,6 +1,6 @@
 #pragma once
 
-#include "basescreen.h"
+#include "BaseScreen.h"
 #include "Player.h"
 #include "TileMapLoader.h"
 
@@ -8,7 +8,7 @@ class MainScreen :
 	public BaseScreen
 {
 public:
-	MainScreen(ContentManager *contentManager);
+	MainScreen(ContentManager* pContentManager);
 	~MainScreen();
 
 	virtual void handleKeyboard(sf::Keyboard::Key key, bool pressed);
@@ -20,7 +20,7 @@ public:
 	virtual void activate();
 	virtual void deactivate();
 
-	virtual bool getState();
+	virtual bool isActivated();
 
 private:
 	std::map<std::string, AnimationManager> _animationManagers;

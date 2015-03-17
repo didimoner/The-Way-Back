@@ -1,8 +1,8 @@
 #include "BaseScreen.h"
 
-BaseScreen::BaseScreen(ContentManager* contentManager)
+BaseScreen::BaseScreen(ContentManager* pContentManager)
 {
-	_pContentManager = contentManager;
+	_pContentManager = pContentManager;
 	_tileSize = _pContentManager->getTileSize();
 }
 
@@ -22,7 +22,7 @@ void BaseScreen::update(float gameTime)
 {
 }
 
-void BaseScreen::draw(sf::RenderWindow &window)
+void BaseScreen::draw(sf::RenderWindow& window)
 {
 }
 
@@ -34,7 +34,12 @@ void BaseScreen::deactivate()
 {
 }
 
-bool BaseScreen::getState()
+bool BaseScreen::isActivated()
 {
 	return _isActivated;
+}
+
+short BaseScreen::getState()
+{
+	return _screenState;
 }

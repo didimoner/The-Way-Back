@@ -31,6 +31,7 @@ private:
 	sf::Vector2f _offset;
 	bool _hover;
 	bool _isClicked;
+	sf::Vector2f _mouseLocalPosition;
 
 	void handleIntersection(sf::RenderWindow& window);
 };

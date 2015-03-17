@@ -55,6 +55,7 @@ void MainScreen::activate()
 	_pTextures = _pContentManager->getTextures();
 	_pSounds = _pContentManager->getSounds();
 	_pFonts = _pContentManager->getFonts();
+	_screenState = 2;
 
 	_camera.setSize(854, 480);
 	_camera.setCenter(_camera.getSize().x / 2, _camera.getSize().y / 2);
@@ -94,7 +95,7 @@ void MainScreen::deactivate()
 	_isActivated = false;
 }
 
-bool MainScreen::getState()
+bool MainScreen::isActivated()
 {
 	return _isActivated;
 }

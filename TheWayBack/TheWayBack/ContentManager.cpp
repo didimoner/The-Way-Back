@@ -173,4 +173,5 @@ void ContentManager::clear()
 {
 	_textures.clear();
 	_sounds.clear();
+	_fonts.clear();
 }

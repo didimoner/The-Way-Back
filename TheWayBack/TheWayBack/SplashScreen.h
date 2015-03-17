@@ -15,7 +15,7 @@ public:
 	virtual void activate();
 	virtual void deactivate();
 
-	virtual bool getState();
+	virtual bool isActivated();
 
 private:
 	Animation* _animation;

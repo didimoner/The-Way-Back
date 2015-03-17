@@ -6,7 +6,7 @@ class MenuScreen :
 	public BaseScreen
 {
 public:
-	MenuScreen(ContentManager *contentManager);
+	MenuScreen(ContentManager* pContentManager);
 	~MenuScreen();
 
 	virtual void handleKeyboard(sf::Keyboard::Key key, bool pressed);
@@ -18,11 +18,12 @@ public:
 	virtual void activate();
 	virtual void deactivate();
 
-	virtual bool getState();
+	virtual bool isActivated();
+	virtual short getState();
 
 private:
-	Animation* _animation;
 	sf::View _camera;
-	ui::Button* _button;
+	ui::Button* _btnNewGame;
+	ui::Button* _btnExit;
 };
 

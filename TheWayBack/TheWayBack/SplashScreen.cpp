@@ -1,8 +1,8 @@
 #include "SplashScreen.h"
 
 
-SplashScreen::SplashScreen(ContentManager* contentManager)
-	: BaseScreen(contentManager)
+SplashScreen::SplashScreen(ContentManager* pContentManager)
+	: BaseScreen(pContentManager)
 {
 	std::cout << "SplashScreen" << std::endl;
 	_isActivated = false;
@@ -44,6 +44,7 @@ void SplashScreen::activate()
 	_pContentManager->loadContent("splashscreen");
 	_pTextures = _pContentManager->getTextures();
 	_pSounds = _pContentManager->getSounds();
+	_screenState = 0;
 
 	_animation = new Animation(6, 1, 5, 0.02f, sf::Vector2i(192, 192), false, true);
 	_animation->setTexture((*_pTextures)["loading32322"]);
@@ -62,7 +63,7 @@ void SplashScreen::deactivate()
 	_isActivated = false;
 }
 
-bool SplashScreen::getState()
+bool SplashScreen::isActivated()
 {
 	return _isActivated;
 }
