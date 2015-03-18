@@ -1,1 +1,0 @@
-slash_effect_002.png loading32322

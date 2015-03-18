@@ -14,6 +14,8 @@ MenuScreen::MenuScreen(ContentManager* pContentManager)
 
 MenuScreen::~MenuScreen()
 {
+	if (_isActivated) delete _btnNewGame;
+	if (_isActivated) delete _btnExit;
 }
 
 void MenuScreen::handleKeyboard(sf::Keyboard::Key key, bool pressed)

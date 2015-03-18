@@ -10,11 +10,6 @@ TileMapLoader::TileMapLoader(std::string mapsDir, short entitiesLayer)
 }
 TileMapLoader::~TileMapLoader()
 {
-	_currentMapSprites.clear();
-	_currentObjects["collision"].clear();
-	_currentTilesets.clear();
-
-	std::cout << "TileMapLoader destructed" << std::endl;
 }
 
 void TileMapLoader::load(std::string name, std::map<std::string, sf::Texture>* pTextures)

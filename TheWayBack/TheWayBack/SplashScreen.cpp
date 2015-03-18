@@ -16,13 +16,11 @@ SplashScreen::~SplashScreen()
 
 void SplashScreen::handleKeyPress(sf::Keyboard::Key key, bool isPressed)
 {
-
 }
 
 // -----------------------------------------------------
 // UPDATE FUNCTION--------------------------------------
 // -----------------------------------------------------
-
 void SplashScreen::update(float gameTime)
 {
 	_animation->update(gameTime);
@@ -31,12 +29,10 @@ void SplashScreen::update(float gameTime)
 // -----------------------------------------------------
 // DRAW FUNCTION----------------------------------------
 // -----------------------------------------------------
-
 void SplashScreen::draw(sf::RenderWindow& window)
 {
 	window.draw(*_animation);
 }
-
 
 void SplashScreen::activate()
 {

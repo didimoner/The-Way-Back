@@ -12,8 +12,6 @@ ContentManager::ContentManager()
 
 ContentManager::~ContentManager()
 {
-	_textures.clear();
-	_sounds.clear();
 }
 
 void ContentManager::loadContent(std::string screenName)
@@ -21,67 +19,47 @@ void ContentManager::loadContent(std::string screenName)
 	std::ifstream file;
 	std::string realName = "";
 	std::string shortName = "";
-
-	// —читываем текстуры
-	file.open(_resourcesDir + screenName + ".txl");
-	if (!file)
-	{
-		std::cout << "Can not open file: " << _resourcesDir + screenName + ".txl" << std::endl;
-	}
-	else
-	{
-		while (!file.eof())
-		{
-			file >> realName >> shortName;
-			if (!realName.empty())
-				addTexture(realName, shortName);
-		}
-
-		file.close();
-	}
-
-	realName = "";
-	shortName = "";
-
-	// считываем звуки
-	file.open(_resourcesDir + screenName + ".snl");
-	if (!file)
-	{
-		std::cout << "Can not open file: " << _resourcesDir + screenName + ".snl" << std::endl;
-	}
-	else
-	{
-		while (!file.eof())
-		{
-			file >> realName >> shortName;
-			if (!realName.empty())
-				addSound(realName, shortName);
-		}
-
-		file.close();
-	}
-
-	realName = "";
-	shortName = "";
-
-	// считываем шрифты
-	file.open(_resourcesDir + screenName + ".fnl");
-	if (!file)
-	{
-		std::cout << "Can not open file: " << _resourcesDir + screenName + ".fnl" << std::endl;
-	}
-	else
-	{
-		while (!file.eof())
-		{
-			file >> realName >> shortName;
-			if (!realName.empty())
-				addFont(realName, shortName);
-		}
-
-		file.close();
-	}
 	
+	file.open(_resourcesDir + screenName + ".twr");
+	if (!file)
+	{
+		std::cout << "Can not open file: " << _resourcesDir + screenName + ".twr" << std::endl;
+	}
+	else
+	{
+		short switcher = 0;
+
+		while (!file.eof())
+		{
+			file >> realName >> shortName;
+
+			if (!realName.empty())
+			{
+				if (realName == "-")
+				{
+					switcher++;
+					continue;
+				}
+
+				switch (switcher)
+				{
+				case 0:
+					addTexture(realName, shortName);
+					break;
+				case 1:
+					addSound(realName, shortName);
+					break;
+				case 2:
+					addFont(realName, shortName);
+					break;
+				default:
+					break;
+				}
+			}
+		}
+
+		file.close();
+	}
 }
 
 void ContentManager::addTexture(std::string file, std::string name)
