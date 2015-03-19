@@ -36,10 +36,6 @@ void Game::update()
 	if (_gameTime > 20)
 		_gameTime = 20;
 
-	sf::Vector2f wSize;
-	sf::Vector2u lastWindowSize = _window.getSize();
-	static bool resizedManually;
-
 	while (_window.pollEvent(_event))
 	{
 		switch (_event.type)
