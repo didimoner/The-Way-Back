@@ -15,7 +15,7 @@ Game::~Game(void)
 void Game::initialize(void)
 {
 	_window.create(sf::VideoMode(_screenResolution.x, _screenResolution.y), _title,
-		_isFullscreen ? sf::Style::Fullscreen : sf::Style::Default);
+		_isFullscreen ? sf::Style::Fullscreen : sf::Style::Close);
 	_window.setFramerateLimit(60);
 	_window.setKeyRepeatEnabled(false);
 	_window.setVerticalSyncEnabled(false);
@@ -36,6 +36,10 @@ void Game::update()
 	if (_gameTime > 20)
 		_gameTime = 20;
 
+	sf::Vector2f wSize;
+	sf::Vector2u lastWindowSize = _window.getSize();
+	static bool resizedManually;
+
 	while (_window.pollEvent(_event))
 	{
 		switch (_event.type)
@@ -45,6 +49,10 @@ void Game::update()
 			break;
 
 		case sf::Event::KeyPressed:
+			if (_event.key.code == sf::Keyboard::F8)
+			{
+				// fullscreen
+			}
 			_screenManager.handleKeyboard(_event.key.code, true);
 			break;
 
