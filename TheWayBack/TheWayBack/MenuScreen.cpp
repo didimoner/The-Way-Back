@@ -35,6 +35,7 @@ void MenuScreen::update(float gameTime)
 {
 	if (_btnNewGame->getState())
 	{
+		_loadingSprite.setTextureRect(sf::IntRect(0, 0, 854, 480));
 		_screenState = 2;
 	}
 }
@@ -48,6 +49,7 @@ void MenuScreen::draw(sf::RenderWindow& window)
 
 	_btnNewGame->draw(window);
 	_btnExit->draw(window);
+	window.draw(_loadingSprite);
 
 	if (_btnExit->getState())
 	{
@@ -68,6 +70,9 @@ void MenuScreen::activate()
 	text->setScale(0.5f, 0.5f);
 	text->setCharacterSize(28 * 2);
 	text->setColor(sf::Color::Black);
+
+	_loadingSprite.setTexture((*_pTextures)["loading"]);
+	_loadingSprite.setTextureRect(sf::IntRect(0, 0, 0, 0));
 
 	// --------------------------------------------------
 

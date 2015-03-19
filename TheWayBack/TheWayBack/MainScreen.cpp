@@ -34,7 +34,6 @@ void MainScreen::handleMouse(sf::Keyboard::Key key, bool pressed)
 void MainScreen::update(float gameTime)
 {
 	_player->update(gameTime, _camera, _tileMapLoader);
-	//_animation->update(gameTime);
 }
 
 // -----------------------------------------------------
@@ -44,9 +43,7 @@ void MainScreen::update(float gameTime)
 void MainScreen::draw(sf::RenderWindow& window)
 {
 	_tileMapLoader->draw(window, _entities, _camera);
-	//_player->draw(window);
 	window.setView(_camera);
-	//window.draw(* _animation);
 }
 
 void MainScreen::activate()

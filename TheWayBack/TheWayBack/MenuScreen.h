@@ -25,5 +25,6 @@ private:
 	sf::View _camera;
 	ui::Button* _btnNewGame;
 	ui::Button* _btnExit;
+	sf::Sprite _loadingSprite;
 };
 

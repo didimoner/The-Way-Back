@@ -6,12 +6,12 @@ SplashScreen::SplashScreen(ContentManager* pContentManager)
 {
 	std::cout << "SplashScreen" << std::endl;
 	_isActivated = false;
+	_splashDuration = 4.f;
 }
 
 
 SplashScreen::~SplashScreen()
 {
-	if (_isActivated) delete _animation;
 }
 
 void SplashScreen::handleKeyPress(sf::Keyboard::Key key, bool isPressed)
@@ -23,7 +23,22 @@ void SplashScreen::handleKeyPress(sf::Keyboard::Key key, bool isPressed)
 // -----------------------------------------------------
 void SplashScreen::update(float gameTime)
 {
-	_animation->update(gameTime);
+	if (_clock.getElapsedTime().asSeconds() >= _splashDuration - 1)
+	{
+		_blackRectTransperency += 8;
+		if (_blackRectTransperency >= 255)
+		{
+			_blackRectTransperency = 255;
+			_screenState = 1;
+		}
+	}
+
+	if (_blackRectTransperency > 0)
+	{
+		_blackRectTransperency -= 3;
+	}
+
+	_blackRect.setFillColor(sf::Color::Color(0, 0, 0, (sf::Uint8)_blackRectTransperency));
 }
 
 // -----------------------------------------------------
@@ -31,28 +46,26 @@ void SplashScreen::update(float gameTime)
 // -----------------------------------------------------
 void SplashScreen::draw(sf::RenderWindow& window)
 {
-	window.draw(*_animation);
+	window.draw(_splashSprite);
+	window.draw(_blackRect);
 }
 
 void SplashScreen::activate()
 {
-
 	_pContentManager->loadContent("splashscreen");
 	_pTextures = _pContentManager->getTextures();
 	_pSounds = _pContentManager->getSounds();
 	_screenState = 0;
+	_blackRectTransperency = 255;
 
-	_animation = new Animation(6, 1, 5, 0.02f, sf::Vector2i(192, 192), false, true);
-	_animation->setTexture((*_pTextures)["loading32322"]);
-	_animation->setPosition(sf::Vector2f((float)8 * _tileSize, (float)4 * _tileSize));
-
+	_splashSprite.setTexture((*_pTextures)["splash"]);
+	_blackRect.setSize(sf::Vector2f(854, 480));
 	std::cout << "SplashScreen activated" << std::endl;
 	_isActivated = true;
 }
 
 void SplashScreen::deactivate()
 {
-	delete _animation;
 	_pContentManager->clear();
 
 	std::cout << "SplashScreen deactivated" << std::endl;
@@ -62,4 +75,9 @@ void SplashScreen::deactivate()
 bool SplashScreen::isActivated()
 {
 	return _isActivated;
+}
+
+short SplashScreen::getState()
+{
+	return _screenState;
 }

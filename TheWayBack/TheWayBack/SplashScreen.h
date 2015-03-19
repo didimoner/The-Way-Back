@@ -16,8 +16,13 @@ public:
 	virtual void deactivate();
 
 	virtual bool isActivated();
+	virtual short getState();
 
 private:
-	Animation* _animation;
+	sf::Sprite _splashSprite;
+	sf::RectangleShape _blackRect;
+	short _blackRectTransperency;
+	float _splashDuration;
+	sf::Clock _clock;
 };
 

@@ -71,7 +71,7 @@ void Game::update()
 
 void Game::draw()
 {
-	_window.clear(sf::Color::White);
+	_window.clear(sf::Color::Black);
 	_screenManager.draw(_window);
 	_window.display();
 }
