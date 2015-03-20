@@ -1,13 +1,12 @@
 #include "MenuScreen.h"
 
 
-MenuScreen::MenuScreen(ContentManager* pContentManager)
-	: BaseScreen(pContentManager)
+MenuScreen::MenuScreen(ContentManager* pContentManager, sf::Vector2u screenSize)
+	: BaseScreen(pContentManager, screenSize)
 {
 	std::cout << "MenuScreen" << std::endl;
-	_isActivated = false;
 	
-	_camera.setSize(854, 480);
+	_camera.setSize((float)_screenSize.x, (float)_screenSize.y);
 	_camera.setCenter(_camera.getSize().x / 2, _camera.getSize().y / 2);
 }
 
@@ -35,7 +34,7 @@ void MenuScreen::update(float gameTime)
 {
 	if (_btnNewGame->getState())
 	{
-		_loadingSprite.setTextureRect(sf::IntRect(0, 0, 854, 480));
+		_loadingSprite.setTextureRect(sf::IntRect(0, 0, _screenSize.x, _screenSize.y));
 		_screenState = 2;
 	}
 }

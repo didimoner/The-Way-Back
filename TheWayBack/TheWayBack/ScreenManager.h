@@ -10,14 +10,13 @@ enum GameState
 {
 	G_SPLASHSCREEN,
 	G_MENU,
-	G_PLAY,
-	G_PAUSE
+	G_PLAY
 };
 
 class ScreenManager
 {
 public:
-	ScreenManager();
+	ScreenManager(sf::Vector2u screenSize);
 	~ScreenManager();
 
 	void handleKeyboard(sf::Keyboard::Key key, bool pressed);
@@ -27,6 +26,7 @@ public:
 	void draw(sf::RenderWindow &window);
 
 private:
+	sf::Vector2u _screenSize;
 	std::vector<BaseScreen*> _screens;
 	BaseScreen* _currentScreen;
 	ContentManager _contentManager;
@@ -38,4 +38,5 @@ private:
 
 	bool _isSwitched;
 	bool _forceSwitch;
+
 };

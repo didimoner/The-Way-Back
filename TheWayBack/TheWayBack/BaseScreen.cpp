@@ -1,9 +1,11 @@
 #include "BaseScreen.h"
 
-BaseScreen::BaseScreen(ContentManager* pContentManager)
+BaseScreen::BaseScreen(ContentManager* pContentManager, sf::Vector2u screenSize)
 {
 	_pContentManager = pContentManager;
+	_screenSize = screenSize;
 	_tileSize = _pContentManager->getTileSize();
+	_isActivated = false;
 }
 
 BaseScreen::~BaseScreen()

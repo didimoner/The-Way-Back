@@ -7,13 +7,11 @@ class Game
 {
 public:
 	Game(sf::Vector2i resolution, std::string title, bool isFullscreen);
-	~Game(void);
+	~Game();
 
-	void initialize(void);
-	void loadContent(void);
-	void update(void);
-	void draw(void);
-	void run(void);
+	void update();
+	void draw();
+	void run();
 
 private:
 	sf::Vector2i _screenResolution;
@@ -26,5 +24,5 @@ private:
 	sf::Clock _clock;
 	float _gameTime;
 
-	ScreenManager _screenManager;
+	ScreenManager* _screenManager;
 };

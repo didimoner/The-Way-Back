@@ -10,7 +10,7 @@
 class BaseScreen
 {
 public:
-	BaseScreen(ContentManager* pContentManager);
+	BaseScreen(ContentManager* pContentManager, sf::Vector2u screenSize);
 	~BaseScreen();
 
 	virtual void handleKeyboard(sf::Keyboard::Key key, bool pressed);
@@ -36,4 +36,5 @@ protected:
 	short _tileSize;
 	bool _isActivated;
 	short _screenState;
+	sf::Vector2u _screenSize;
 };

@@ -1,12 +1,14 @@
 #include "SplashScreen.h"
 
 
-SplashScreen::SplashScreen(ContentManager* pContentManager)
-	: BaseScreen(pContentManager)
+SplashScreen::SplashScreen(ContentManager* pContentManager, sf::Vector2u screenSize)
+	: BaseScreen(pContentManager, screenSize)
 {
 	std::cout << "SplashScreen" << std::endl;
-	_isActivated = false;
 	_splashDuration = 4.f;
+
+	_camera.setSize((float)_screenSize.x, (float)_screenSize.y);
+	_camera.setCenter(_camera.getSize().x / 2, _camera.getSize().y / 2);
 }
 
 
@@ -46,6 +48,8 @@ void SplashScreen::update(float gameTime)
 // -----------------------------------------------------
 void SplashScreen::draw(sf::RenderWindow& window)
 {
+	window.setView(_camera);
+
 	window.draw(_splashSprite);
 	window.draw(_blackRect);
 }
@@ -59,7 +63,10 @@ void SplashScreen::activate()
 	_blackRectTransperency = 255;
 
 	_splashSprite.setTexture((*_pTextures)["splash"]);
-	_blackRect.setSize(sf::Vector2f(854, 480));
+	_splashSprite.setTextureRect(sf::IntRect(0, 0, _screenSize.x, _screenSize.y));
+
+	_blackRect.setSize(sf::Vector2f((float)_screenSize.x, (float)_screenSize.y));
+
 	std::cout << "SplashScreen activated" << std::endl;
 	_isActivated = true;
 }

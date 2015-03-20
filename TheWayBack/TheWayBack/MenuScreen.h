@@ -6,7 +6,7 @@ class MenuScreen :
 	public BaseScreen
 {
 public:
-	MenuScreen(ContentManager* pContentManager);
+	MenuScreen(ContentManager* pContentManager, sf::Vector2u screenSize);
 	~MenuScreen();
 
 	virtual void handleKeyboard(sf::Keyboard::Key key, bool pressed);

@@ -1,11 +1,10 @@
 #include "MainScreen.h"
 #include <iostream>
 
-MainScreen::MainScreen(ContentManager* contentManager)
-	: BaseScreen(contentManager)
+MainScreen::MainScreen(ContentManager* contentManager, sf::Vector2u screenSize)
+	: BaseScreen(contentManager, screenSize)
 {
 	std::cout << "MainScreen" << std::endl;
-	_isActivated = false;
 }
 
 MainScreen::~MainScreen()
@@ -54,7 +53,7 @@ void MainScreen::activate()
 	_pFonts = _pContentManager->getFonts();
 	_screenState = 2;
 
-	_camera.setSize(854, 480);
+	_camera.setSize((float)_screenSize.x, (float)_screenSize.y);
 	_camera.setCenter(_camera.getSize().x / 2, _camera.getSize().y / 2);
 	_cameraSpeed = sf::Vector2f(0.2f, 0.18f);
 

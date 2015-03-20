@@ -6,24 +6,20 @@ Game::Game(sf::Vector2i resolution, std::string title, bool isFullscreen)
 	_screenResolution = resolution;
 	_title = title;
 	_isFullscreen = isFullscreen;
-}
 
-Game::~Game(void)
-{
-}
-
-void Game::initialize(void)
-{
 	_window.create(sf::VideoMode(_screenResolution.x, _screenResolution.y), _title,
 		_isFullscreen ? sf::Style::Fullscreen : sf::Style::Close);
 	_window.setFramerateLimit(60);
 	_window.setKeyRepeatEnabled(false);
 	_window.setVerticalSyncEnabled(false);
 	_window.setMouseCursorVisible(true);
+
+	_screenManager = new ScreenManager(_window.getSize());
 }
 
-void Game::loadContent(void)
+Game::~Game()
 {
+	delete _screenManager;
 }
 
 void Game::update()
@@ -49,19 +45,19 @@ void Game::update()
 			{
 				// fullscreen
 			}
-			_screenManager.handleKeyboard(_event.key.code, true);
+			_screenManager->handleKeyboard(_event.key.code, true);
 			break;
 
 		case sf::Event::KeyReleased:
-			_screenManager.handleKeyboard(_event.key.code, false);
+			_screenManager->handleKeyboard(_event.key.code, false);
 			break;
 
 		case sf::Event::MouseButtonPressed:
-			_screenManager.handleMouse(_event.key.code, true);
+			_screenManager->handleMouse(_event.key.code, true);
 			break;
 
 		case sf::Event::MouseButtonReleased:
-			_screenManager.handleMouse(_event.key.code, false);
+			_screenManager->handleMouse(_event.key.code, false);
 			break;
 
 		default:
@@ -69,22 +65,19 @@ void Game::update()
 		}
 	}
 
-	_screenManager.update(_gameTime);
+	_screenManager->update(_gameTime);
 	_clock.restart();
 }
 
 void Game::draw()
 {
 	_window.clear(sf::Color::Black);
-	_screenManager.draw(_window);
+	_screenManager->draw(_window);
 	_window.display();
 }
 
 void Game::run()
 {
-	initialize();
-	loadContent();
-
 	while (_window.isOpen())
 	{
 		update();

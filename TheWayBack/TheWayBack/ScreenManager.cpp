@@ -1,17 +1,19 @@
 #include "ScreenManager.h"
 
-ScreenManager::ScreenManager()
+ScreenManager::ScreenManager(sf::Vector2u screenSize)
 {
 	_contentManager.setRootFolder("Content");
 	_contentManager.setTileSize(32);
 
-	_pSplashScreen = new SplashScreen(&_contentManager);
+	_screenSize = screenSize;
+
+	_pSplashScreen = new SplashScreen(&_contentManager, _screenSize);
 	_screens.push_back(_pSplashScreen);
 
-	_pMenuScreen = new MenuScreen(&_contentManager);
+	_pMenuScreen = new MenuScreen(&_contentManager, _screenSize);
 	_screens.push_back(_pMenuScreen);
 
-	_pMainScreen = new MainScreen(&_contentManager);
+	_pMainScreen = new MainScreen(&_contentManager, _screenSize);
 	_screens.push_back(_pMainScreen);
 
 	_gameState = GameState::G_SPLASHSCREEN;

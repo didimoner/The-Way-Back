@@ -8,7 +8,7 @@ class MainScreen :
 	public BaseScreen
 {
 public:
-	MainScreen(ContentManager* pContentManager);
+	MainScreen(ContentManager* pContentManager, sf::Vector2u screenSize);
 	~MainScreen();
 
 	virtual void handleKeyboard(sf::Keyboard::Key key, bool pressed);
