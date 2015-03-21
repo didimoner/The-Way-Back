@@ -8,13 +8,13 @@ Game::Game(sf::Vector2i resolution, std::string title, bool isFullscreen)
 	_isFullscreen = isFullscreen;
 
 	_window.create(sf::VideoMode(_screenResolution.x, _screenResolution.y), _title,
-		_isFullscreen ? sf::Style::Fullscreen : sf::Style::Close);
+		_isFullscreen ? sf::Style::Fullscreen : sf::Style::Default);
 	_window.setFramerateLimit(60);
 	_window.setKeyRepeatEnabled(false);
 	_window.setVerticalSyncEnabled(false);
 	_window.setMouseCursorVisible(true);
 
-	_screenManager = new ScreenManager(_window.getSize());
+	_screenManager = new ScreenManager(sf::Vector2u((unsigned)_screenResolution.x, (unsigned)_screenResolution.y));
 }
 
 Game::~Game()

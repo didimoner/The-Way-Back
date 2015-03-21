@@ -7,7 +7,7 @@
 
 int main()
 {
-	Game game(sf::Vector2i(854, 480), "The Way Back", false);
+	Game game(sf::Vector2i(854, 480), "The Way Back", true);
 	game.run();
 
 	return 0;
