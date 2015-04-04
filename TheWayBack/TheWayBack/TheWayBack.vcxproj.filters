@@ -105,13 +105,8 @@
     <ClInclude Include="Checkbox.h">
       <Filter>GUI\Headers</Filter>
     </ClInclude>
-<<<<<<< HEAD
-    <ClInclude Include="UI.h">
-      <Filter>GUI\Headers</Filter>
-=======
     <ClInclude Include="Item.h">
       <Filter>Header Files</Filter>
->>>>>>> origin/master
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -178,13 +173,8 @@
     <ClCompile Include="Checkbox.cpp">
       <Filter>GUI\Source Files</Filter>
     </ClCompile>
-<<<<<<< HEAD
-    <ClCompile Include="UI.cpp">
-      <Filter>GUI\Source Files</Filter>
-=======
     <ClCompile Include="Item.cpp">
       <Filter>Source Files</Filter>
->>>>>>> origin/master
     </ClCompile>
   </ItemGroup>
 </Project>

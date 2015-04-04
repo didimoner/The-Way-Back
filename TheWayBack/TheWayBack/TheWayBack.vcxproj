@@ -89,7 +89,6 @@
     <ClInclude Include="SpriteManager.h" />
     <ClInclude Include="TileMapLoader.h" />
     <ClInclude Include="tinyxml\tinyxml2.h" />
-    <ClInclude Include="UI.h" />
     <ClInclude Include="UIObject.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
@@ -114,7 +113,6 @@
     <ClCompile Include="SpriteManager.cpp" />
     <ClCompile Include="TileMapLoader.cpp" />
     <ClCompile Include="tinyxml\tinyxml2.cpp" />
-    <ClCompile Include="UI.cpp" />
     <ClCompile Include="UIObject.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
