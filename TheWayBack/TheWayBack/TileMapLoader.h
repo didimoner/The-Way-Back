@@ -4,6 +4,7 @@
 
 #include "ContentManager.h"
 #include "Entity.h"
+#include "Item.h"
 
 struct Map
 {
@@ -23,6 +24,7 @@ struct Tileset
 	unsigned short height;
 };
 
+
 class TileMapLoader
 {
 public:
@@ -34,6 +36,7 @@ public:
 
 	sf::Vector2i getSize();
 	std::vector<sf::FloatRect>* getObjects(std::string name);
+	std::vector<Item>* getItems();
 
 private:
 	std::map <std::string, sf::Texture>* _pTextures;
@@ -41,6 +44,7 @@ private:
 	std::vector<std::vector<std::vector<sf::Sprite>>> _currentMapSprites;
 	std::map<std::string, std::vector<sf::FloatRect>> _currentObjects;
 	std::vector<Tileset> _currentTilesets;
+	std::vector<Item> _mapItems;
 	Map _currentMap;
 	short _entitiesLayer;
 };

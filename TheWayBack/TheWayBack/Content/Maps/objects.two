@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<object name="Lunar prism" width="24" height="24" tileid="1215" left="4" top="9">
+	<image source="bigset" width="384" height="15096"/>
+	<desc>Очень полезная вещь!</desc>
+</object>
+<object name="Super ball" width="24" height="24" tileid="649" left="5" top="9">
+	<image source="bigset" width="384" height="15096"/>
+	<desc>124421</desc>
+</object>
+<object name="Great shield" width="24" height="24" tileid="5345" left="6" top="9">
+	<image source="bigset" width="384" height="15096"/>
+	<desc>555555</desc>
+</object>

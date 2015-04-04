@@ -9,6 +9,7 @@ public:
 
 	virtual void update(float gameTime);
 	virtual void draw(sf::RenderWindow &window);
+	virtual sf::FloatRect getBounds();
 
 protected:
 	sf::Vector2f _position;

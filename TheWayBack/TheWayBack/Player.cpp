@@ -168,6 +168,19 @@ void Player::move(float x, float y, float gameTime, TileMapLoader* pTileMapLoade
 		}
 	}
 
+	for (unsigned int i = 0; i < pTileMapLoader->getItems()->size(); i++)
+	{
+		Item* currItem = &(*pTileMapLoader->getItems())[i];
+
+		if (!currItem->getState())
+			continue;
+
+		if (_bounds.intersects(currItem->getBounds()))
+		{
+			currItem->setVisible(false);
+		}
+	}
+
 	_character.setPosition(_position.x, _position.y);
 }
 
