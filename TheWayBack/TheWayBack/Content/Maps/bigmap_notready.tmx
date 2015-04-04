@@ -3,6 +3,9 @@
  <tileset firstgid="1" name="RPGmakerXPMegaTilesetByLmnopguy7" tilewidth="32" tileheight="32">
   <image source="../Images/RPGmakerXPMegaTilesetByLmnopguy7.png" width="256" height="15300"/>
  </tileset>
+ <tileset firstgid="3825" name="bigset" tilewidth="24" tileheight="24">
+  <image source="../../../../../../TheWayBack Files/bigset.png" width="384" height="15096"/>
+ </tileset>
  <layer name="grass" width="48" height="30">
   <data>
    <tile gid="1"/>
