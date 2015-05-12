@@ -53,11 +53,13 @@ void Game::update()
 			break;
 
 		case sf::Event::MouseButtonPressed:
-			_screenManager->handleMouse(_event.key.code, true);
+			std::cout << "Pressed!" << std::endl;
+			_screenManager->handleMouse(_event.mouseButton.button, true);
 			break;
 
 		case sf::Event::MouseButtonReleased:
-			_screenManager->handleMouse(_event.key.code, false);
+			std::cout << "Released!" << std::endl;
+			_screenManager->handleMouse(_event.mouseButton.button, false);
 			break;
 
 		default:

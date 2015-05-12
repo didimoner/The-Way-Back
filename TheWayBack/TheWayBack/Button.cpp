@@ -46,7 +46,7 @@ void Button::setText(sf::Text text)
 	_text = text;
 }
 
-void Button::handleMouse(sf::Keyboard::Key key, bool pressed)
+void Button::handleMouse(sf::Mouse::Button key, bool pressed)
 {
 	if (_hover && sf::Mouse::isButtonPressed(sf::Mouse::Left) && pressed)
 	{

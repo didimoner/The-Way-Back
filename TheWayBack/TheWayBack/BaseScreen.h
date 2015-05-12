@@ -14,7 +14,7 @@ public:
 	~BaseScreen();
 
 	virtual void handleKeyboard(sf::Keyboard::Key key, bool pressed);
-	virtual void handleMouse(sf::Keyboard::Key key, bool pressed);
+	virtual void handleMouse(sf::Mouse::Button key, bool pressed);
 	
 	virtual void update(float gameTime);
 	virtual void draw(sf::RenderWindow& window);

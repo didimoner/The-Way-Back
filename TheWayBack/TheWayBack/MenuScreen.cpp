@@ -25,8 +25,9 @@ void MenuScreen::handleKeyboard(sf::Keyboard::Key key, bool pressed)
 {
 }
 
-void MenuScreen::handleMouse(sf::Keyboard::Key key, bool pressed)
+void MenuScreen::handleMouse(sf::Mouse::Button key, bool pressed)
 {
+	//std::cout << key << "  " << pressed << std::endl;
 	_btnNewGame->handleMouse(key, pressed);
 	_btnExit->handleMouse(key, pressed);
 }

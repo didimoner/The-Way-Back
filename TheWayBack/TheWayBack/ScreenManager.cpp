@@ -56,7 +56,7 @@ void ScreenManager::handleKeyboard(sf::Keyboard::Key key, bool pressed)
 	_currentScreen->handleKeyboard(key, pressed);
 }
 
-void ScreenManager::handleMouse(sf::Keyboard::Key key, bool pressed)
+void ScreenManager::handleMouse(sf::Mouse::Button key, bool pressed)
 {
 	_currentScreen->handleMouse(key, pressed);
 }

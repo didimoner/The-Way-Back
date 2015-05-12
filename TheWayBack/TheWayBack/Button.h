@@ -20,7 +20,7 @@ public:
 	void setText(sf::Text text);
 	void setOffset(float x, float y);
 
-	void handleMouse(sf::Keyboard::Key key, bool pressed);
+	void handleMouse(sf::Mouse::Button key, bool pressed);
 
 	bool getState();
 
