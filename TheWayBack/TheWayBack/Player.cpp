@@ -15,6 +15,7 @@ Player::Player(AnimationManager animationManager, SoundManager soundManager, flo
 	_character.setPosition(_position.x, _position.y);
 	_bounds = sf::FloatRect(_position.x * _tileSize, _position.y * _tileSize, (float)_size.x, (float)_size.y);
 	_isIntersecting = false;
+	_inventory = new Inventory(16);
 }
 
 Player::~Player(void)
@@ -177,6 +178,7 @@ void Player::move(float x, float y, float gameTime, TileMapLoader* pTileMapLoade
 
 		if (_bounds.intersects(currItem->getBounds()))
 		{
+			_inventory->add(currItem);
 			currItem->setVisible(false);
 		}
 	}

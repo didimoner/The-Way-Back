@@ -3,6 +3,7 @@
 #include "AnimationManager.h"
 #include "SoundManager.h"
 #include "TileMapLoader.h"
+#include "Inventory.h"
 
 class Player :
 	public Entity
@@ -41,4 +42,5 @@ private:
 	sf::Vector2f _lastPosition;
 	sf::Vector2f _cameraMovementSpeed;
 	bool _isIntersecting;
+	Inventory* _inventory;
 };

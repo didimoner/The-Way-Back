@@ -1,16 +1,14 @@
 #include "Item.h"
 
-
 Item::Item(sf::Sprite sprite, std::string name, std::string desc)
 {
 	_sprite = sprite;
 	_name = name;
 	_description = desc;
-	_bounds = sf::FloatRect(sprite.getPosition().x, sprite.getPosition().y, sprite.getTextureRect().width, sprite.getTextureRect().height);
-	//_bounds = sprite.getLocalBounds();
+	_bounds = sf::FloatRect(sprite.getPosition().x, sprite.getPosition().y, 
+		(float)sprite.getTextureRect().width, (float)sprite.getTextureRect().height);
 	_isVisible = true;
 }
-
 
 Item::~Item()
 {
