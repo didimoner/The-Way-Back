@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<object name="Lantern" width="24" height="24" tileid="180" left="9" top="9">
+	<image source="bigset" width="384" height="15096"/>
+	<desc>555555</desc>
+</object>
+<object name="Pick" width="24" height="24" tileid="184" left="8" top="9">
+	<image source="bigset" width="384" height="15096"/>
+	<desc>555555</desc>
+</object>

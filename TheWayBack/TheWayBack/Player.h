@@ -27,6 +27,8 @@ public:
 	sf::Vector2f getCurrentPosition();
 	sf::Vector2f getLastPosition();
 
+	void setPosition(sf::Vector2f position);
+
 	bool isMoving();
 
 private:

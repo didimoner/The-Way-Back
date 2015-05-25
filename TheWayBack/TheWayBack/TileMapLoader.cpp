@@ -3,10 +3,12 @@
 #include <iostream>
 #include <fstream>
 
-TileMapLoader::TileMapLoader(std::string mapsDir, short entitiesLayer)
+TileMapLoader::TileMapLoader(std::string mapsDir, short entitiesLayer, std::map<std::string, sf::Texture>* pTextures)
 {
 	_mapsDir = mapsDir + "/";
 	_entitiesLayer = entitiesLayer;
+	_pTextures = pTextures;
+	_isChanged = false;
 }
 TileMapLoader::~TileMapLoader()
 {
@@ -16,11 +18,17 @@ TileMapLoader::~TileMapLoader()
 	_mapItems.clear();
 }
 
-void TileMapLoader::load(std::string name, std::map<std::string, sf::Texture>* pTextures)
+void TileMapLoader::load(std::string name)
 {
-	_pTextures = pTextures;
+	_currentMapSprites.clear();
+	_currentObjects.clear();
+	_currentTilesets.clear();
+	_mapItems.clear();
 
-	std::string path = _mapsDir + name;
+	_isChanged = true;
+
+
+	std::string path = _mapsDir + name + ".tmx";
 	const char* charPath = path.c_str();
 
 	tinyxml2::XMLDocument tmxMap;
@@ -158,7 +166,7 @@ void TileMapLoader::load(std::string name, std::map<std::string, sf::Texture>* p
 
 	//objects on the map
 
-	path = _mapsDir + "objects.two";
+	path = _mapsDir + name + ".two";
 	charPath = path.c_str();
 
 	tinyxml2::XMLDocument objects;
@@ -245,6 +253,12 @@ void TileMapLoader::draw(sf::RenderWindow& window, std::vector<Entity*>& entitie
 			for (unsigned short i = 0; i < _mapItems.size(); i++)
 			{
 				_mapItems[i].draw(window);
+			}
+
+			if (_isChanged)
+			{
+				entities[0]->setPosition(sf::Vector2f(5, 5));
+				_isChanged = false;
 			}
 
 			for (unsigned short i = 0; i < entities.size(); i++)

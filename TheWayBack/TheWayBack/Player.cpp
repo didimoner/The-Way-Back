@@ -169,6 +169,15 @@ void Player::move(float x, float y, float gameTime, TileMapLoader* pTileMapLoade
 		}
 	}
 
+	for (unsigned int i = 0; i < pTileMapLoader->getObjects("teleport")->size(); i++)
+	{
+		if (_bounds.intersects((*pTileMapLoader->getObjects("teleport"))[i]))
+		{
+			pTileMapLoader->load("megamap");
+			break;
+		}
+	}
+
 	for (unsigned int i = 0; i < pTileMapLoader->getItems()->size(); i++)
 	{
 		Item* currItem = &(*pTileMapLoader->getItems())[i];
@@ -245,4 +254,9 @@ bool Player::isMoving()
 short Player::getState()
 {
 	return _state;
+}
+
+void Player::setPosition(sf::Vector2f position)
+{
+	_position = position;
 }

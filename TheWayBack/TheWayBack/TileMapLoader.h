@@ -28,10 +28,10 @@ struct Tileset
 class TileMapLoader
 {
 public:
-	TileMapLoader(std::string mapsDir, short entitiesLayer);
+	TileMapLoader(std::string mapsDir, short entitiesLayer, std::map<std::string, sf::Texture>* pTextures);
 	~TileMapLoader();
 
-	void load(std::string name, std::map<std::string, sf::Texture>* pTextures);
+	void load(std::string name);
 	void draw(sf::RenderWindow& window, std::vector<Entity*>& entities, sf::View& camera);
 
 	sf::Vector2i getSize();
@@ -47,5 +47,6 @@ private:
 	std::vector<Item> _mapItems;
 	Map _currentMap;
 	short _entitiesLayer;
+	bool _isChanged;
 };
 

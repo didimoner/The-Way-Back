@@ -20,3 +20,8 @@ sf::FloatRect Entity::getBounds()
 {
 	return _bounds;
 }
+
+void Entity::setPosition(sf::Vector2f position)
+{
+	_position = position;
+}

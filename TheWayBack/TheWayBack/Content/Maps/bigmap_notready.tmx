@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="48" height="30" tilewidth="32" tileheight="32" nextobjectid="52">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="48" height="30" tilewidth="32" tileheight="32" nextobjectid="53">
  <tileset firstgid="1" name="RPGmakerXPMegaTilesetByLmnopguy7" tilewidth="32" tileheight="32">
   <image source="../Images/RPGmakerXPMegaTilesetByLmnopguy7.png" width="256" height="15300"/>
  </tileset>
  <tileset firstgid="3825" name="bigset" tilewidth="24" tileheight="24">
-  <image source="../../../../../../TheWayBack Files/bigset.png" width="384" height="15096"/>
+  <image source="../Images/bigset.png" width="384" height="15096"/>
  </tileset>
  <layer name="grass" width="48" height="30">
   <data>
@@ -8699,5 +8699,8 @@
   <object id="48" x="1528" y="2" width="8" height="954"/>
   <object id="50" x="4" y="0" width="1532" height="4"/>
   <object id="51" x="541.333" y="678.667" width="98.6667" height="150.667"/>
+ </objectgroup>
+ <objectgroup name="teleport">
+  <object id="52" x="1251" y="534" width="26" height="27"/>
  </objectgroup>
 </map>

@@ -20,6 +20,28 @@ MainScreen::~MainScreen()
 void MainScreen::handleKeyboard(sf::Keyboard::Key key, bool pressed)
 {
 	_player->handleKeyboard(key, pressed);
+
+	if (pressed)
+	{
+		switch (key)
+		{
+		case sf::Keyboard::E:
+			_tileMapLoader->load("megamap");
+			break;
+		case sf::Keyboard::R:
+			_tileMapLoader->load("bigmap_notready");
+			break;
+
+		default:
+			break;
+		}
+	}
+	else
+	{
+
+	}
+
+	
 }
 
 void MainScreen::handleMouse(sf::Keyboard::Key key, bool pressed)
@@ -67,8 +89,8 @@ void MainScreen::activate()
 	pPlayerSounds = new SoundManager();
 	pPlayerSounds->addSound((*_pSounds)["collect"], "jump");
 
-	_tileMapLoader = new TileMapLoader("Content/Maps", 2);
-	_tileMapLoader->load("bigmap_notready.tmx", _pTextures);
+	_tileMapLoader = new TileMapLoader("Content/Maps", 2, _pTextures);
+	_tileMapLoader->load("bigmap_notready");
 
 	_player = new Player(playerOne, *(pPlayerSounds), 0.24f, sf::Vector2f(1, 2),
 		sf::Vector2i(32, 32), _tileSize);
