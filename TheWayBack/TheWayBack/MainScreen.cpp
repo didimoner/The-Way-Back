@@ -20,28 +20,6 @@ MainScreen::~MainScreen()
 void MainScreen::handleKeyboard(sf::Keyboard::Key key, bool pressed)
 {
 	_player->handleKeyboard(key, pressed);
-
-	if (pressed)
-	{
-		switch (key)
-		{
-		case sf::Keyboard::E:
-			_tileMapLoader->load("megamap");
-			break;
-		case sf::Keyboard::R:
-			_tileMapLoader->load("bigmap_notready");
-			break;
-
-		default:
-			break;
-		}
-	}
-	else
-	{
-
-	}
-
-	
 }
 
 void MainScreen::handleMouse(sf::Keyboard::Key key, bool pressed)

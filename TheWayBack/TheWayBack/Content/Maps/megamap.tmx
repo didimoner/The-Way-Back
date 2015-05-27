@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="32" tileheight="32" nextobjectid="1">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="32" tileheight="32" nextobjectid="2">
  <tileset firstgid="1" name="japanese" tilewidth="32" tileheight="32">
-  <image source="../../../../../../TheWayBack Files/ТайлСеты/japanese.png" width="384" height="256"/>
+  <image source="../Images/japanese.png" width="384" height="256"/>
  </tileset>
  <tileset firstgid="97" name="tilea4" tilewidth="32" tileheight="32">
-  <image source="../../../../../../TheWayBack Files/ТайлСеты/tilea4.png" width="512" height="480"/>
+  <image source="../Images/tilea4.png" width="512" height="480"/>
  </tileset>
  <tileset firstgid="337" name="tilea2" tilewidth="32" tileheight="32">
-  <image source="../../../../../../TheWayBack Files/ТайлСеты/tilea2.png" width="512" height="384"/>
+  <image source="../Images/tilea2.png" width="512" height="384"/>
  </tileset>
  <layer name="Слой тайлов 1" width="20" height="20">
   <data>
@@ -2029,4 +2029,12 @@
    <tile gid="0"/>
   </data>
  </layer>
+ <objectgroup name="teleport">
+  <object id="1" name="bigmap_notready" x="286" y="162" width="65" height="60">
+   <properties>
+    <property name="def_x" value="15"/>
+    <property name="def_y" value="9"/>
+   </properties>
+  </object>
+ </objectgroup>
 </map>

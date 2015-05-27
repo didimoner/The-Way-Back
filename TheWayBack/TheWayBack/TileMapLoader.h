@@ -24,6 +24,12 @@ struct Tileset
 	unsigned short height;
 };
 
+struct MapObject
+{
+	std::string name;
+	sf::FloatRect rect;
+	sf::Vector2f initPosition;
+};
 
 class TileMapLoader
 {
@@ -35,14 +41,14 @@ public:
 	void draw(sf::RenderWindow& window, std::vector<Entity*>& entities, sf::View& camera);
 
 	sf::Vector2i getSize();
-	std::vector<sf::FloatRect>* getObjects(std::string name);
+	std::vector<MapObject>* getObjects(std::string name);
 	std::vector<Item>* getItems();
 
 private:
 	std::map <std::string, sf::Texture>* _pTextures;
 	std::string _mapsDir;
 	std::vector<std::vector<std::vector<sf::Sprite>>> _currentMapSprites;
-	std::map<std::string, std::vector<sf::FloatRect>> _currentObjects;
+	std::map<std::string, std::vector<MapObject>> _currentObjects;
 	std::vector<Tileset> _currentTilesets;
 	std::vector<Item> _mapItems;
 	Map _currentMap;

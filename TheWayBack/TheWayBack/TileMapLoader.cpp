@@ -145,6 +145,8 @@ void TileMapLoader::load(std::string name)
 	std::string objectgroupName = "";
 
 	tinyxml2::XMLElement* pObject;
+	tinyxml2::XMLElement* pProperties;
+	tinyxml2::XMLElement* pProperty;
 
 	while (pObjectgroup != nullptr)
 	{
@@ -154,9 +156,61 @@ void TileMapLoader::load(std::string name)
 
 		while (pObject != nullptr)
 		{
+			pProperties = pObject->FirstChildElement("properties");
+			
+			MapObject tempObject;
+
 			sf::FloatRect tempRect = sf::FloatRect(pObject->FloatAttribute("x"), pObject->FloatAttribute("y"),
 				pObject->FloatAttribute("width"), pObject->FloatAttribute("height"));
-			_currentObjects[objectgroupName].push_back(tempRect);
+			tempObject.rect = tempRect;
+
+			if (pObject->Attribute("name"))
+			{
+				tempObject.name = pObject->Attribute("name");
+			}
+			else
+			{
+				tempObject.name = "";
+			}
+
+			// Properties
+
+			if (pProperties == nullptr)
+			{
+				tempObject.initPosition = sf::Vector2f(0, 0);
+			}
+			else
+			{
+				pProperty = pProperties->FirstChildElement("property");
+
+				while (pProperty != nullptr)
+				{
+					std::string propertyName = pProperty->Attribute("name");
+
+					if (propertyName == "def_x")
+					{
+						tempObject.initPosition.x = pProperty->FloatAttribute("value");
+					}
+					if (propertyName == "def_y")
+					{
+						tempObject.initPosition.y = pProperty->FloatAttribute("value");
+					}
+
+					pProperty = pProperty->NextSiblingElement("property");
+				}
+			}
+			
+			//if (pObject->FloatAttribute("def_x"))
+			//{
+			//	tempObject.initPosition = sf::Vector2f(pObject->FloatAttribute("def_x"), pObject->FloatAttribute("def_y"));
+			//}
+			//else
+			//{
+			//	tempObject.initPosition = sf::Vector2f(0, 0);
+			//}
+
+
+			_currentObjects[objectgroupName].push_back(tempObject);
 
 			pObject = pObject->NextSiblingElement("object");
 		}
@@ -257,7 +311,6 @@ void TileMapLoader::draw(sf::RenderWindow& window, std::vector<Entity*>& entitie
 
 			if (_isChanged)
 			{
-				entities[0]->setPosition(sf::Vector2f(5, 5));
 				_isChanged = false;
 			}
 
@@ -274,7 +327,7 @@ sf::Vector2i TileMapLoader::getSize()
 	return sf::Vector2i(_currentMap.width * _currentMap.tileWidth, _currentMap.height * _currentMap.tileHeight);
 }
 
-std::vector<sf::FloatRect>* TileMapLoader::getObjects(std::string name)
+std::vector<MapObject>* TileMapLoader::getObjects(std::string name)
 {
 	return &(_currentObjects[name]);
 }

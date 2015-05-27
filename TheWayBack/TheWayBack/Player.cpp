@@ -108,6 +108,7 @@ void Player::update(float gameTime, sf::View& camera, TileMapLoader* pTileMapLoa
 		}
 	}
 
+	//std::cout << "Set Center" << std::endl;
 	camera.setCenter(cameraCenter.x, cameraCenter.y);
 }
 
@@ -157,7 +158,9 @@ void Player::move(float x, float y, float gameTime, TileMapLoader* pTileMapLoade
 
 	for (unsigned int i = 0; i < pTileMapLoader->getObjects("collision")->size(); i++)
 	{
-		if (_bounds.intersects((*pTileMapLoader->getObjects("collision"))[i]))
+		MapObject currentMapObject = (*pTileMapLoader->getObjects("collision"))[i];
+
+		if (_bounds.intersects(currentMapObject.rect))
 		{
 			_isIntersecting = true;
 			_position = sf::Vector2f(_lastPosition.x / _tileSize, _lastPosition.y / _tileSize);
@@ -171,9 +174,12 @@ void Player::move(float x, float y, float gameTime, TileMapLoader* pTileMapLoade
 
 	for (unsigned int i = 0; i < pTileMapLoader->getObjects("teleport")->size(); i++)
 	{
-		if (_bounds.intersects((*pTileMapLoader->getObjects("teleport"))[i]))
+		MapObject currentMapObject = (*pTileMapLoader->getObjects("teleport"))[i];
+
+		if (_bounds.intersects(currentMapObject.rect))
 		{
-			pTileMapLoader->load("megamap");
+			pTileMapLoader->load(currentMapObject.name);
+			_position = currentMapObject.initPosition;
 			break;
 		}
 	}
