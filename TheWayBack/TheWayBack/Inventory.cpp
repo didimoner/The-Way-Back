@@ -28,3 +28,16 @@ int Inventory::getSize()
 {
 	return _size;
 }
+
+bool Inventory::contains(std::string name)
+{
+	for (unsigned int i = 0; i < _cells.size(); i++)
+	{
+		if (_cells[i].getName() == name)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}

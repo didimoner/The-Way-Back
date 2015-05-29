@@ -5,6 +5,7 @@ class Item :
 	public Entity
 {
 public:
+	Item();
 	Item(sf::Sprite sprite, std::string name, std::string desc);
 	~Item();
 

@@ -1,5 +1,9 @@
 #include "Item.h"
 
+Item::Item()
+{
+}
+
 Item::Item(sf::Sprite sprite, std::string name, std::string desc)
 {
 	_sprite = sprite;

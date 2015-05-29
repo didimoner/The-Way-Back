@@ -8,6 +8,7 @@ public:
 	~Inventory();
 
 	void add(Item* item);
+	bool contains(std::string name);
 
 	int getSize();
 

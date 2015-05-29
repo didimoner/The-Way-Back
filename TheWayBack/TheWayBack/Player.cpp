@@ -195,6 +195,7 @@ void Player::move(float x, float y, float gameTime, TileMapLoader* pTileMapLoade
 		{
 			_inventory->add(currItem);
 			currItem->setVisible(false);
+			pTileMapLoader->setItemBoolAttr(currItem->getName(), false);
 		}
 	}
 
