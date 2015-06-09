@@ -4,6 +4,7 @@
 #include "SoundManager.h"
 #include "TileMapLoader.h"
 #include "Inventory.h"
+#include "SaveFileHandler.h"
 
 class Player :
 	public Entity
@@ -33,6 +34,7 @@ public:
 
 private:
 	void handleLiveInput();
+	void intersects(TileMapLoader* pTileMapLoader);
 
 	AnimationManager _character;
 	SoundManager _sounds;
@@ -45,4 +47,5 @@ private:
 	sf::Vector2f _cameraMovementSpeed;
 	bool _isIntersecting;
 	Inventory* _inventory;
+	SaveFileHandler* _saveFile;
 };

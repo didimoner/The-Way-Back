@@ -4,14 +4,15 @@ Item::Item()
 {
 }
 
-Item::Item(sf::Sprite sprite, std::string name, std::string desc)
+Item::Item(sf::Sprite sprite, std::string name, std::string id, std::string desc)
 {
 	_sprite = sprite;
 	_name = name;
+	_id = id;
 	_description = desc;
 	_bounds = sf::FloatRect(sprite.getPosition().x, sprite.getPosition().y, 
 		(float)sprite.getTextureRect().width, (float)sprite.getTextureRect().height);
-	_isVisible = true;
+	_state = true;
 }
 
 Item::~Item()
@@ -24,12 +25,17 @@ void Item::update(float gameTime)
 
 void Item::draw(sf::RenderWindow &window)
 {
-	if (_isVisible) window.draw(_sprite);
+	if (_state) window.draw(_sprite);
 }
 
 std::string Item::getName()
 {
 	return _name;
+}
+
+std::string Item::getId()
+{
+	return _id;
 }
 
 std::string Item::getDescription()
@@ -47,12 +53,12 @@ sf::FloatRect Item::getBounds()
 	return _bounds;
 }
 
-void Item::setVisible(bool flag)
+void Item::setState(bool flag)
 {
-	_isVisible = flag;
+	_state = flag;
 }
 
 bool Item::getState()
 {
-	return _isVisible;
+	return _state;
 }

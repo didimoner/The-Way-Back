@@ -6,7 +6,7 @@ class Item :
 {
 public:
 	Item();
-	Item(sf::Sprite sprite, std::string name, std::string desc);
+	Item(sf::Sprite sprite, std::string name, std::string id, std::string desc);
 	~Item();
 
 	virtual void update(float gameTime);
@@ -15,15 +15,17 @@ public:
 	virtual sf::FloatRect getBounds();
 
 	std::string getName();
+	std::string getId();
 	std::string getDescription();
 	sf::Sprite* getSprite();
-	void setVisible(bool flag);
+	void setState(bool flag);
 	bool getState();
 
 private:
 	sf::Sprite _sprite;
 	std::string _name;
+	std::string _id;
 	std::string _description;
-	bool _isVisible;
+	bool _state;
 };
 

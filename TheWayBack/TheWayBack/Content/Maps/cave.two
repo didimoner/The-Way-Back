@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tileset name="bigset" width="384" height="15096"/>
 
-<object type="0" name="Crystal" tileset="0" width="24" height="24" tileid="1202" left="17" top="8" offset_x="4" offset_y="8" visible="1">
+<object type="0" id="05" name="Strange Crystal" tileset="0" width="24" height="24" tileid="1202" left="17" top="8" offset_x="4" offset_y="8" state="1">
     Переливающийся кристалл
 </object>
 
-<object type="1" name="Chest" tileset="0" width="24" height="24" tileid="904" left="13" top="5" offset_x="4" offset_y="8" visible="1">
-    <item name="Mushroom" tileset="0" width="24" height="24" tileid="718" visible="1">
+<object type="1" name="Chest" tileset="0" width="24" height="24" tileid="904" left="13" top="5" offset_x="4" offset_y="8" state="1">
+    <item id="06" name="Mushroom" tileset="0" width="24" height="24" tileid="718" state="1">
 		Очень похоже на мухомор
 	</item>
-    <item name="Lollipop" tileset="0" width="24" height="24" tileid="678" visible="1">
+    <item id="07" name="Lollipop" tileset="0" width="24" height="24" tileid="678" state="1">
 		Вкусный ледицен
 	</item>
-    <item name="Potion" tileset="0" width="24" height="24" tileid="961" visible="1">
+    <item id="08" name="Potion" tileset="0" width="24" height="24" tileid="961" state="1">
 		Странное зелье
 	</item>
 </object>

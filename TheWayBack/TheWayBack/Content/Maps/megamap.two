@@ -2,10 +2,10 @@
 
 <tileset name="bigset" width="384" height="15096"/>
 
-<object type="0" name="Lantern" tileset="0" width="24" height="24" tileid="180" left="9" top="9" visible="1">
+<object type="0" id="03" name="Lantern" tileset="0" width="24" height="24" tileid="180" left="9" top="9" state="1">
     555555
 </object>
 
-<object type="0" name="Pick" tileset="0" width="24" height="24" tileid="184" left="8" top="9" visible="0">
+<object type="0" id="04" name="Pick" tileset="0" width="24" height="24" tileid="184" left="8" top="9" state="1">
     555555
 </object>

@@ -4,6 +4,9 @@
 Player::Player(AnimationManager animationManager, SoundManager soundManager, float speed,
 	sf::Vector2f position, sf::Vector2i size, short tileSize)
 {
+	_saveFile = new SaveFileHandler("Content/Saves/save.tws");
+	_saveFile->load();
+
 	_character = animationManager;
 	_sounds = soundManager;
 	_movementSpeed = speed / 100;
@@ -16,6 +19,7 @@ Player::Player(AnimationManager animationManager, SoundManager soundManager, flo
 	_bounds = sf::FloatRect(_position.x * _tileSize, _position.y * _tileSize, (float)_size.x, (float)_size.y);
 	_isIntersecting = false;
 	_inventory = new Inventory(16);
+	
 }
 
 Player::~Player(void)
@@ -108,7 +112,6 @@ void Player::update(float gameTime, sf::View& camera, TileMapLoader* pTileMapLoa
 		}
 	}
 
-	//std::cout << "Set Center" << std::endl;
 	camera.setCenter(cameraCenter.x, cameraCenter.y);
 }
 
@@ -156,48 +159,7 @@ void Player::move(float x, float y, float gameTime, TileMapLoader* pTileMapLoade
 
 	_bounds = sf::FloatRect(_position.x * _tileSize, _position.y * _tileSize + _tileSize / 2, (float)_size.x, (float)_size.y / 2);
 
-	for (unsigned int i = 0; i < pTileMapLoader->getObjects("collision")->size(); i++)
-	{
-		MapObject currentMapObject = (*pTileMapLoader->getObjects("collision"))[i];
-
-		if (_bounds.intersects(currentMapObject.rect))
-		{
-			_isIntersecting = true;
-			_position = sf::Vector2f(_lastPosition.x / _tileSize, _lastPosition.y / _tileSize);
-			break;
-		}
-		else
-		{
-			_isIntersecting = false;
-		}
-	}
-
-	for (unsigned int i = 0; i < pTileMapLoader->getObjects("teleport")->size(); i++)
-	{
-		MapObject currentMapObject = (*pTileMapLoader->getObjects("teleport"))[i];
-
-		if (_bounds.intersects(currentMapObject.rect))
-		{
-			pTileMapLoader->load(currentMapObject.name);
-			_position = currentMapObject.initPosition;
-			break;
-		}
-	}
-
-	for (unsigned int i = 0; i < pTileMapLoader->getItems()->size(); i++)
-	{
-		Item* currItem = &(*pTileMapLoader->getItems())[i];
-
-		if (!currItem->getState())
-			continue;
-
-		if (_bounds.intersects(currItem->getBounds()))
-		{
-			_inventory->add(currItem);
-			currItem->setVisible(false);
-			pTileMapLoader->setItemBoolAttr(currItem->getName(), false);
-		}
-	}
+	intersects(pTileMapLoader);
 
 	_character.setPosition(_position.x, _position.y);
 }
@@ -266,4 +228,75 @@ short Player::getState()
 void Player::setPosition(sf::Vector2f position)
 {
 	_position = position;
+}
+
+void Player::intersects(TileMapLoader* pTileMapLoader)
+{
+	for (unsigned int i = 0; i < pTileMapLoader->getObjects("collision")->size(); i++)
+	{
+		MapObject currentMapObject = (*pTileMapLoader->getObjects("collision"))[i];
+
+		if (_bounds.intersects(currentMapObject.rect))
+		{
+			_isIntersecting = true;
+			_position = sf::Vector2f(_lastPosition.x / _tileSize, _lastPosition.y / _tileSize);
+			break;
+		}
+		else
+		{
+			_isIntersecting = false;
+		}
+	}
+
+	for (unsigned int i = 0; i < pTileMapLoader->getObjects("teleport")->size(); i++)
+	{
+		MapObject currentMapObject = (*pTileMapLoader->getObjects("teleport"))[i];
+
+		if (_bounds.intersects(currentMapObject.rect))
+		{
+			pTileMapLoader->load(currentMapObject.name);
+			_position = currentMapObject.initPosition;
+			break;
+		}
+	}
+
+	for (unsigned int i = 0; i < pTileMapLoader->getItems()->size(); i++)
+	{
+		Item* currItem = &(*pTileMapLoader->getItems())[i];
+
+		if (!currItem->getState())
+			continue;
+
+		if (_bounds.intersects(currItem->getBounds()))
+		{
+			_inventory->add(currItem);
+			currItem->setState(false);
+			_saveFile->maplItemChange(currItem, "hidden");
+			_saveFile->inventoryItemChange(currItem);
+		}
+	}
+
+	for (unsigned int i = 0; i < pTileMapLoader->getContainers()->size(); i++)
+	{
+		Container* currConteiner = &(*pTileMapLoader->getContainers())[i];
+
+		if (!currConteiner->container.getState())
+			continue;
+
+		if (_bounds.intersects(currConteiner->container.getBounds()))
+		{
+			for (unsigned int j = 0; j < currConteiner->items.size(); j++)
+			{
+				Item* currContainerItem = &currConteiner->items[j];
+
+				if (!currContainerItem->getState())
+					continue;
+
+				_inventory->add(currContainerItem);
+				currContainerItem->setState(false);
+				_saveFile->maplItemChange(currContainerItem, "hidden");
+				_saveFile->inventoryItemChange(currContainerItem);
+			}
+		}
+	}
 }

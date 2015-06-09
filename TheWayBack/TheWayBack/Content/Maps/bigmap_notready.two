@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tileset name="bigset" width="384" height="15096"/>
 
-<object type="0" name="Lunar prism" tileset="0" width="24" height="24" tileid="1215" left="4" top="9" visible="1">
+<object type="0" id="00" name="Lunar prism" tileset="0" width="24" height="24" tileid="1215" left="4" top="9" state="1">
     Очень полезная вещь!
 </object>
 
-<object type="0" name="Super ball" tileset="0" width="24" height="24" tileid="649" left="5" top="9" visible="1">
+<object type="0" id="01" name="Super ball" tileset="0" width="24" height="24" tileid="649" left="5" top="9" state="1">
     124421
 </object>
 
-<object type="0" name="Great shield" tileset="0" width="24" height="24" tileid="5345" left="6" top="9" visible="1">
+<object type="0" id="02" name="Great shield" tileset="0" width="24" height="24" tileid="5345" left="6" top="9" state="1">
     555555
 </object>

@@ -270,6 +270,7 @@ void TileMapLoader::load(std::string name)
 
 		pMapObject = pMapObject->NextSiblingElement("object");
 	}
+	
 }
 
 void TileMapLoader::draw(sf::RenderWindow& window, std::vector<Entity*>& entities, sf::View& camera)
@@ -345,6 +346,11 @@ std::vector<Item>* TileMapLoader::getItems()
 	return &_mapItems;
 }
 
+std::vector<Container>* TileMapLoader::getContainers()
+{
+	return &_containers;
+}
+
 Map TileMapLoader::getCurrentMap()
 {
 	return _currentMap;
@@ -353,35 +359,6 @@ Map TileMapLoader::getCurrentMap()
 std::string TileMapLoader::getMapsDir()
 {
 	return _mapsDir;
-}
-
-void TileMapLoader::setItemBoolAttr(std::string name, bool attr)
-{
-	std::string path = _mapsDir + _currentMap.name + ".two";
-	const char* charPath = path.c_str();
-
-	tinyxml2::XMLDocument objects;
-	objects.LoadFile(charPath);
-
-	if (objects.ErrorID() != 0)
-	{
-		std::cout << "Error while opening " << path << " file!" << std::endl;
-		return;
-	}
-
-	tinyxml2::XMLElement* pMapObject = objects.FirstChildElement("object");
-
-	while (pMapObject != nullptr)
-	{
-		if (pMapObject->Attribute("name") == name)
-		{
-			pMapObject->SetAttribute("visible", attr);
-		}
-
-		pMapObject = pMapObject->NextSiblingElement("object");
-	}
-
-	objects.SaveFile(charPath);
 }
 
 Item TileMapLoader::makeItem(tinyxml2::XMLElement* pMapObject, std::vector<ItemTileset>& tilesets)
@@ -398,8 +375,6 @@ Item TileMapLoader::makeItem(tinyxml2::XMLElement* pMapObject, std::vector<ItemT
 	unsigned int offset_x = pMapObject->IntAttribute("offset_x") ? pMapObject->IntAttribute("offset_x") : 0;
 	unsigned int offset_y = pMapObject->IntAttribute("offset_y") ? pMapObject->IntAttribute("offset_y") : 0;
 
-	bool isVisible = pMapObject->BoolAttribute("visible") ? pMapObject->BoolAttribute("visible") : false;
-
 	unsigned int tilesetWidth = tilesets[tilesetId].width / objectWidth;
 	unsigned int tilesetHeight = tilesets[tilesetId].height / objectHeight;
 
@@ -412,9 +387,33 @@ Item TileMapLoader::makeItem(tinyxml2::XMLElement* pMapObject, std::vector<ItemT
 	sprite.move(sf::Vector2f((float)offset_x, (float)offset_y));
 
 	std::string description = pMapObject->GetText() ? pMapObject->GetText() : "";
+	char* id = pMapObject->Attribute("id") ? pMapObject->Attribute("id") : "";
+	bool itemState = pMapObject->BoolAttribute("state") ? pMapObject->BoolAttribute("state") : false;
 
-	Item item(sprite, pMapObject->Attribute("name"), description);
-	item.setVisible(isVisible);
+	SaveFileHandler saveFile("Content/Saves/save.tws");
+	saveFile.load();
+
+	std::string response = saveFile.getElement("mapItems", id, "state");
+
+	if (response != "NO_ATTR" || response != "NO_ITEM")
+	{
+		if (response == "hidden")
+			itemState = false;
+	}
+
+	Item item(sprite, pMapObject->Attribute("name"), id, description);
+	item.setState(itemState);
 
 	return item;
+}
+
+
+bool TileMapLoader::strToBool(std::string str)
+{
+	if (str == "1" || str == "true" || str == "TRUE")
+	{
+		return true;
+	}
+
+	return false;
 }

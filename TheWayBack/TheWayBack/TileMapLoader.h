@@ -5,6 +5,7 @@
 #include "ContentManager.h"
 #include "Entity.h"
 #include "Item.h"
+#include "SaveFileHandler.h"
 
 struct Map
 {
@@ -57,10 +58,9 @@ public:
 	sf::Vector2i getSize();
 	std::vector<MapObject>* getObjects(std::string name);
 	std::vector<Item>* getItems();
+	std::vector<Container>* getContainers();
 	Map getCurrentMap();
 	std::string getMapsDir();
-
-	void setItemBoolAttr(std::string name, bool attr);
 
 private:
 	std::map <std::string, sf::Texture>* _pTextures;
@@ -75,5 +75,6 @@ private:
 	bool _isChanged;
 
 	Item makeItem(tinyxml2::XMLElement* pMapObject, std::vector<ItemTileset>& tilesets);
+	bool strToBool(std::string str);
 };
 
