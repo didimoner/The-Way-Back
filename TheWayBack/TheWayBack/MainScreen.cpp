@@ -53,10 +53,6 @@ void MainScreen::activate()
 	_pFonts = _pContentManager->getFonts();
 	_screenState = 2;
 
-	_camera.setSize((float)_screenSize.x, (float)_screenSize.y);
-	_camera.setCenter(_camera.getSize().x / 2, _camera.getSize().y / 2);
-	_cameraSpeed = sf::Vector2f(0.2f, 0.18f);
-
 	AnimationManager playerOne((*_pTextures)["char1"], _tileSize);
 	playerOne.addAnimation("walk_down", 1, 1, 3, 0.004f, LOOP, true);
 	playerOne.addAnimation("walk_up", 4, 1, 3, 0.004f, LOOP, true);
@@ -68,13 +64,45 @@ void MainScreen::activate()
 	pPlayerSounds->addSound((*_pSounds)["collect"], "jump");
 
 	_tileMapLoader = new TileMapLoader("Content/Maps", 2, _pTextures);
-	_tileMapLoader->load("bigmap_notready");
+	_tileMapLoader->load("world_1");
 
-	_player = new Player(playerOne, *(pPlayerSounds), 0.24f, sf::Vector2f(1, 2),
+	sf::Vector2f playerPosition = sf::Vector2f(47, 26);
+	sf::Vector2f cameraCenter = sf::Vector2f(playerPosition.x * 32 + 16, playerPosition.y * 32 + 16);
+
+	_player = new Player(playerOne, *(pPlayerSounds), 0.24f, playerPosition,
 		sf::Vector2i(32, 32), _tileSize);
 	_entities.push_back(_player);
 
 	delete pPlayerSounds;
+
+	// выставляем камеру по координатам персонажа
+	_camera.setSize((float)_screenSize.x, (float)_screenSize.y);
+	_cameraSpeed = sf::Vector2f(0.2f, 0.18f);
+
+	unsigned short tileW = _tileMapLoader->getCurrentMap().tileWidth;
+	unsigned short tileH = _tileMapLoader->getCurrentMap().tileHeight;
+
+	if ((_tileMapLoader->getSize().x - playerPosition.x * tileW + _tileSize / 2) < (float)_screenSize.x / 2)
+	{
+		cameraCenter.x -= _screenSize.x / 2 - (_tileMapLoader->getSize().x - playerPosition.x * tileW - _tileSize / 2);
+	}
+	if ((_tileMapLoader->getSize().y - playerPosition.y * tileH + _tileSize / 2) < (float)_screenSize.y / 2)
+	{
+		cameraCenter.y -= _screenSize.y / 2 - (_tileMapLoader->getSize().y - playerPosition.y * tileH - _tileSize / 2);
+	}
+
+	if ((playerPosition.x * tileW + _tileSize / 2) < (float)_screenSize.x / 2)
+	{
+		cameraCenter.x += _screenSize.x / 2 - (playerPosition.x * tileW + _tileSize / 2);
+	}
+	if ((playerPosition.y * tileH + _tileSize / 2) < (float)_screenSize.y / 2)
+	{
+		cameraCenter.y += _screenSize.y / 2 - (playerPosition.y * tileH + _tileSize / 2);
+	}
+
+	_camera.setCenter(cameraCenter);
+
+
 
 	std::cout << "MainScreen activated" << std::endl;
 	_isActivated = true;

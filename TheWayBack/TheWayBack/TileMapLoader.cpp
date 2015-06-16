@@ -24,6 +24,7 @@ void TileMapLoader::load(std::string name)
 	_currentObjects.clear();
 	_currentTilesets.clear();
 	_mapItems.clear();
+	_containers.clear();
 
 	_isChanged = true;
 

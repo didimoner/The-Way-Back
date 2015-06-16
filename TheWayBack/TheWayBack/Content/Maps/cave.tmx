@@ -849,10 +849,10 @@
   <object id="24" x="32" y="2" width="574" height="92"/>
  </objectgroup>
  <objectgroup name="teleport">
-  <object id="1" name="bigmap_notready" x="321" y="296" width="29" height="23">
+  <object id="1" name="world_1" x="321" y="296" width="29" height="23">
    <properties>
-    <property name="def_x" value="7"/>
-    <property name="def_y" value="4"/>
+    <property name="def_x" value="10"/>
+    <property name="def_y" value="7"/>
    </properties>
   </object>
  </objectgroup>
