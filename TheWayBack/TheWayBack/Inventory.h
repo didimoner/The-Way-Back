@@ -7,6 +7,10 @@ public:
 	Inventory(unsigned short size);
 	~Inventory();
 
+	void update(float gameTime);
+	void draw(sf::RenderWindow& window);
+
+	void load();
 	void add(Item* item);
 	bool contains(std::string name);
 

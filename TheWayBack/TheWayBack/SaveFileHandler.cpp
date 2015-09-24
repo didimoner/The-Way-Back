@@ -49,7 +49,6 @@ void SaveFileHandler::inventoryItemChange(Item* item)
 	}
 
 	tinyxml2::XMLElement* pNewItem = _document.NewElement("item");
-	pNewItem->SetAttribute("name", item->getName().c_str());
 	pNewItem->SetAttribute("id", item->getId().c_str());
 	pInventory->InsertEndChild(pNewItem);
 	
@@ -68,7 +67,6 @@ void SaveFileHandler::maplItemChange(Item* item, char* state)
 	{
 		if (pItem->Attribute("id") == item->getId())
 		{
-			pItem->SetAttribute("name", item->getName().c_str());
 			pItem->SetAttribute("id", item->getId().c_str());
 			pItem->SetAttribute("state", state);
 
@@ -82,7 +80,6 @@ void SaveFileHandler::maplItemChange(Item* item, char* state)
 	if (!exists)
 	{
 		tinyxml2::XMLElement* pItem = _document.NewElement("item");
-		pItem->SetAttribute("name", item->getName().c_str());
 		pItem->SetAttribute("id", item->getId().c_str());
 		pItem->SetAttribute("state", state);
 		pMapItems->InsertEndChild(pItem);

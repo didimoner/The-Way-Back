@@ -9,13 +9,60 @@ TileMapLoader::TileMapLoader(std::string mapsDir, short entitiesLayer, std::map<
 	_entitiesLayer = entitiesLayer;
 	_pTextures = pTextures;
 	_isChanged = false;
+
+	// Загружаю предметы
+	std::string path = "Content/Resources/items.twi";
+	const char* charPath = path.c_str();
+
+	tinyxml2::XMLDocument items;
+	items.LoadFile(charPath);
+
+	if (items.ErrorID() != 0)
+	{
+		std::cout << "Error while opening " << path << " file!" << std::endl;
+		return;
+	}
+
+	tinyxml2::XMLElement* pItem = items.FirstChildElement("item");
+	tinyxml2::XMLElement* pItemTileset = items.FirstChildElement("tileset");
+
+	while (pItemTileset != nullptr)
+	{
+		ItemTileset tempTilesetItem;
+		tempTilesetItem.name = pItemTileset->Attribute("name");
+		tempTilesetItem.width = pItemTileset->IntAttribute("width");
+		tempTilesetItem.height = pItemTileset->IntAttribute("height");
+
+		_itemTilesets.push_back(tempTilesetItem);
+
+		pItemTileset = pItemTileset->NextSiblingElement("tileset");
+	}
+
+	while (pItem != nullptr)
+	{
+		PreItem preItem;
+
+		preItem.name = pItem->Attribute("name");
+		preItem.desc = (std::string)pItem->GetText();
+		preItem.id = pItem->Attribute("id");
+		preItem.tileId = pItem->IntAttribute("tileid");
+		preItem.tileset = pItem->IntAttribute("tileset");
+		preItem.width = pItem->FloatAttribute("width");
+		preItem.height = pItem->FloatAttribute("height");
+
+		std::remove_if(preItem.desc.begin(), preItem.desc.end(), isspace);
+		_itemsPre.push_back(preItem);
+		pItem = pItem->NextSiblingElement("item");
+
+	}
 }
+
 TileMapLoader::~TileMapLoader()
 {
 	_currentMapSprites.clear();
 	_currentObjects.clear();
 	_currentTilesets.clear();
-	_mapItems.clear();
+	_levelItems.clear();
 }
 
 void TileMapLoader::load(std::string name)
@@ -23,7 +70,7 @@ void TileMapLoader::load(std::string name)
 	_currentMapSprites.clear();
 	_currentObjects.clear();
 	_currentTilesets.clear();
-	_mapItems.clear();
+	_levelItems.clear();
 	_containers.clear();
 
 	_isChanged = true;
@@ -223,21 +270,6 @@ void TileMapLoader::load(std::string name)
 	}
 
 	tinyxml2::XMLElement* pMapObject = objects.FirstChildElement("object");
-	tinyxml2::XMLElement* pItemTileset = objects.FirstChildElement("tileset");
-
-	std::vector<ItemTileset> tilesets;
-
-	while (pItemTileset != nullptr)
-	{
-		ItemTileset tempTilesetItem;
-		tempTilesetItem.name = pItemTileset->Attribute("name");
-		tempTilesetItem.width = pItemTileset->IntAttribute("width");
-		tempTilesetItem.height = pItemTileset->IntAttribute("height");
-
-		tilesets.push_back(tempTilesetItem);
-
-		pItemTileset = pItemTileset->NextSiblingElement("tileset");
-	}
 
 	while (pMapObject != nullptr)
 	{
@@ -246,13 +278,29 @@ void TileMapLoader::load(std::string name)
 			Container tempContainer;
 			std::vector<Item> tempContainerItems;
 
-			Item containerItem = makeItem(pMapObject, tilesets);
+			Item containerItem = makeItem(pMapObject, _itemTilesets);
 
 			tinyxml2::XMLElement* pItem = pMapObject->FirstChildElement("item");
 
 			while (pItem != nullptr)
 			{
-				Item tempContainerItem = makeItem(pItem, tilesets);
+				Item tempContainerItem;
+
+				for (unsigned int i = 0; i < _itemsPre.size(); i++)
+				{
+					if (pItem->Attribute("id") == _itemsPre[i].id)
+					{
+						pItem->SetAttribute("name", _itemsPre[i].name.c_str());
+						pItem->SetAttribute("tileset", _itemsPre[i].tileset);
+						pItem->SetAttribute("width", _itemsPre[i].width);
+						pItem->SetAttribute("height", _itemsPre[i].height);
+						pItem->SetAttribute("tileid", _itemsPre[i].tileId);
+						pItem->SetText(_itemsPre[i].desc.c_str());
+
+						tempContainerItem = makeItem(pItem, _itemTilesets);
+					}
+				}
+
 				tempContainerItems.push_back(tempContainerItem);
 
 				pItem = pItem->NextSiblingElement("item");
@@ -265,8 +313,24 @@ void TileMapLoader::load(std::string name)
 		}
 		else
 		{
-			Item mapItem = makeItem(pMapObject, tilesets);
-			_mapItems.push_back(mapItem);
+			Item mapItem;
+
+			for (unsigned int i = 0; i < _itemsPre.size(); i++)
+			{
+				if (pMapObject->Attribute("id") == _itemsPre[i].id)
+				{
+					pMapObject->SetAttribute("name", _itemsPre[i].name.c_str());
+					pMapObject->SetAttribute("tileset", _itemsPre[i].tileset);
+					pMapObject->SetAttribute("width", _itemsPre[i].width);
+					pMapObject->SetAttribute("height", _itemsPre[i].height);
+					pMapObject->SetAttribute("tileid", _itemsPre[i].tileId);
+					pMapObject->SetText(_itemsPre[i].desc.c_str());
+
+					mapItem = makeItem(pMapObject, _itemTilesets);
+				}
+			}
+
+			_levelItems.push_back(mapItem);
 		}
 
 		pMapObject = pMapObject->NextSiblingElement("object");
@@ -309,9 +373,9 @@ void TileMapLoader::draw(sf::RenderWindow& window, std::vector<Entity*>& entitie
 
 		if (_entitiesLayer == layer)
 		{
-			for (unsigned short i = 0; i < _mapItems.size(); i++)
+			for (unsigned short i = 0; i < _levelItems.size(); i++)
 			{
-				_mapItems[i].draw(window);
+				_levelItems[i].draw(window);
 			}
 
 			for (unsigned short i = 0; i < _containers.size(); i++)
@@ -344,7 +408,7 @@ std::vector<MapObject>* TileMapLoader::getObjects(std::string name)
 
 std::vector<Item>* TileMapLoader::getItems()
 {
-	return &_mapItems;
+	return &_levelItems;
 }
 
 std::vector<Container>* TileMapLoader::getContainers()

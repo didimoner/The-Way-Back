@@ -1,20 +1,4 @@
 <saves>
-    <inventory>
-        <item name="Super ball" id="01"/>
-        <item name="Great shield" id="02"/>
-        <item name="Lunar prism" id="00"/>
-        <item name="Pick" id="04"/>
-        <item name="Mushroom" id="06"/>
-        <item name="Lollipop" id="07"/>
-        <item name="Potion" id="08"/>
-    </inventory>
-    <mapItems>
-        <item name="Super ball" id="01" state="hidden"/>
-        <item name="Lunar prism" id="00" state="hidden"/>
-        <item name="Pick" id="04" state="hidden"/>
-        <item name="Great shield" id="02" state="hidden"/>
-        <item name="Mushroom" id="06" state="hidden"/>
-        <item name="Lollipop" id="07" state="hidden"/>
-        <item name="Potion" id="08" state="hidden"/>
-    </mapItems>
+    <inventory/>
+    <mapItems/>
 </saves>

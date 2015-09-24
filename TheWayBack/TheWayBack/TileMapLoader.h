@@ -46,6 +46,17 @@ struct Container
 	std::vector<Item> items;
 };
 
+struct PreItem
+{
+	std::string id;
+	std::string name;
+	std::string desc;
+	unsigned short tileset;
+	float width;
+	float height;
+	unsigned int tileId;
+};
+
 class TileMapLoader
 {
 public:
@@ -68,7 +79,11 @@ private:
 	std::vector<std::vector<std::vector<sf::Sprite>>> _currentMapSprites;
 	std::map< std::string, std::vector<MapObject> > _currentObjects;
 	std::vector<Tileset> _currentTilesets;
-	std::vector<Item> _mapItems;
+
+	std::vector<ItemTileset> _itemTilesets;
+	std::vector<PreItem> _itemsPre;
+	std::vector<Item> _levelItems;
+
 	std::vector<Container> _containers;
 	Map _currentMap;
 	short _entitiesLayer;
