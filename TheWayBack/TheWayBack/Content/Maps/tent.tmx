@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="5" height="8" tilewidth="32" tileheight="32" nextobjectid="18">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="5" height="8" tilewidth="32" tileheight="32" nextobjectid="19">
  <tileset firstgid="1" name="RPG_Maker_Tileset" tilewidth="32" tileheight="32">
   <image source="../Images/RPG_Maker_Tileset.png" width="1024" height="2016"/>
  </tileset>
@@ -188,8 +188,8 @@
   <object id="9" x="61" y="2" width="34" height="21"/>
   <object id="10" x="-2" y="-1" width="2" height="255"/>
   <object id="12" x="2" y="-5" width="158" height="4"/>
-  <object id="13" x="158" y="0" height="254"/>
   <object id="17" x="3" y="15" width="14" height="40"/>
+  <object id="18" x="159.5" y="0" width="1.5" height="256"/>
  </objectgroup>
  <objectgroup name="teleport">
   <object id="15" name="world_1" x="5" y="236" width="148" height="16">
