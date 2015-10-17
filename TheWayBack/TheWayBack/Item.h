@@ -6,7 +6,7 @@ class Item :
 {
 public:
 	Item();
-	Item(sf::Sprite sprite, std::string name, std::string id, std::string desc);
+	Item(sf::Sprite sprite, std::string name, std::string id, std::string desc, std::string dependence);
 	~Item();
 
 	virtual void update(float gameTime);
@@ -18,14 +18,19 @@ public:
 	std::string getId();
 	std::string getDescription();
 	sf::Sprite* getSprite();
-	void setState(bool flag);
+	std::vector<std::string>* getDependence();
 	bool getState();
+	
+	void setState(bool flag);
 
 private:
+	void Item::parseDependence(std::string dependence);
+
 	sf::Sprite _sprite;
 	std::string _name;
 	std::string _id;
 	std::string _description;
+	std::vector<std::string> _dependence;
 	bool _state;
 };
 

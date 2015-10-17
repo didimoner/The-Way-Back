@@ -1,10 +1,11 @@
 #include "Item.h"
+#include <iostream>
 
 Item::Item()
 {
 }
 
-Item::Item(sf::Sprite sprite, std::string name, std::string id, std::string desc)
+Item::Item(sf::Sprite sprite, std::string name, std::string id, std::string desc, std::string dependence)
 {
 	_sprite = sprite;
 	_name = name;
@@ -13,6 +14,7 @@ Item::Item(sf::Sprite sprite, std::string name, std::string id, std::string desc
 	_bounds = sf::FloatRect(sprite.getPosition().x, sprite.getPosition().y, 
 		(float)sprite.getTextureRect().width, (float)sprite.getTextureRect().height);
 	_state = true;
+	parseDependence(dependence);
 }
 
 Item::~Item()
@@ -61,4 +63,25 @@ void Item::setState(bool flag)
 bool Item::getState()
 {
 	return _state;
+}
+
+std::vector<std::string>* Item::getDependence()
+{
+	return &_dependence;
+}
+
+void Item::parseDependence(std::string dependence)
+{
+	std::string sep(",");
+
+	while (true)
+	{
+		if (dependence.length() <= 0) break;
+
+		std::string::size_type pos = dependence.find(sep);
+		_dependence.push_back(dependence.substr(0, pos));
+
+		if (pos > dependence.length()) break;
+		dependence = dependence.substr(pos + sep.length());
+	}
 }

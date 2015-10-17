@@ -12,7 +12,7 @@ public:
 
 	void load();
 	void add(Item* item);
-	bool contains(std::string name);
+	bool contains(std::string name, int mode);
 
 	int getSize();
 

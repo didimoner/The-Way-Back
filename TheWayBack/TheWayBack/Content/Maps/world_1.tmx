@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="58" height="36" tilewidth="32" tileheight="32" nextobjectid="171">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="58" height="36" tilewidth="32" tileheight="32" nextobjectid="173">
  <tileset firstgid="1" name="RPGmakerXPMegaTilesetByLmnopguy7" tilewidth="32" tileheight="32">
   <image source="../Images/RPGmakerXPMegaTilesetByLmnopguy7.png" width="256" height="15300"/>
  </tileset>
@@ -10482,7 +10482,7 @@
   <object id="15" x="491" y="65" width="38" height="24"/>
   <object id="16" x="416" y="34" width="29" height="27"/>
   <object id="17" x="302" y="65" width="28" height="27"/>
-  <object id="18" x="225" y="36" width="37" height="28"/>
+  <object id="18" x="225" y="36" width="31.5" height="28"/>
   <object id="20" x="159" y="34" width="28" height="28"/>
   <object id="21" x="135" y="72" width="16" height="23"/>
   <object id="22" x="33" y="95" width="61" height="33"/>
@@ -10549,7 +10549,7 @@
   <object id="97" x="579" y="540" width="58" height="35"/>
   <object id="98" x="933" y="446" width="51" height="31"/>
   <object id="99" x="834" y="672" width="56" height="26"/>
-  <object id="100" x="151" y="110" width="164" height="114"/>
+  <object id="100" x="151" y="115" width="164" height="109"/>
   <object id="101" x="355" y="115" width="314" height="107"/>
   <object id="102" x="672" y="113" width="29" height="95"/>
   <object id="103" x="318" y="114" width="36" height="12"/>
@@ -10601,13 +10601,14 @@
   <object id="155" x="1501" y="928" width="3" height="34"/>
   <object id="156" x="1471" y="962" width="2" height="29"/>
   <object id="157" x="1439" y="994" width="1" height="31"/>
-  <object id="158" x="1374" y="1026" height="27"/>
   <object id="159" x="1312" y="1059" width="2" height="33"/>
   <object id="163" x="1187" y="609" width="27" height="96"/>
   <object id="165" x="1536" y="95" width="31" height="25"/>
   <object id="168" x="1535" y="896" width="3" height="32"/>
   <object id="169" x="1536" y="892" width="63" height="3"/>
   <object id="170" x="1600" y="863" width="4" height="33"/>
+  <object id="171" x="1375.45" y="1024" width="2.18182" height="32.9091"/>
+  <object id="172" x="227" y="885.5" width="91.5" height="11"/>
  </objectgroup>
  <objectgroup name="teleport" visible="0">
   <properties>

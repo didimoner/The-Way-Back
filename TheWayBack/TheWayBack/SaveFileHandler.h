@@ -17,7 +17,7 @@ public:
 	bool load();
 	bool del(char* element, std::string  id);
 	void inventoryItemChange(Item* item);
-	void maplItemChange(Item* item, char* state);
+	void mapItemChange(Item* item, char* state);
 	std::string getElement(char* element, std::string id, char* attr);
 
 private:
