@@ -3,6 +3,7 @@
 #include "BaseScreen.h"
 #include "Player.h"
 #include "TileMapLoader.h"
+#include "Window.h"
 
 class MainScreen :
 	public BaseScreen
@@ -32,4 +33,6 @@ private:
 	std::vector<Entity*> _entities;
 	sf::View _camera;
 	sf::Vector2f _cameraSpeed;
+	ui::Window* _myWindow;
+
 };

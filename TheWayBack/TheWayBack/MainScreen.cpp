@@ -42,6 +42,11 @@ void MainScreen::update(float gameTime)
 void MainScreen::draw(sf::RenderWindow& window)
 {
 	_tileMapLoader->draw(window, _entities, _camera);
+	//_myWindow->setPosition(_camera.getCenter().x - _myWindow->getSize().x / 2, _camera.getCenter().y - _myWindow->getSize().y / 2);
+	//_myWindow->draw(window);
+
+	//std::cout << _camera.getCenter().x << "  " << _camera.getCenter().y << std::endl;
+
 	window.setView(_camera);
 }
 
@@ -102,10 +107,12 @@ void MainScreen::activate()
 
 	_camera.setCenter(cameraCenter);
 
-
-
 	std::cout << "MainScreen activated" << std::endl;
 	_isActivated = true;
+	
+	// ----------------------------------------------------
+
+	_myWindow = new ui::Window(480, 360);
 }
 
 void MainScreen::deactivate()
