@@ -38,6 +38,7 @@ TileMapLoader::TileMapLoader(std::string mapsDir, short entitiesLayer, std::map<
 		pItemTileset = pItemTileset->NextSiblingElement("tileset");
 	}
 
+	// формирую массив предметов
 	while (pItem != nullptr)
 	{
 		PreItem preItem;
@@ -50,7 +51,7 @@ TileMapLoader::TileMapLoader(std::string mapsDir, short entitiesLayer, std::map<
 		preItem.width = pItem->FloatAttribute("width");
 		preItem.height = pItem->FloatAttribute("height");
 
-		std::remove_if(preItem.desc.begin(), preItem.desc.end(), isspace);
+		std::remove_if(preItem.desc.begin(), preItem.desc.end(), isspace); // удаляет пробелы в описании
 		_itemsPre.push_back(preItem);
 		pItem = pItem->NextSiblingElement("item");
 
@@ -256,7 +257,6 @@ void TileMapLoader::load(std::string name)
 	}
 
 	//objects on the map
-
 	path = _mapsDir + name + ".two";
 	charPath = path.c_str();
 
@@ -450,8 +450,9 @@ Item TileMapLoader::makeItem(tinyxml2::XMLElement* pMapObject, std::vector<ItemT
 	sprite.setTextureRect(sf::IntRect(spritePositionX, spritePositionY, objectWidth, objectHeight));
 	sprite.setPosition(sf::Vector2f((float)left * _currentMap.tileWidth, (float)top * _currentMap.tileHeight));
 	sprite.move(sf::Vector2f((float)offset_x, (float)offset_y));
-
+	
 	std::string description = pMapObject->GetText() ? pMapObject->GetText() : "";
+	std::string dependence = pMapObject->Attribute("need") ? pMapObject->Attribute("need") : "";
 	char* id = pMapObject->Attribute("id") ? pMapObject->Attribute("id") : "";
 	bool itemState = pMapObject->BoolAttribute("state") ? pMapObject->BoolAttribute("state") : false;
 
@@ -466,7 +467,7 @@ Item TileMapLoader::makeItem(tinyxml2::XMLElement* pMapObject, std::vector<ItemT
 			itemState = false;
 	}
 
-	Item item(sprite, pMapObject->Attribute("name"), id, description);
+	Item item(sprite, pMapObject->Attribute("name"), id, description, dependence);
 	item.setState(itemState);
 
 	return item;

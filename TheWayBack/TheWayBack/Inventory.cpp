@@ -29,13 +29,18 @@ int Inventory::getSize()
 	return _size;
 }
 
-bool Inventory::contains(std::string name)
+bool Inventory::contains(std::string seed, int mode)
 {
 	for (unsigned int i = 0; i < _cells.size(); i++)
 	{
-		if (_cells[i].getName() == name)
+		switch (mode)
 		{
-			return true;
+		case 0:
+			if (_cells[i].getName() == seed) return true;
+		case 1: 
+			if (_cells[i].getId() == seed) return true;
+		default:
+			break;
 		}
 	}
 

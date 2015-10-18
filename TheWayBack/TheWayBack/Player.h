@@ -11,15 +11,15 @@ class Player :
 {
 public:
 	Player(AnimationManager animationManager, SoundManager soundManager,
-		float speed, sf::Vector2f position, sf::Vector2i size, short tileSize);
+		float speed, sf::Vector2f position, sf::Vector2i size, short tileSize, TileMapLoader* pTileMapLoader);
 	~Player(void);
 
-	virtual void update(float gameTime, sf::View& camera, TileMapLoader* tileMapLoader);
+	virtual void update(float gameTime, sf::View& camera);
 	virtual void draw(sf::RenderWindow& window);
 
 	void handleKeyboard(sf::Keyboard::Key key, bool pressed);
 
-	void move(float x, float y, float gameTime, TileMapLoader* tileMapLoader);
+	void move(float x, float y, float gameTimer);
 
 	bool intersects(sf::FloatRect bounds);
 
@@ -34,7 +34,8 @@ public:
 
 private:
 	void handleLiveInput();
-	void intersects(TileMapLoader* pTileMapLoader);
+	void processMapCollisions();
+	void processItemCollision();
 
 	AnimationManager _character;
 	SoundManager _sounds;
@@ -48,4 +49,5 @@ private:
 	bool _isIntersecting;
 	Inventory* _inventory;
 	SaveFileHandler* _saveFile;
+	TileMapLoader* _pTileMapLoader;
 };

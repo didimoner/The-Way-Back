@@ -2,7 +2,7 @@
 #include <iostream>
 
 Player::Player(AnimationManager animationManager, SoundManager soundManager, float speed,
-	sf::Vector2f position, sf::Vector2i size, short tileSize)
+	sf::Vector2f position, sf::Vector2i size, short tileSize, TileMapLoader* pTileMapLoader)
 {
 	_saveFile = new SaveFileHandler("Content/Saves/save.tws");
 	_saveFile->load();
@@ -19,6 +19,7 @@ Player::Player(AnimationManager animationManager, SoundManager soundManager, flo
 	_bounds = sf::FloatRect(_position.x * _tileSize, _position.y * _tileSize, (float)_size.x, (float)_size.y);
 	_isIntersecting = false;
 	_inventory = new Inventory(16);
+	_pTileMapLoader = pTileMapLoader;
 	
 }
 
@@ -30,7 +31,7 @@ Player::~Player(void)
 // UPDATE FUNCTION--------------------------------------
 // -----------------------------------------------------
 
-void Player::update(float gameTime, sf::View& camera, TileMapLoader* pTileMapLoader)
+void Player::update(float gameTime, sf::View& camera)
 {
 	handleLiveInput();
 	
@@ -44,25 +45,25 @@ void Player::update(float gameTime, sf::View& camera, TileMapLoader* pTileMapLoa
 	case WALK_UP:
 		_character.setCurrentAnimation("walk_up");
 		_character.playAnimation(_currentAnimation);
-		move(0, -1, gameTime, pTileMapLoader);
+		move(0, -1, gameTime);
 		break;
 
 	case WALK_DOWN:
 		_character.setCurrentAnimation("walk_down");
 		_character.playAnimation(_currentAnimation);
-		move(0, 1, gameTime, pTileMapLoader);
+		move(0, 1, gameTime);
 		break;
 
 	case WALK_LEFT:
 		_character.setCurrentAnimation("walk_left");
 		_character.playAnimation(_currentAnimation);
-		move(-1, 0, gameTime, pTileMapLoader);
+		move(-1, 0, gameTime);
 		break;
 
 	case WALK_RIGHT:
 		_character.setCurrentAnimation("walk_right");
 		_character.playAnimation(_currentAnimation);
-		move(1, 0, gameTime, pTileMapLoader);
+		move(1, 0, gameTime);
 		break;
 
 	default:
@@ -76,9 +77,9 @@ void Player::update(float gameTime, sf::View& camera, TileMapLoader* pTileMapLoa
 	// устанавливаем вьюху и не пускаем ее за границы карты (иначе рисовальщик выйдет за границы массива)
 	sf::Vector2f cameraCenter = sf::Vector2f(_character.getPosition().x + _size.x / 2, _character.getPosition().y + _size.y / 2);
 
-	if (pTileMapLoader->getSize().x < camera.getSize().x)
+	if (_pTileMapLoader->getSize().x < camera.getSize().x)
 	{
-		cameraCenter.x = camera.getSize().x / 2 - (camera.getSize().x - pTileMapLoader->getSize().x) / 2;
+		cameraCenter.x = camera.getSize().x / 2 - (camera.getSize().x - _pTileMapLoader->getSize().x) / 2;
 	}
 	else
 	{
@@ -87,16 +88,16 @@ void Player::update(float gameTime, sf::View& camera, TileMapLoader* pTileMapLoa
 			cameraCenter.x = camera.getSize().x / 2;
 		}
 
-		if ((cameraCenter.x + camera.getSize().x / 2) >= pTileMapLoader->getSize().x)
+		if ((cameraCenter.x + camera.getSize().x / 2) >= _pTileMapLoader->getSize().x)
 		{
-			cameraCenter.x = pTileMapLoader->getSize().x - camera.getSize().x / 2;
+			cameraCenter.x = _pTileMapLoader->getSize().x - camera.getSize().x / 2;
 		}
 		
 	}
 
-	if (pTileMapLoader->getSize().y < camera.getSize().y)
+	if (_pTileMapLoader->getSize().y < camera.getSize().y)
 	{
-		cameraCenter.y = camera.getSize().y / 2 - (camera.getSize().y - pTileMapLoader->getSize().y) / 2;
+		cameraCenter.y = camera.getSize().y / 2 - (camera.getSize().y - _pTileMapLoader->getSize().y) / 2;
 	}
 	else
 	{
@@ -106,9 +107,9 @@ void Player::update(float gameTime, sf::View& camera, TileMapLoader* pTileMapLoa
 			cameraCenter.y = camera.getSize().y / 2;
 		}
 
-		if ((cameraCenter.y + camera.getSize().y / 2) >= pTileMapLoader->getSize().y)
+		if ((cameraCenter.y + camera.getSize().y / 2) >= _pTileMapLoader->getSize().y)
 		{
-			cameraCenter.y = pTileMapLoader->getSize().y - camera.getSize().y / 2;
+			cameraCenter.y = _pTileMapLoader->getSize().y - camera.getSize().y / 2;
 		}
 	}
 
@@ -135,6 +136,9 @@ void Player::handleKeyboard(sf::Keyboard::Key key, bool pressed)
 		case sf::Keyboard::B:
 			_sounds.play("jump");
 			break;
+		case sf::Keyboard::Space:
+			processItemCollision();
+			break;
 
 		default:
 			break;
@@ -147,7 +151,7 @@ void Player::handleKeyboard(sf::Keyboard::Key key, bool pressed)
 	
 }
 
-void Player::move(float x, float y, float gameTime, TileMapLoader* pTileMapLoader)
+void Player::move(float x, float y, float gameTime)
 {
 	if (!_isIntersecting)
 	{
@@ -159,7 +163,7 @@ void Player::move(float x, float y, float gameTime, TileMapLoader* pTileMapLoade
 
 	_bounds = sf::FloatRect(_position.x * _tileSize, _position.y * _tileSize + _tileSize / 2, (float)_size.x, (float)_size.y / 2);
 
-	intersects(pTileMapLoader);
+	processMapCollisions();
 
 	_character.setPosition(_position.x, _position.y);
 }
@@ -230,11 +234,12 @@ void Player::setPosition(sf::Vector2f position)
 	_position = position;
 }
 
-void Player::intersects(TileMapLoader* pTileMapLoader)
+void Player::processMapCollisions()
 {
-	for (unsigned int i = 0; i < pTileMapLoader->getObjects("collision")->size(); i++)
+	// collision
+	for (unsigned int i = 0; i < _pTileMapLoader->getObjects("collision")->size(); i++)
 	{
-		MapObject currentMapObject = (*pTileMapLoader->getObjects("collision"))[i];
+		MapObject currentMapObject = (*_pTileMapLoader->getObjects("collision"))[i];
 
 		if (_bounds.intersects(currentMapObject.rect))
 		{
@@ -248,37 +253,66 @@ void Player::intersects(TileMapLoader* pTileMapLoader)
 		}
 	}
 
-	for (unsigned int i = 0; i < pTileMapLoader->getObjects("teleport")->size(); i++)
+	for (unsigned int i = 0; i < _pTileMapLoader->getObjects("teleport")->size(); i++)
 	{
-		MapObject currentMapObject = (*pTileMapLoader->getObjects("teleport"))[i];
+		MapObject currentMapObject = (*_pTileMapLoader->getObjects("teleport"))[i];
 
 		if (_bounds.intersects(currentMapObject.rect))
 		{
-			pTileMapLoader->load(currentMapObject.name);
+			_pTileMapLoader->load(currentMapObject.name);
 			_position = currentMapObject.initPosition;
 			break;
 		}
 	}
+}
 
-	for (unsigned int i = 0; i < pTileMapLoader->getItems()->size(); i++)
+void Player::processItemCollision()
+{
+	// items and containers
+	for (unsigned int i = 0; i < _pTileMapLoader->getItems()->size(); i++)
 	{
-		Item* currItem = &(*pTileMapLoader->getItems())[i];
+		Item* currItem = &(*_pTileMapLoader->getItems())[i];
 
 		if (!currItem->getState())
 			continue;
 
 		if (_bounds.intersects(currItem->getBounds()))
 		{
-			_inventory->add(currItem);
-			currItem->setState(false);
-			_saveFile->maplItemChange(currItem, "hidden");
-			_saveFile->inventoryItemChange(currItem);
+			if (currItem->getDependence()->size() != 0)
+			{
+				bool flag = true;
+
+				for (unsigned int i = 0; i < currItem->getDependence()->size(); i++)
+				{
+					if (!_inventory->contains((*currItem->getDependence())[i], 1))
+						flag = false;
+				}
+
+				if (flag)
+				{
+					_inventory->add(currItem);
+					currItem->setState(false);
+					_saveFile->mapItemChange(currItem, "hidden");
+					_saveFile->inventoryItemChange(currItem);
+				}
+				else
+				{
+					std::cout << "You don't have required item!" << std::endl;
+				}
+			}
+			else
+			{
+				_inventory->add(currItem);
+				currItem->setState(false);
+				_saveFile->mapItemChange(currItem, "hidden");
+				_saveFile->inventoryItemChange(currItem);
+			}
 		}
 	}
 
-	for (unsigned int i = 0; i < pTileMapLoader->getContainers()->size(); i++)
+	for (unsigned int i = 0; i < _pTileMapLoader->getContainers()->size(); i++)
 	{
-		Container* currConteiner = &(*pTileMapLoader->getContainers())[i];
+		Container* currConteiner = &(*_pTileMapLoader->getContainers())[i];
 
 		if (!currConteiner->container.getState())
 			continue;
@@ -294,7 +328,7 @@ void Player::intersects(TileMapLoader* pTileMapLoader)
 
 				_inventory->add(currContainerItem);
 				currContainerItem->setState(false);
-				_saveFile->maplItemChange(currContainerItem, "hidden");
+				_saveFile->mapItemChange(currContainerItem, "hidden");
 				_saveFile->inventoryItemChange(currContainerItem);
 			}
 		}

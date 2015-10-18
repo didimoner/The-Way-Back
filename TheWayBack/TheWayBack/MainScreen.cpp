@@ -32,7 +32,7 @@ void MainScreen::handleMouse(sf::Keyboard::Key key, bool pressed)
 
 void MainScreen::update(float gameTime)
 {
-	_player->update(gameTime, _camera, _tileMapLoader);
+	_player->update(gameTime, _camera);
 }
 
 // -----------------------------------------------------
@@ -70,7 +70,7 @@ void MainScreen::activate()
 	sf::Vector2f cameraCenter = sf::Vector2f(playerPosition.x * 32 + 16, playerPosition.y * 32 + 16);
 
 	_player = new Player(playerOne, *(pPlayerSounds), 0.24f, playerPosition,
-		sf::Vector2i(32, 32), _tileSize);
+		sf::Vector2i(32, 32), _tileSize, _tileMapLoader);
 	_entities.push_back(_player);
 
 	delete pPlayerSounds;

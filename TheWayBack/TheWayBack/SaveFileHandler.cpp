@@ -55,7 +55,7 @@ void SaveFileHandler::inventoryItemChange(Item* item)
 	save();
 }
 
-void SaveFileHandler::maplItemChange(Item* item, char* state)
+void SaveFileHandler::mapItemChange(Item* item, char* state)
 {
 	tinyxml2::XMLElement* pRootElement = _document.FirstChildElement("saves");
 	tinyxml2::XMLElement* pMapItems = pRootElement->FirstChildElement("mapItems");
