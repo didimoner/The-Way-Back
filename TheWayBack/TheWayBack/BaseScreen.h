@@ -10,7 +10,7 @@
 class BaseScreen
 {
 public:
-	BaseScreen(ContentManager* pContentManager, sf::Vector2u screenSize);
+	BaseScreen(sf::Vector2u screenSize);
 	~BaseScreen();
 
 	virtual void handleKeyboard(sf::Keyboard::Key key, bool pressed);
@@ -27,7 +27,7 @@ public:
 	virtual short getState();
 
 protected:
-	ContentManager* _pContentManager;
+	ContentManager _contentManager;
 
 	std::map <std::string, sf::Texture>* _pTextures;
 	std::map <std::string, sf::SoundBuffer>* _pSounds;

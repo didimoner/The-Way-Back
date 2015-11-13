@@ -1,4 +1,12 @@
 <saves>
-    <inventory/>
-    <mapItems/>
+    <inventory>
+        <item id="01"/>
+        <item id="02"/>
+        <item id="00"/>
+    </inventory>
+    <mapItems>
+        <item id="01" state="hidden"/>
+        <item id="02" state="hidden"/>
+        <item id="00" state="hidden"/>
+    </mapItems>
 </saves>

@@ -2,18 +2,15 @@
 
 ScreenManager::ScreenManager(sf::Vector2u screenSize)
 {
-	_contentManager.setRootFolder("Content");
-	_contentManager.setTileSize(32);
-
 	_screenSize = screenSize;
 
-	_pSplashScreen = new SplashScreen(&_contentManager, _screenSize);
+	_pSplashScreen = new SplashScreen(_screenSize);
 	_screens.push_back(_pSplashScreen);
 
-	_pMenuScreen = new MenuScreen(&_contentManager, _screenSize);
+	_pMenuScreen = new MenuScreen(_screenSize);
 	_screens.push_back(_pMenuScreen);
 
-	_pMainScreen = new MainScreen(&_contentManager, _screenSize);
+	_pMainScreen = new MainScreen(_screenSize);
 	_screens.push_back(_pMainScreen);
 
 	_gameState = GameState::G_SPLASHSCREEN;

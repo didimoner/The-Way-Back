@@ -1,8 +1,8 @@
 #include "MainScreen.h"
 #include <iostream>
 
-MainScreen::MainScreen(ContentManager* contentManager, sf::Vector2u screenSize)
-	: BaseScreen(contentManager, screenSize)
+MainScreen::MainScreen(sf::Vector2u screenSize)
+	: BaseScreen(screenSize)
 {
 	std::cout << "MainScreen" << std::endl;
 }
@@ -11,15 +11,22 @@ MainScreen::~MainScreen()
 {
 	if (_isActivated) delete _player;
 	if (_isActivated) delete _tileMapLoader;
+	if (_isActivated) delete _inventoryWindow;
 
 	_animationManagers.clear();
 	_spriteManagers.clear();
 	_soundManagers.clear();
+	_uiObjects.clear();
 }
 
 void MainScreen::handleKeyboard(sf::Keyboard::Key key, bool pressed)
 {
 	_player->handleKeyboard(key, pressed);
+
+	for (unsigned int i = 0; i < _uiObjects.size(); i++)
+	{
+		_uiObjects[i]->handleKeyboard(key, pressed);
+	}
 }
 
 void MainScreen::handleMouse(sf::Keyboard::Key key, bool pressed)
@@ -33,6 +40,11 @@ void MainScreen::handleMouse(sf::Keyboard::Key key, bool pressed)
 void MainScreen::update(float gameTime)
 {
 	_player->update(gameTime, _camera);
+
+	for (unsigned int i = 0; i < _uiObjects.size(); i++)
+	{
+		_uiObjects[i]->update(gameTime);
+	}
 }
 
 // -----------------------------------------------------
@@ -41,21 +53,23 @@ void MainScreen::update(float gameTime)
 
 void MainScreen::draw(sf::RenderWindow& window)
 {
-	_tileMapLoader->draw(window, _entities, _camera);
-	//_myWindow->setPosition(_camera.getCenter().x - _myWindow->getSize().x / 2, _camera.getCenter().y - _myWindow->getSize().y / 2);
-	//_myWindow->draw(window);
-
-	//std::cout << _camera.getCenter().x << "  " << _camera.getCenter().y << std::endl;
-
 	window.setView(_camera);
+
+	_tileMapLoader->draw(window, _entities, _camera);
+
+	for (unsigned int i = 0; i < _uiObjects.size(); i++)
+	{
+		_uiObjects[i]->setPosition(_camera.getCenter().x, _camera.getCenter().y);
+		_uiObjects[i]->draw(window);
+	}
 }
 
 void MainScreen::activate()
 {
-	_pContentManager->loadContent("mainscreen");
-	_pTextures = _pContentManager->getTextures();
-	_pSounds = _pContentManager->getSounds();
-	_pFonts = _pContentManager->getFonts();
+	_contentManager.loadContent("mainscreen");
+	_pTextures = _contentManager.getTextures();
+	_pSounds = _contentManager.getSounds();
+	_pFonts = _contentManager.getFonts();
 	_screenState = 2;
 
 	AnimationManager playerOne((*_pTextures)["char1"], _tileSize);
@@ -106,21 +120,23 @@ void MainScreen::activate()
 	}
 
 	_camera.setCenter(cameraCenter);
-
 	std::cout << "MainScreen activated" << std::endl;
 	_isActivated = true;
 	
 	// ----------------------------------------------------
 
-	_myWindow = new ui::Window(480, 360);
+	_inventoryWindow = new ui::Window(480, 360, "Invertory");
+	_uiObjects.push_back(_inventoryWindow);
 }
 
 void MainScreen::deactivate()
 {
 	delete _tileMapLoader;
 	delete _player;
+	delete _inventoryWindow;
 	_entities.clear();
-	_pContentManager->clear();
+	_contentManager.clear();
+	_uiObjects.clear();
 
 	std::cout << "MainScreen deactivated" << std::endl;
 	_isActivated = false;

@@ -5,12 +5,18 @@ Button::Button()
 {
 }
 
-Button::Button(float x, float y, float width, float height, sf::Text text)
+Button::Button(float x, float y, float width, float height, std::wstring text)
 {
-	_text = text;
+	_text.setFont((*_pFonts)["Visitor"]);
+	_text.setScale(0.5f, 0.5f);
+	_text.setCharacterSize(28 * 2);
+	_text.setString(text);
+	_text.setColor(sf::Color::Color(50, 50, 50));
+	_offset = sf::Vector2f(_text.getGlobalBounds().width / 2.f, (_text.getCharacterSize() / 2) / 1.35f);
+	_text.setPosition(sf::Vector2f(x + (width / 2 - _offset.x), y + (height / 2 - _offset.y)));
+
 	_position = sf::Vector2f(x, y);
 	_size = sf::Vector2f(width, height);
-	_offset = sf::Vector2f(_text.getGlobalBounds().width / 2.f, (_text.getCharacterSize() / 2) / 1.35f);
 	_hover = false;
 	_isClicked = false;
 
@@ -20,8 +26,10 @@ Button::Button(float x, float y, float width, float height, sf::Text text)
 	_button.setOutlineThickness(2);
 	_button.setOutlineColor(sf::Color::Color(180, 180, 180));
 
-	_text.setPosition(sf::Vector2f(x + (width / 2 - _offset.x), y + (height / 2 - _offset.y)));
-	_text.setColor(sf::Color::Color(50, 50, 50));
+	
+	
+
+	
 }
 
 Button::~Button()

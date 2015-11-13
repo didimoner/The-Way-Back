@@ -1,8 +1,8 @@
 #include "MenuScreen.h"
 
 
-MenuScreen::MenuScreen(ContentManager* pContentManager, sf::Vector2u screenSize)
-	: BaseScreen(pContentManager, screenSize)
+MenuScreen::MenuScreen(sf::Vector2u screenSize)
+	: BaseScreen(screenSize)
 {
 	std::cout << "MenuScreen" << std::endl;
 
@@ -64,17 +64,11 @@ void MenuScreen::draw(sf::RenderWindow& window)
 
 void MenuScreen::activate()
 {
-	_pContentManager->loadContent("menuscreen");
-	_pTextures = _pContentManager->getTextures();
-	_pSounds = _pContentManager->getSounds();
-	_pFonts = _pContentManager->getFonts();
+	_contentManager.loadContent("menuscreen");
+	_pTextures = _contentManager.getTextures();
+	_pSounds = _contentManager.getSounds();
+	_pFonts = _contentManager.getFonts();
 	_screenState = 1;
-
-	sf::Text* text = new sf::Text();
-	text->setFont((*_pFonts)["Visitor"]);
-	text->setScale(0.5f, 0.5f);
-	text->setCharacterSize(28 * 2);
-	text->setColor(sf::Color::Black);
 
 	_loadingSprite = new sf::Sprite();
 	_loadingSprite->setTexture((*_pTextures)["loading"]);
@@ -91,14 +85,9 @@ void MenuScreen::activate()
 	_menuMusic->play();
 
 	// --------------------------------------------------
-
-	text->setString(L"Новая игра");
-	_btnNewGame = new ui::Button(337, 190+60, 180, 40, *text);
-
-	text->setString(L"Выход");
-	_btnExit = new ui::Button(337, 250+60, 180, 40, *text);
-
-	delete text;
+	
+	_btnNewGame = new ui::Button(337, 190 + 60, 180, 40, L"Новая игра");
+	_btnExit = new ui::Button(337, 250 + 60, 180, 40, L"Выход");
 
 	std::cout << "MenuScreen activated" << std::endl;
 	_isActivated = true;
@@ -111,7 +100,7 @@ void MenuScreen::deactivate()
 	delete _loadingSprite;
 	delete _logoSprite;
 	delete _menuMusic;
-	_pContentManager->clear();
+	_contentManager.clear();
 
 	std::cout << "MenuScreen deactivated" << std::endl;
 	_isActivated = false;
