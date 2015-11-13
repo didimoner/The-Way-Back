@@ -26,5 +26,6 @@ private:
 	sf::RectangleShape _window;
 	bool _visible;
 	sf::Text* _headerText;
+	sf::Vector2f _textOffset;
 };
 
