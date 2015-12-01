@@ -11,7 +11,7 @@ MainScreen::~MainScreen()
 {
 	if (_isActivated) delete _player;
 	if (_isActivated) delete _tileMapLoader;
-	if (_isActivated) delete _inventoryWindow;
+	if (_isActivated) delete _pInventory;
 
 	_animationManagers.clear();
 	_spriteManagers.clear();
@@ -122,18 +122,18 @@ void MainScreen::activate()
 	_camera.setCenter(cameraCenter);
 	std::cout << "MainScreen activated" << std::endl;
 	_isActivated = true;
-	
-	// ----------------------------------------------------
 
-	_inventoryWindow = new ui::Window(480, 360, "Invertory");
-	_uiObjects.push_back(_inventoryWindow);
+	// ----------------------------------------------------
+	_player->initInventory(16, 480, 360, "Invertory");
+	_pInventory = _player->getInventoryPointer();
+	_uiObjects.push_back(_pInventory);
 }
 
 void MainScreen::deactivate()
 {
 	delete _tileMapLoader;
 	delete _player;
-	delete _inventoryWindow;
+	delete _pInventory;
 	_entities.clear();
 	_contentManager.clear();
 	_uiObjects.clear();

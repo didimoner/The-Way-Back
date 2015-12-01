@@ -1,7 +1,8 @@
 #include "Inventory.h"
 #include <iostream>
 
-Inventory::Inventory(unsigned short size)
+Inventory::Inventory(unsigned short size, float width, float height, std::string header) :
+	ui::Window(width, height, header)
 {
 	_size = size;
 }
@@ -9,7 +10,9 @@ Inventory::Inventory(unsigned short size)
 
 Inventory::~Inventory()
 {
+	delete _window;
 }
+
 
 void Inventory::add(Item* item)
 {

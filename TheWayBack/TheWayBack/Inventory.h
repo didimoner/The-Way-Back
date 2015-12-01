@@ -1,14 +1,13 @@
 #pragma once
 #include "Item.h"
+#include "Window.h"
 
-class Inventory
+class Inventory	:
+	public ui::Window
 {
 public:
-	Inventory(unsigned short size);
+	Inventory(unsigned short size, float width, float height, std::string header);
 	~Inventory();
-
-	void update(float gameTime);
-	void draw(sf::RenderWindow& window);
 
 	void load();
 	void add(Item* item);
@@ -19,5 +18,6 @@ public:
 private:
 	std::vector<Item> _cells;
 	unsigned short _size;
+	ui::Window* _window;
 };
 

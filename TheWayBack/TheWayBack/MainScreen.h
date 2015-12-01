@@ -34,5 +34,5 @@ private:
 	std::vector<Entity*> _entities;
 	sf::View _camera;
 	sf::Vector2f _cameraSpeed;
-	ui::Window* _inventoryWindow;
+	Inventory* _pInventory;
 };

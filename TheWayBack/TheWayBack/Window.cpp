@@ -28,6 +28,7 @@ Window::Window(float width, float height, std::string header)
 
 Window::~Window()
 {
+	delete _headerText;
 }
 
 void Window::update(float gameTime)

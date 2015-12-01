@@ -18,9 +18,7 @@ Player::Player(AnimationManager animationManager, SoundManager soundManager, flo
 	_character.setPosition(_position.x, _position.y);
 	_bounds = sf::FloatRect(_position.x * _tileSize, _position.y * _tileSize, (float)_size.x, (float)_size.y);
 	_isIntersecting = false;
-	_inventory = new Inventory(16);
 	_pTileMapLoader = pTileMapLoader;
-	
 }
 
 Player::~Player(void)
@@ -333,4 +331,14 @@ void Player::processItemCollision()
 			}
 		}
 	}
+}
+
+Inventory* Player::getInventoryPointer()
+{
+	return _inventory;
+}
+
+void Player::initInventory(unsigned short size, float width, float height, std::string header)
+{
+	_inventory = new Inventory(size, width, height, header);
 }

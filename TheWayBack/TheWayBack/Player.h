@@ -24,11 +24,13 @@ public:
 	bool intersects(sf::FloatRect bounds);
 
 	short getState();
+	Inventory* getInventoryPointer();
 
 	sf::Vector2f getCurrentPosition();
 	sf::Vector2f getLastPosition();
 
 	void setPosition(sf::Vector2f position);
+	void initInventory(unsigned short size, float width, float height, std::string header);
 
 	bool isMoving();
 
