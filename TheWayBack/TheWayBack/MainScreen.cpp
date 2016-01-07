@@ -85,7 +85,24 @@ void MainScreen::activate()
 	_tileMapLoader = new TileMapLoader("Content/Maps", 2, _pTextures);
 	_tileMapLoader->load("world_1");
 
-	sf::Vector2f playerPosition = sf::Vector2f(47, 26);
+	sf::Vector2f playerPosition;
+
+	SaveFileHandler saveFile("Content/Saves/save.tws");
+	std::string::size_type sz;
+
+	std::pair<std::string, std::string> search;
+	std::string x = saveFile.getElement("playerPosition", "", search, "x");
+	std::string y = saveFile.getElement("playerPosition", "", search, "y");
+
+	if (x != "" && y != "")
+	{
+		playerPosition = sf::Vector2f(stof(x, &sz), stof(y, &sz));
+	}
+	else
+	{
+		playerPosition = sf::Vector2f(47, 26);
+	}
+
 	sf::Vector2f cameraCenter = sf::Vector2f(playerPosition.x * 32 + 16, playerPosition.y * 32 + 16);
 
 	_player = new Player(playerOne, *(pPlayerSounds), 0.24f, playerPosition,
@@ -131,6 +148,25 @@ void MainScreen::activate()
 
 void MainScreen::deactivate()
 {
+	SaveFileHandler saveFile("Content/Saves/save.tws");
+	std::pair<std::string, std::string> search;
+	search.first = "";
+	search.second = "";
+
+	saveFile.deleteElement("playerPosition", "", search);
+
+	SaveElement parentElement;
+	SaveElement childElement;
+
+	parentElement.name = "playerPosition";
+	parentElement.attributes["x"] = std::to_string(_player->getCurrentPosition().x / _tileMapLoader->getCurrentMap().tileWidth);
+	parentElement.attributes["y"] = std::to_string(_player->getCurrentPosition().y / _tileMapLoader->getCurrentMap().tileWidth);
+
+	saveFile.addElement(parentElement, childElement);
+
+
+
+
 	delete _tileMapLoader;
 	delete _player;
 	delete _pInventory;

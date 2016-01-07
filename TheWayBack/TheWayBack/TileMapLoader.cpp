@@ -456,12 +456,14 @@ Item TileMapLoader::makeItem(tinyxml2::XMLElement* pMapObject, std::vector<ItemT
 	char* id = pMapObject->Attribute("id") ? pMapObject->Attribute("id") : "";
 	bool itemState = pMapObject->BoolAttribute("state") ? pMapObject->BoolAttribute("state") : false;
 
+	// обращение к файлу сохранений, чтобы узнать, какие предметы персонаж собрал с карты
 	SaveFileHandler saveFile("Content/Saves/save.tws");
-	saveFile.load();
+	std::pair<std::string, std::string> search;
+	search.first = "id";
+	search.second = id;
+	std::string response = saveFile.getElement("mapItems", "item", search, "state");
 
-	std::string response = saveFile.getElement("mapItems", id, "state");
-
-	if (response != "NO_ATTR" || response != "NO_ITEM")
+	if (response != "")
 	{
 		if (response == "hidden")
 			itemState = false;

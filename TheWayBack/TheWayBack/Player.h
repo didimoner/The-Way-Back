@@ -38,6 +38,7 @@ private:
 	void handleLiveInput();
 	void processMapCollisions();
 	void processItemCollision();
+	void saveItem(Item* item);
 
 	AnimationManager _character;
 	SoundManager _sounds;

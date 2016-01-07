@@ -5,7 +5,6 @@ Player::Player(AnimationManager animationManager, SoundManager soundManager, flo
 	sf::Vector2f position, sf::Vector2i size, short tileSize, TileMapLoader* pTileMapLoader)
 {
 	_saveFile = new SaveFileHandler("Content/Saves/save.tws");
-	_saveFile->load();
 
 	_character = animationManager;
 	_sounds = soundManager;
@@ -290,8 +289,9 @@ void Player::processItemCollision()
 				{
 					_inventory->add(currItem);
 					currItem->setState(false);
-					_saveFile->mapItemChange(currItem, "hidden");
-					_saveFile->inventoryItemChange(currItem);
+
+					saveItem(currItem);
+
 				}
 				else
 				{
@@ -302,8 +302,8 @@ void Player::processItemCollision()
 			{
 				_inventory->add(currItem);
 				currItem->setState(false);
-				_saveFile->mapItemChange(currItem, "hidden");
-				_saveFile->inventoryItemChange(currItem);
+
+				saveItem(currItem);
 			}
 		}
 	}
@@ -326,8 +326,8 @@ void Player::processItemCollision()
 
 				_inventory->add(currContainerItem);
 				currContainerItem->setState(false);
-				_saveFile->mapItemChange(currContainerItem, "hidden");
-				_saveFile->inventoryItemChange(currContainerItem);
+
+				saveItem(currContainerItem);
 			}
 		}
 	}
@@ -341,4 +341,30 @@ Inventory* Player::getInventoryPointer()
 void Player::initInventory(unsigned short size, float width, float height, std::string header)
 {
 	_inventory = new Inventory(size, width, height, header);
+}
+
+void Player::saveItem(Item* item)
+{
+	SaveElement parentElement;
+	SaveElement childElement;
+
+	parentElement.name = "inventory";
+
+	childElement.name = "item";
+	childElement.attrForSearch.first = "id";
+	childElement.attrForSearch.second = item->getId();
+	childElement.attributes["id"] = item->getId();
+
+	_saveFile->addElement(parentElement, childElement);
+
+	parentElement.attributes.clear();
+	childElement.attributes.clear();
+
+	// ----
+
+	parentElement.name = "mapItems";
+	childElement.attributes["id"] = item->getId();
+	childElement.attributes["state"] = "hidden";
+
+	_saveFile->addElement(parentElement, childElement);
 }

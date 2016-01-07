@@ -1,12 +1,3 @@
 <saves>
-    <inventory>
-        <item id="01"/>
-        <item id="02"/>
-        <item id="00"/>
-    </inventory>
-    <mapItems>
-        <item id="01" state="hidden"/>
-        <item id="02" state="hidden"/>
-        <item id="00" state="hidden"/>
-    </mapItems>
+    <playerPosition x="42.103966" y="24.559990"/>
 </saves>
