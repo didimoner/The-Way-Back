@@ -300,9 +300,9 @@ Inventory* Player::getInventoryPointer()
 	return _inventory;
 }
 
-void Player::initInventory(unsigned short size, float width, float height, std::string header)
+void Player::initInventory(unsigned short size, float width, float height, std::string header, TileMapLoader* tileMapLoader)
 {
-	_inventory = new Inventory(size, width, height, header);
+	_inventory = new Inventory(size, width, height, header, tileMapLoader);
 }
 
 void Player::saveItem(Item* item)

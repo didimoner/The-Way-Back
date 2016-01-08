@@ -14,10 +14,10 @@ public:
 	Window(float width, float height, std::string header);
 	~Window();
 
-	void update(float gameTime);
-	void draw(sf::RenderWindow &window);
+	virtual void update(float gameTime);
+	virtual void draw(sf::RenderWindow &window);
 	void handleKeyboard(sf::Keyboard::Key key, bool pressed);
-	void setPosition(float x, float y);
+	virtual void setPosition(float x, float y);
 
 	sf::Vector2f getSize();
 

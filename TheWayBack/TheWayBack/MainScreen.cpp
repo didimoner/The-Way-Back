@@ -158,7 +158,7 @@ void MainScreen::activate()
 	_isActivated = true;
 
 	// ----------------------------------------------------
-	_player->initInventory(16, 480, 360, "Invertory");
+	_player->initInventory(16, 480, 360, "Invertory", _tileMapLoader);
 	_pInventory = _player->getInventoryPointer();
 	_uiObjects.push_back(_pInventory);
 }

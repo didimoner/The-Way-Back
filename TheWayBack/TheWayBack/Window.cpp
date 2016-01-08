@@ -10,7 +10,6 @@ Window::Window(float width, float height, std::string header)
 {
 	_size = sf::Vector2f(width, height);
 	
-
 	_headerText = new sf::Text();
 	_headerText->setFont((*_pFonts)["Visitor"]);
 	_headerText->setScale(0.5f, 0.5f);

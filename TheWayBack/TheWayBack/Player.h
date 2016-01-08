@@ -30,7 +30,7 @@ public:
 	sf::Vector2f getLastPosition();
 
 	void setPosition(sf::Vector2f position);
-	void initInventory(unsigned short size, float width, float height, std::string header);
+	void initInventory(unsigned short size, float width, float height, std::string header, TileMapLoader* tileMapLoader);
 
 	bool isMoving();
 
