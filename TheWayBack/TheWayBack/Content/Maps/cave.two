@@ -1,7 +1,7 @@
-<object type="0" id="05" top="8" offset_x="4" offset_y="8" state="1"/> 
+<object type="0" id="05" left="17" top="8" offset_x="4" offset_y="8" state="1"/> 
 <object type="1" name="Chest" tileset="0" width="24" height="24" tileid="904" left="13" top="5" offset_x="4" offset_y="8" state="1">
-    <item id="06" state="1"/>
-    <item id="07" state="1"/>
-    <item id="08" state="1"/>
+    <item id="00" state="1"/>
+    <item id="01" state="1"/>
+    <item id="02" state="1"/>
 </object>
  

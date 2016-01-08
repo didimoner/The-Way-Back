@@ -72,6 +72,14 @@ void MainScreen::activate()
 	_pFonts = _contentManager.getFonts();
 	_screenState = 2;
 
+	// загружаем сохранения
+
+	SaveFileHandler saveFile("Content/Saves/save.tws");
+	std::string::size_type sz;
+	std::pair<std::string, std::string> search;
+
+	// ------
+
 	AnimationManager playerOne((*_pTextures)["char1"], _tileSize);
 	playerOne.addAnimation("walk_down", 1, 1, 3, 0.004f, LOOP, true);
 	playerOne.addAnimation("walk_up", 4, 1, 3, 0.004f, LOOP, true);
@@ -83,14 +91,21 @@ void MainScreen::activate()
 	pPlayerSounds->addSound((*_pSounds)["collect"], "jump");
 
 	_tileMapLoader = new TileMapLoader("Content/Maps", 2, _pTextures);
-	_tileMapLoader->load("world_1");
 
+	// загружаем текущую карту из сохранений
+	std::string currentMap = saveFile.getElement("currentMap", "", search, "name");
+	if (currentMap != "")
+	{
+		_tileMapLoader->load(currentMap);
+	}
+	else
+	{
+		_tileMapLoader->load("world_1");
+	}
+
+	// загружаем текущие координаты персонажа из сохранений
 	sf::Vector2f playerPosition;
 
-	SaveFileHandler saveFile("Content/Saves/save.tws");
-	std::string::size_type sz;
-
-	std::pair<std::string, std::string> search;
 	std::string x = saveFile.getElement("playerPosition", "", search, "x");
 	std::string y = saveFile.getElement("playerPosition", "", search, "y");
 
@@ -104,6 +119,8 @@ void MainScreen::activate()
 	}
 
 	sf::Vector2f cameraCenter = sf::Vector2f(playerPosition.x * 32 + 16, playerPosition.y * 32 + 16);
+
+	// ------
 
 	_player = new Player(playerOne, *(pPlayerSounds), 0.24f, playerPosition,
 		sf::Vector2i(32, 32), _tileSize, _tileMapLoader);
@@ -153,10 +170,12 @@ void MainScreen::deactivate()
 	search.first = "";
 	search.second = "";
 
+	// сохраняем текущие координаты
 	saveFile.deleteElement("playerPosition", "", search);
 
 	SaveElement parentElement;
 	SaveElement childElement;
+	childElement.name = "";
 
 	parentElement.name = "playerPosition";
 	parentElement.attributes["x"] = std::to_string(_player->getCurrentPosition().x / _tileMapLoader->getCurrentMap().tileWidth);
@@ -164,8 +183,18 @@ void MainScreen::deactivate()
 
 	saveFile.addElement(parentElement, childElement);
 
+	parentElement.attributes.clear();
+	childElement.attributes.clear();
 
+	// сохраняем текущую карту
+	saveFile.deleteElement("currentMap", "", search);
 
+	parentElement.name = "currentMap";
+	parentElement.attributes["name"] = _tileMapLoader->getCurrentMap().name;
+
+	saveFile.addElement(parentElement, childElement);
+	
+	// -------------------
 
 	delete _tileMapLoader;
 	delete _player;

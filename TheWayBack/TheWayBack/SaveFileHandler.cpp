@@ -42,7 +42,7 @@ void SaveFileHandler::addElement(SaveElement parent, SaveElement child)
 
 	// -----------
 
-	if (!child.name)
+	if (child.name != "")
 	{
 		bool exists = false;
 
@@ -82,15 +82,12 @@ void SaveFileHandler::addElement(SaveElement parent, SaveElement child)
 	save();
 }
 
-// TODO: проверить этот метод
 bool SaveFileHandler::deleteElement(char* parentElement, char* childElement, std::pair<std::string, std::string> search)
 {
 	tinyxml2::XMLElement* pParentElement = _pRootElement->FirstChildElement(parentElement);
 
 	if (pParentElement)
 	{
-		std::cout << "I'm here!" << std::endl;
-
 		if (!strcmp(childElement, ""))
 		{
 			if (search.first == "" & search.second == "")
@@ -101,7 +98,6 @@ bool SaveFileHandler::deleteElement(char* parentElement, char* childElement, std
 			}
 			else if (!strcmp(pParentElement->Attribute(search.first.c_str()), search.second.c_str()))
 			{
-				std::cout << "I'm here 2!" << std::endl;
 				_pRootElement->DeleteChild(pParentElement);
 				save();
 				return 0;

@@ -1,3 +1,16 @@
 <saves>
-    <playerPosition x="42.103966" y="24.559990"/>
+    <inventory>
+        <item id="01"/>
+        <item id="02"/>
+        <item id="00"/>
+        <item id="05"/>
+    </inventory>
+    <mapItems>
+        <item id="01" state="hidden"/>
+        <item id="02" state="hidden"/>
+        <item id="00" state="hidden"/>
+        <item id="05" state="hidden"/>
+    </mapItems>
+    <playerPosition x="45.599922" y="6.101782"/>
+    <currentMap name="world_1"/>
 </saves>

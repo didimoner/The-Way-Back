@@ -39,6 +39,7 @@ private:
 	void processMapCollisions();
 	void processItemCollision();
 	void saveItem(Item* item);
+	void cameraCheck(sf::View& camera);
 
 	AnimationManager _character;
 	SoundManager _sounds;

@@ -30,6 +30,7 @@ Player::~Player(void)
 
 void Player::update(float gameTime, sf::View& camera)
 {
+	
 	handleLiveInput();
 	
 	switch (_state)
@@ -37,6 +38,7 @@ void Player::update(float gameTime, sf::View& camera)
 	case STAY:
 		_character.stopAnimation(_currentAnimation);
 		_character.update(gameTime);
+		cameraCheck(camera);
 		return;
 
 	case WALK_UP:
@@ -70,47 +72,7 @@ void Player::update(float gameTime, sf::View& camera)
 
 	_character.update(gameTime);
 	_currentAnimation = _character.getCurrentAnimation();
-
-	// устанавливаем вьюху и не пускаем ее за границы карты (иначе рисовальщик выйдет за границы массива)
-	sf::Vector2f cameraCenter = sf::Vector2f(_character.getPosition().x + _size.x / 2, _character.getPosition().y + _size.y / 2);
-
-	if (_pTileMapLoader->getSize().x < camera.getSize().x)
-	{
-		cameraCenter.x = camera.getSize().x / 2 - (camera.getSize().x - _pTileMapLoader->getSize().x) / 2;
-	}
-	else
-	{
-		if ((cameraCenter.x - camera.getSize().x / 2) < 0)
-		{
-			cameraCenter.x = camera.getSize().x / 2;
-		}
-
-		if ((cameraCenter.x + camera.getSize().x / 2) >= _pTileMapLoader->getSize().x)
-		{
-			cameraCenter.x = _pTileMapLoader->getSize().x - camera.getSize().x / 2;
-		}
-		
-	}
-
-	if (_pTileMapLoader->getSize().y < camera.getSize().y)
-	{
-		cameraCenter.y = camera.getSize().y / 2 - (camera.getSize().y - _pTileMapLoader->getSize().y) / 2;
-	}
-	else
-	{
-		
-		if ((cameraCenter.y - camera.getSize().y / 2) < 0)
-		{
-			cameraCenter.y = camera.getSize().y / 2;
-		}
-
-		if ((cameraCenter.y + camera.getSize().y / 2) >= _pTileMapLoader->getSize().y)
-		{
-			cameraCenter.y = _pTileMapLoader->getSize().y - camera.getSize().y / 2;
-		}
-	}
-
-	camera.setCenter(cameraCenter.x, cameraCenter.y);
+	cameraCheck(camera);
 }
 
 // -----------------------------------------------------
@@ -367,4 +329,47 @@ void Player::saveItem(Item* item)
 	childElement.attributes["state"] = "hidden";
 
 	_saveFile->addElement(parentElement, childElement);
+}
+
+void Player::cameraCheck(sf::View& camera)
+{
+	sf::Vector2f cameraCenter = sf::Vector2f(_character.getPosition().x + _size.x / 2, _character.getPosition().y + _size.y / 2);
+	
+	if (_pTileMapLoader->getSize().x < camera.getSize().x)
+	{
+		cameraCenter.x = camera.getSize().x / 2 - (camera.getSize().x - _pTileMapLoader->getSize().x) / 2;
+	}
+	else
+	{
+		if ((cameraCenter.x - camera.getSize().x / 2) < 0)
+		{
+			cameraCenter.x = camera.getSize().x / 2;
+		}
+
+		if ((cameraCenter.x + camera.getSize().x / 2) >= _pTileMapLoader->getSize().x)
+		{
+			cameraCenter.x = _pTileMapLoader->getSize().x - camera.getSize().x / 2;
+		}
+
+	}
+
+	if (_pTileMapLoader->getSize().y < camera.getSize().y)
+	{
+		cameraCenter.y = camera.getSize().y / 2 - (camera.getSize().y - _pTileMapLoader->getSize().y) / 2;
+	}
+	else
+	{
+
+		if ((cameraCenter.y - camera.getSize().y / 2) < 0)
+		{
+			cameraCenter.y = camera.getSize().y / 2;
+		}
+
+		if ((cameraCenter.y + camera.getSize().y / 2) >= _pTileMapLoader->getSize().y)
+		{
+			cameraCenter.y = _pTileMapLoader->getSize().y - camera.getSize().y / 2;
+		}
+	}
+
+	camera.setCenter(cameraCenter.x, cameraCenter.y);
 }
