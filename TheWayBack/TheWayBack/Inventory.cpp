@@ -1,19 +1,18 @@
 #include "Inventory.h"
 #include <iostream>
 
-Inventory::Inventory(unsigned short size, float width, float height, std::string header, TileMapLoader* tileMapLoader) :
+Inventory::Inventory(unsigned short size, float width, float height, std::string header, ItemLoader* itemLoader) :
 	ui::Window(width, height, header)
 {
 	_size = size;
-	_pTileMapLoader = tileMapLoader;
+	_pItemLoader = itemLoader;
 
 	_grid = new sf::Sprite((*_pTextures)["grid"]);
 	_grid->setScale(0.7f, 0.7f);
 
 	_gridOffset = sf::Vector2f(_grid->getGlobalBounds().width / 2.f, (_grid->getTextureRect().height * _grid->getScale().y) / 6.f);
 
-	loadItems();
-
+	_cells = (*_pItemLoader->getInventoryItems());
 }
 
 // TODO: загрузка инвентаря из файла
@@ -102,45 +101,4 @@ bool Inventory::contains(std::string seed, int mode)
 	}
 
 	return false;
-}
-
-void Inventory::loadItems()
-{
-	std::vector<Item>* pItems = _pTileMapLoader->getItems();
-
-	tinyxml2::XMLDocument document;
-	tinyxml2::XMLElement* rootElement;
-
-	document.LoadFile("Content/Saves/save.tws");
-
-	if (document.ErrorID() != 0)
-	{
-		return;
-	}
-
-	rootElement = document.FirstChildElement("saves");
-
-	tinyxml2::XMLElement* pParentElement = rootElement->FirstChildElement("inventory");
-
-	if (!pParentElement) return;
-
-	tinyxml2::XMLElement* pChildElement = pParentElement->FirstChildElement("item");
-
-
-	if (pChildElement)
-	{
-		while (pChildElement != nullptr)
-		{
-			for (unsigned int i = 0; i < pItems->size(); i++)
-			{
-				if ((*pItems)[i].getId() == pChildElement->Attribute("id"))
-				{
-					std::cout << "Match! " << (*pItems)[i].getId() << " : " << pChildElement->Attribute("id") << std::endl;
-					_cells.push_back((*pItems)[i]);
-				}
-			}
-
-			pChildElement = pChildElement->NextSiblingElement("item");
-		}
-	}
 }

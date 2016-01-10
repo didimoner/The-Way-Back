@@ -2,7 +2,7 @@
 #include <iostream>
 
 Player::Player(AnimationManager animationManager, SoundManager soundManager, float speed,
-	sf::Vector2f position, sf::Vector2i size, short tileSize, TileMapLoader* pTileMapLoader)
+	sf::Vector2f position, sf::Vector2i size, short tileSize, TileMapLoader* pTileMapLoader, ItemLoader* pItemLoader)
 {
 	_saveFile = new SaveFileHandler("Content/Saves/save.tws");
 
@@ -18,6 +18,7 @@ Player::Player(AnimationManager animationManager, SoundManager soundManager, flo
 	_bounds = sf::FloatRect(_position.x * _tileSize, _position.y * _tileSize, (float)_size.x, (float)_size.y);
 	_isIntersecting = false;
 	_pTileMapLoader = pTileMapLoader;
+	_pItemLoader = pItemLoader;
 }
 
 Player::~Player(void)
@@ -107,7 +108,6 @@ void Player::handleKeyboard(sf::Keyboard::Key key, bool pressed)
 	{
 
 	}
-	
 }
 
 void Player::move(float x, float y, float gameTime)
@@ -219,6 +219,7 @@ void Player::processMapCollisions()
 		if (_bounds.intersects(currentMapObject.rect))
 		{
 			_pTileMapLoader->load(currentMapObject.name);
+			_pItemLoader->load(currentMapObject.name);
 			_position = currentMapObject.initPosition;
 			break;
 		}
@@ -227,10 +228,10 @@ void Player::processMapCollisions()
 
 void Player::processItemCollision()
 {
-	// items and containers
-	for (unsigned int i = 0; i < _pTileMapLoader->getItems()->size(); i++)
+	// взаимодействие с предметами на карте
+	for (unsigned int i = 0; i < _pItemLoader->getItems()->size(); i++)
 	{
-		Item* currItem = &(*_pTileMapLoader->getItems())[i];
+		Item* currItem = &(*_pItemLoader->getItems())[i];
 
 		if (!currItem->getState())
 			continue;
@@ -270,27 +271,62 @@ void Player::processItemCollision()
 		}
 	}
 
-	for (unsigned int i = 0; i < _pTileMapLoader->getContainers()->size(); i++)
+	// проверяем взаимодействие с контейнером
+	for (unsigned int i = 0; i < _pItemLoader->getContainers()->size(); i++)
 	{
-		Container* currConteiner = &(*_pTileMapLoader->getContainers())[i];
+		Container* currConteiner = &(*_pItemLoader->getContainers())[i];
 
 		if (!currConteiner->container.getState())
 			continue;
 
 		if (_bounds.intersects(currConteiner->container.getBounds()))
 		{
-			for (unsigned int j = 0; j < currConteiner->items.size(); j++)
+			if (currConteiner->container.getDependence()->size() != 0)
 			{
-				Item* currContainerItem = &currConteiner->items[j];
+				bool flag = true;
 
-				if (!currContainerItem->getState())
-					continue;
+				for (unsigned int i = 0; i < currConteiner->container.getDependence()->size(); i++)
+				{
+					if (!_inventory->contains((*currConteiner->container.getDependence())[i], 1))
+						flag = false;
+				}
 
-				_inventory->add(currContainerItem);
-				currContainerItem->setState(false);
+				if (flag)
+				{
+					for (unsigned int j = 0; j < currConteiner->items.size(); j++)
+					{
+						Item* currContainerItem = &currConteiner->items[j];
 
-				saveItem(currContainerItem);
+						if (!currContainerItem->getState())
+							continue;
+
+						_inventory->add(currContainerItem);
+						currContainerItem->setState(false);
+
+						saveItem(currContainerItem);
+					}
+				}
+				else
+				{
+					std::cout << "You don't have required item!" << std::endl;
+				}
 			}
+			else
+			{
+				for (unsigned int j = 0; j < currConteiner->items.size(); j++)
+				{
+					Item* currContainerItem = &currConteiner->items[j];
+
+					if (!currContainerItem->getState())
+						continue;
+
+					_inventory->add(currContainerItem);
+					currContainerItem->setState(false);
+
+					saveItem(currContainerItem);
+				}
+			}
+			
 		}
 	}
 }
@@ -300,9 +336,9 @@ Inventory* Player::getInventoryPointer()
 	return _inventory;
 }
 
-void Player::initInventory(unsigned short size, float width, float height, std::string header, TileMapLoader* tileMapLoader)
+void Player::initInventory(unsigned short size, float width, float height, std::string header, ItemLoader* itemLoader)
 {
-	_inventory = new Inventory(size, width, height, header, tileMapLoader);
+	_inventory = new Inventory(size, width, height, header, itemLoader);
 }
 
 void Player::saveItem(Item* item)
@@ -326,7 +362,7 @@ void Player::saveItem(Item* item)
 
 	parentElement.name = "mapItems";
 	childElement.attributes["id"] = item->getId();
-	childElement.attributes["state"] = "hidden";
+	childElement.attributes["state"] = "0";
 
 	_saveFile->addElement(parentElement, childElement);
 }

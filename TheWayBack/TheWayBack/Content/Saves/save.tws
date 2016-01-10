@@ -1,16 +1,26 @@
 <saves>
     <inventory>
         <item id="01"/>
-        <item id="02"/>
-        <item id="00"/>
+        <item id="06"/>
         <item id="05"/>
+        <item id="03"/>
+        <item id="07"/>
+        <item id="02"/>
+        <item id="10"/>
+        <item id="09"/>
+        <item id="08"/>
     </inventory>
     <mapItems>
-        <item id="01" state="hidden"/>
-        <item id="02" state="hidden"/>
-        <item id="00" state="hidden"/>
-        <item id="05" state="hidden"/>
+        <item id="01" state="0"/>
+        <item id="06" state="0"/>
+        <item id="05" state="0"/>
+        <item id="03" state="0"/>
+        <item id="07" state="0"/>
+        <item id="02" state="0"/>
+        <item id="10" state="0"/>
+        <item id="09" state="0"/>
+        <item id="08" state="0"/>
     </mapItems>
-    <playerPosition x="40.917671" y="25.481318"/>
-    <currentMap name="world_1"/>
+    <playerPosition x="14.128029" y="6.658730"/>
+    <currentMap name="cave"/>
 </saves>

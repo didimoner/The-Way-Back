@@ -55,7 +55,57 @@ void MainScreen::draw(sf::RenderWindow& window)
 {
 	window.setView(_camera);
 
-	_tileMapLoader->draw(window, _entities, _camera);
+	sf::Vector2f cameraSizeT = sf::Vector2f(std::ceil(_camera.getSize().x / TILE_H),
+		std::ceil(_camera.getSize().y / TILE_W));
+
+	sf::Vector2f leftTop = sf::Vector2f(std::floor((_camera.getCenter().x - _camera.getSize().x / 2) / TILE_H),
+		std::floor((_camera.getCenter().y - _camera.getSize().y / 2) / TILE_W));
+	sf::Vector2f bottomRight = sf::Vector2f(std::ceil((_camera.getCenter().x + _camera.getSize().x / 2) / TILE_H),
+		std::ceil((_camera.getCenter().y + _camera.getSize().y / 2) / TILE_W));
+
+	for (unsigned int layer = 0; layer < _currentMapSprites->size(); layer++)
+	{
+		for (int tilesH = (int)leftTop.y; tilesH < (int)bottomRight.y; tilesH++)
+		{
+			if (tilesH < 0 || tilesH >= _tileMapLoader->getCurrentMap().height)
+			{
+				continue;
+			}
+
+			for (int tilesW = (int)leftTop.x; tilesW < (int)bottomRight.x; tilesW++)
+			{
+				if (tilesW < 0 || tilesW >= _tileMapLoader->getCurrentMap().width)
+				{
+					continue;
+				}
+
+				if ((*_currentMapSprites)[layer][tilesH][tilesW].getColor() == sf::Color::Transparent)
+					continue;
+
+				window.draw((*_currentMapSprites)[layer][tilesH][tilesW]);
+			}
+		}
+
+		if (ENTITY_LAYER == layer)
+		{
+			for (unsigned short i = 0; i < _levelItems->size(); i++)
+			{
+				(*_levelItems)[i].draw(window);
+			}
+
+			for (unsigned short i = 0; i < _containers->size(); i++)
+			{
+				(*_containers)[i].container.draw(window);
+			}
+
+			if (_mapChanged) _mapChanged = false;
+
+			for (unsigned short i = 0; i < _entities.size(); i++)
+			{
+				_entities[i]->draw(window);
+			}
+		}
+	}
 
 	for (unsigned int i = 0; i < _uiObjects.size(); i++)
 	{
@@ -71,6 +121,7 @@ void MainScreen::activate()
 	_pSounds = _contentManager.getSounds();
 	_pFonts = _contentManager.getFonts();
 	_screenState = 2;
+	_mapChanged = false;
 
 	// загружаем сохранения
 
@@ -91,17 +142,26 @@ void MainScreen::activate()
 	pPlayerSounds->addSound((*_pSounds)["collect"], "jump");
 
 	_tileMapLoader = new TileMapLoader("Content/Maps", 2, _pTextures);
+	_itemLoader = new ItemLoader("Content/Maps", _pTextures);
 
 	// загружаем текущую карту из сохранений
 	std::string currentMap = saveFile.getElement("currentMap", "", search, "name");
 	if (currentMap != "")
 	{
 		_tileMapLoader->load(currentMap);
+		_itemLoader->load(currentMap);
+		_mapChanged = true;
 	}
 	else
 	{
 		_tileMapLoader->load("world_1");
+		_itemLoader->load("world_1");
+		_mapChanged = true;
 	}
+
+	_currentMapSprites = _tileMapLoader->getSprites();
+	_levelItems = _itemLoader->getItems();
+	_containers = _itemLoader->getContainers();
 
 	// загружаем текущие координаты персонажа из сохранений
 	sf::Vector2f playerPosition;
@@ -123,7 +183,7 @@ void MainScreen::activate()
 	// ------
 
 	_player = new Player(playerOne, *(pPlayerSounds), 0.24f, playerPosition,
-		sf::Vector2i(32, 32), _tileSize, _tileMapLoader);
+		sf::Vector2i(32, 32), _tileSize, _tileMapLoader, _itemLoader);
 	_entities.push_back(_player);
 
 	delete pPlayerSounds;
@@ -132,35 +192,14 @@ void MainScreen::activate()
 	_camera.setSize((float)_screenSize.x, (float)_screenSize.y);
 	_cameraSpeed = sf::Vector2f(0.2f, 0.18f);
 
-	unsigned short tileW = _tileMapLoader->getCurrentMap().tileWidth;
-	unsigned short tileH = _tileMapLoader->getCurrentMap().tileHeight;
-
-	if ((_tileMapLoader->getSize().x - playerPosition.x * tileW + _tileSize / 2) < (float)_screenSize.x / 2)
-	{
-		cameraCenter.x -= _screenSize.x / 2 - (_tileMapLoader->getSize().x - playerPosition.x * tileW - _tileSize / 2);
-	}
-	if ((_tileMapLoader->getSize().y - playerPosition.y * tileH + _tileSize / 2) < (float)_screenSize.y / 2)
-	{
-		cameraCenter.y -= _screenSize.y / 2 - (_tileMapLoader->getSize().y - playerPosition.y * tileH - _tileSize / 2);
-	}
-
-	if ((playerPosition.x * tileW + _tileSize / 2) < (float)_screenSize.x / 2)
-	{
-		cameraCenter.x += _screenSize.x / 2 - (playerPosition.x * tileW + _tileSize / 2);
-	}
-	if ((playerPosition.y * tileH + _tileSize / 2) < (float)_screenSize.y / 2)
-	{
-		cameraCenter.y += _screenSize.y / 2 - (playerPosition.y * tileH + _tileSize / 2);
-	}
-
-	_camera.setCenter(cameraCenter);
-	std::cout << "MainScreen activated" << std::endl;
-	_isActivated = true;
-
-	// ----------------------------------------------------
-	_player->initInventory(16, 480, 360, "Invertory", _tileMapLoader);
+	_player->initInventory(16, 480, 360, "Invertory", _itemLoader);
 	_pInventory = _player->getInventoryPointer();
 	_uiObjects.push_back(_pInventory);
+
+	// ------------------
+
+	std::cout << "MainScreen activated" << std::endl;
+	_isActivated = true;
 }
 
 void MainScreen::deactivate()

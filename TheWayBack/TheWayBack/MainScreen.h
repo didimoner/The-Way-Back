@@ -3,6 +3,7 @@
 #include "BaseScreen.h"
 #include "Player.h"
 #include "TileMapLoader.h"
+#include "ItemLoader.h"
 #include "Window.h"
 
 class MainScreen :
@@ -31,8 +32,13 @@ private:
 
 	Player* _player;
 	TileMapLoader* _tileMapLoader;
+	ItemLoader* _itemLoader;
 	std::vector<Entity*> _entities;
 	sf::View _camera;
 	sf::Vector2f _cameraSpeed;
 	Inventory* _pInventory;
+	bool _mapChanged;
+	std::vector<std::vector<std::vector<sf::Sprite>>>* _currentMapSprites;
+	std::vector<Item>* _levelItems;
+	std::vector<Container>* _containers;
 };
