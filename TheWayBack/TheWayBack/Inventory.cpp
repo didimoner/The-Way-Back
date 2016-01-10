@@ -53,7 +53,8 @@ void Inventory::setPosition(float x, float y)
 
 	for (unsigned int i = 0; i < _cells.size(); i++)
 	{
-		 _cells[i].setPosition(sf::Vector2f(x - _gridOffset.x + i * 72 + 8, y - _gridOffset.y + 8));
+		if (i < 6) _cells[i].setPosition(sf::Vector2f(x - _gridOffset.x + i * 72 + 8, y - _gridOffset.y + 8));
+		else _cells[i].setPosition(sf::Vector2f(x - _gridOffset.x + (i - 6) * 72 + 8, y - (_gridOffset.y - 72) + 8));
 	}
 
 }

@@ -55,6 +55,7 @@ void MainScreen::draw(sf::RenderWindow& window)
 {
 	window.setView(_camera);
 
+	// тут очень хитро вычисляется, какие именно тайлы нужно рисовать (в зависимости от расположения камеры)
 	sf::Vector2f cameraSizeT = sf::Vector2f(std::ceil(_camera.getSize().x / TILE_H),
 		std::ceil(_camera.getSize().y / TILE_W));
 
@@ -63,6 +64,7 @@ void MainScreen::draw(sf::RenderWindow& window)
 	sf::Vector2f bottomRight = sf::Vector2f(std::ceil((_camera.getCenter().x + _camera.getSize().x / 2) / TILE_H),
 		std::ceil((_camera.getCenter().y + _camera.getSize().y / 2) / TILE_W));
 
+	// рисуем карту
 	for (unsigned int layer = 0; layer < _currentMapSprites->size(); layer++)
 	{
 		for (int tilesH = (int)leftTop.y; tilesH < (int)bottomRight.y; tilesH++)
@@ -86,6 +88,7 @@ void MainScreen::draw(sf::RenderWindow& window)
 			}
 		}
 
+		//рисуем предметы и персонажей
 		if (ENTITY_LAYER == layer)
 		{
 			for (unsigned short i = 0; i < _levelItems->size(); i++)
@@ -107,6 +110,7 @@ void MainScreen::draw(sf::RenderWindow& window)
 		}
 	}
 
+	// рисуем UI
 	for (unsigned int i = 0; i < _uiObjects.size(); i++)
 	{
 		_uiObjects[i]->setPosition(_camera.getCenter().x, _camera.getCenter().y);
