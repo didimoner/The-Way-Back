@@ -3,6 +3,7 @@
 #include "AnimationManager.h"
 #include "SoundManager.h"
 #include "TileMapLoader.h"
+#include "ItemLoader.h"
 #include "Inventory.h"
 #include "SaveFileHandler.h"
 
@@ -11,7 +12,7 @@ class Player :
 {
 public:
 	Player(AnimationManager animationManager, SoundManager soundManager,
-		float speed, sf::Vector2f position, sf::Vector2i size, short tileSize, TileMapLoader* pTileMapLoader);
+		float speed, sf::Vector2f position, sf::Vector2i size, short tileSize, TileMapLoader* pTileMapLoader, ItemLoader* pItemLoader);
 	~Player(void);
 
 	virtual void update(float gameTime, sf::View& camera);
@@ -24,11 +25,13 @@ public:
 	bool intersects(sf::FloatRect bounds);
 
 	short getState();
+	Inventory* getInventoryPointer();
 
 	sf::Vector2f getCurrentPosition();
 	sf::Vector2f getLastPosition();
 
 	void setPosition(sf::Vector2f position);
+	void initInventory(unsigned short size, float width, float height, std::string header, ItemLoader* itemLoader);
 
 	bool isMoving();
 
@@ -36,6 +39,8 @@ private:
 	void handleLiveInput();
 	void processMapCollisions();
 	void processItemCollision();
+	void saveItem(Item* item);
+	void cameraCheck(sf::View& camera);
 
 	AnimationManager _character;
 	SoundManager _sounds;
@@ -50,4 +55,5 @@ private:
 	Inventory* _inventory;
 	SaveFileHandler* _saveFile;
 	TileMapLoader* _pTileMapLoader;
+	ItemLoader* _pItemLoader;
 };

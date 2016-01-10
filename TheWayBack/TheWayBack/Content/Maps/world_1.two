@@ -1,8 +1,8 @@
-<object type="0" id="00" left="44" top="27" offset_x="4" offset_y="8" need="01,02" state="1"/> 
+<object type="0" id="03" left="44" top="27" offset_x="4" offset_y="8" need="01,02" state="1"/> 
 <object type="0" id="01" left="35" top="26" offset_x="4" offset_y="8" state="1"/>
 <object type="0" id="02" left="39" top="25" offset_x="4" offset_y="8" need="01" state="1"/>
-<object type="1" name="Chest" tileset="0" width="24" height="24" tileid="904" left="41" top="27" offset_x="4" offset_y="8" state="1">
-	<item id="00" state="1"/>
-	<item id="01" state="1"/>
+<object type="1" id="00" left="41" top="27" offset_x="4" offset_y="8" state="1" need="01">
+	<item id="06" state="1"/>
+	<item id="07" state="1"/>
 	<item id="05" state="1"/>
 </object>

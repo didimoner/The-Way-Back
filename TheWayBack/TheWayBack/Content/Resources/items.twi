@@ -1,14 +1,32 @@
 <tileset name="bigset" width="384" height="15096"/>
 
-<item id="00" name="Mushroom" tileset="0" width="24" height="24" tileid="718">
+<item id="00" name="Chest" tileset="0" width="24" height="24" tileid="904">
+    chest
+</item>
+<item id="01" name="Mushroom" tileset="0" width="24" height="24" tileid="718">
 	bfdbfdbs
 </item>
-<item id="01" name="Lollipop" tileset="0" width="24" height="24" tileid="678">
+<item id="02" name="Lollipop" tileset="0" width="24" height="24" tileid="678">
 	sadgsdgashsdh
 </item>
-<item id="02" name="Potion" tileset="0" width="24" height="24" tileid="961">
+<item id="03" name="Potion" tileset="0" width="24" height="24" tileid="961">
 	sdg32r23fefwg
 </item>
 <item id="05" name="Strange Crystal" tileset="0" width="24" height="24" tileid="1202">
-    sdaga3t25t3ds
+    gggggttttgtgt
+</item>
+<item id="06" name="IDK" tileset="0" width="24" height="24" tileid="1145">
+    sdg hfjghkhjlhljh
+</item>
+<item id="07" name="Something" tileset="0" width="24" height="24" tileid="863">
+	12312r12f1
+</item>
+<item id="08" name="Nothing interesting" tileset="0" width="24" height="24" tileid="333">
+	1111111111111111111111111
+</item>
+<item id="09" name="Old thing" tileset="0" width="24" height="24" tileid="775">
+	5614f65ds165sd1f65
+</item>
+<item id="10" name="FUCK YOU!" tileset="0" width="24" height="24" tileid="145">
+	4815162342
 </item>

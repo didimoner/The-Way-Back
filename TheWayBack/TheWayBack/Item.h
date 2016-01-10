@@ -13,6 +13,7 @@ public:
 	virtual void draw(sf::RenderWindow &window);
 
 	virtual sf::FloatRect getBounds();
+	virtual void setPosition(sf::Vector2f position);
 
 	std::string getName();
 	std::string getId();
@@ -22,6 +23,7 @@ public:
 	bool getState();
 	
 	void setState(bool flag);
+	void setScale(float x, float y);
 
 private:
 	void Item::parseDependence(std::string dependence);

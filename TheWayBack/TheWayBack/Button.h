@@ -11,7 +11,7 @@ class ui::Button :
 {
 public:
 	Button();
-	Button(float x, float y, float width, float height, sf::Text text);
+	Button(float x, float y, float width, float height, std::wstring text);
 	~Button();
 
 	virtual void update(float gameTime);

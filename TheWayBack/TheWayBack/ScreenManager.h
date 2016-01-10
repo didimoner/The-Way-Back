@@ -29,7 +29,6 @@ private:
 	sf::Vector2u _screenSize;
 	std::vector<BaseScreen*> _screens;
 	BaseScreen* _currentScreen;
-	ContentManager _contentManager;
 	GameState _gameState;
 
 	SplashScreen* _pSplashScreen;

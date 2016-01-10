@@ -1,8 +1,8 @@
 #include "SplashScreen.h"
 
 
-SplashScreen::SplashScreen(ContentManager* pContentManager, sf::Vector2u screenSize)
-	: BaseScreen(pContentManager, screenSize)
+SplashScreen::SplashScreen(sf::Vector2u screenSize)
+	: BaseScreen(screenSize)
 {
 	std::cout << "SplashScreen" << std::endl;
 	_splashDuration = 4.f;
@@ -56,9 +56,9 @@ void SplashScreen::draw(sf::RenderWindow& window)
 
 void SplashScreen::activate()
 {
-	_pContentManager->loadContent("splashscreen");
-	_pTextures = _pContentManager->getTextures();
-	_pSounds = _pContentManager->getSounds();
+	_contentManager.loadContent("splashscreen");
+	_pTextures = _contentManager.getTextures();
+	_pSounds = _contentManager.getSounds();
 	_screenState = 0;
 	_blackRectTransperency = 255;
 
@@ -73,7 +73,7 @@ void SplashScreen::activate()
 
 void SplashScreen::deactivate()
 {
-	_pContentManager->clear();
+	_contentManager.clear();
 
 	std::cout << "SplashScreen deactivated" << std::endl;
 	_isActivated = false;

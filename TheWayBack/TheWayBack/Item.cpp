@@ -85,3 +85,14 @@ void Item::parseDependence(std::string dependence)
 		dependence = dependence.substr(pos + sep.length());
 	}
 }
+
+void Item::setPosition(sf::Vector2f position)
+{
+	_sprite.setPosition(position);
+}
+
+void Item::setScale(float x, float y)
+{
+	_sprite.setScale(x, y);
+}
+

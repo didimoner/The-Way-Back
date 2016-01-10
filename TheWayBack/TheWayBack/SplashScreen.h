@@ -4,7 +4,7 @@ class SplashScreen :
 	public BaseScreen
 {
 public:
-	SplashScreen(ContentManager *contentManager, sf::Vector2u screenSize);
+	SplashScreen(sf::Vector2u screenSize);
 	~SplashScreen();
 
 	virtual void handleKeyPress(sf::Keyboard::Key key, bool isPressed);

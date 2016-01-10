@@ -114,6 +114,12 @@
     <ClInclude Include="SaveFileHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ItemLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Constants.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AnimatedSprite.cpp">
@@ -186,6 +192,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SaveFileHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

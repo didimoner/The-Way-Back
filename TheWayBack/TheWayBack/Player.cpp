@@ -2,10 +2,9 @@
 #include <iostream>
 
 Player::Player(AnimationManager animationManager, SoundManager soundManager, float speed,
-	sf::Vector2f position, sf::Vector2i size, short tileSize, TileMapLoader* pTileMapLoader)
+	sf::Vector2f position, sf::Vector2i size, short tileSize, TileMapLoader* pTileMapLoader, ItemLoader* pItemLoader)
 {
 	_saveFile = new SaveFileHandler("Content/Saves/save.tws");
-	_saveFile->load();
 
 	_character = animationManager;
 	_sounds = soundManager;
@@ -18,9 +17,8 @@ Player::Player(AnimationManager animationManager, SoundManager soundManager, flo
 	_character.setPosition(_position.x, _position.y);
 	_bounds = sf::FloatRect(_position.x * _tileSize, _position.y * _tileSize, (float)_size.x, (float)_size.y);
 	_isIntersecting = false;
-	_inventory = new Inventory(16);
 	_pTileMapLoader = pTileMapLoader;
-	
+	_pItemLoader = pItemLoader;
 }
 
 Player::~Player(void)
@@ -33,6 +31,7 @@ Player::~Player(void)
 
 void Player::update(float gameTime, sf::View& camera)
 {
+	
 	handleLiveInput();
 	
 	switch (_state)
@@ -40,6 +39,7 @@ void Player::update(float gameTime, sf::View& camera)
 	case STAY:
 		_character.stopAnimation(_currentAnimation);
 		_character.update(gameTime);
+		cameraCheck(camera);
 		return;
 
 	case WALK_UP:
@@ -73,47 +73,7 @@ void Player::update(float gameTime, sf::View& camera)
 
 	_character.update(gameTime);
 	_currentAnimation = _character.getCurrentAnimation();
-
-	// устанавливаем вьюху и не пускаем ее за границы карты (иначе рисовальщик выйдет за границы массива)
-	sf::Vector2f cameraCenter = sf::Vector2f(_character.getPosition().x + _size.x / 2, _character.getPosition().y + _size.y / 2);
-
-	if (_pTileMapLoader->getSize().x < camera.getSize().x)
-	{
-		cameraCenter.x = camera.getSize().x / 2 - (camera.getSize().x - _pTileMapLoader->getSize().x) / 2;
-	}
-	else
-	{
-		if ((cameraCenter.x - camera.getSize().x / 2) < 0)
-		{
-			cameraCenter.x = camera.getSize().x / 2;
-		}
-
-		if ((cameraCenter.x + camera.getSize().x / 2) >= _pTileMapLoader->getSize().x)
-		{
-			cameraCenter.x = _pTileMapLoader->getSize().x - camera.getSize().x / 2;
-		}
-		
-	}
-
-	if (_pTileMapLoader->getSize().y < camera.getSize().y)
-	{
-		cameraCenter.y = camera.getSize().y / 2 - (camera.getSize().y - _pTileMapLoader->getSize().y) / 2;
-	}
-	else
-	{
-		
-		if ((cameraCenter.y - camera.getSize().y / 2) < 0)
-		{
-			cameraCenter.y = camera.getSize().y / 2;
-		}
-
-		if ((cameraCenter.y + camera.getSize().y / 2) >= _pTileMapLoader->getSize().y)
-		{
-			cameraCenter.y = _pTileMapLoader->getSize().y - camera.getSize().y / 2;
-		}
-	}
-
-	camera.setCenter(cameraCenter.x, cameraCenter.y);
+	cameraCheck(camera);
 }
 
 // -----------------------------------------------------
@@ -148,7 +108,6 @@ void Player::handleKeyboard(sf::Keyboard::Key key, bool pressed)
 	{
 
 	}
-	
 }
 
 void Player::move(float x, float y, float gameTime)
@@ -260,6 +219,7 @@ void Player::processMapCollisions()
 		if (_bounds.intersects(currentMapObject.rect))
 		{
 			_pTileMapLoader->load(currentMapObject.name);
+			_pItemLoader->load(currentMapObject.name);
 			_position = currentMapObject.initPosition;
 			break;
 		}
@@ -268,10 +228,10 @@ void Player::processMapCollisions()
 
 void Player::processItemCollision()
 {
-	// items and containers
-	for (unsigned int i = 0; i < _pTileMapLoader->getItems()->size(); i++)
+	// взаимодействие с предметами на карте
+	for (unsigned int i = 0; i < _pItemLoader->getItems()->size(); i++)
 	{
-		Item* currItem = &(*_pTileMapLoader->getItems())[i];
+		Item* currItem = &(*_pItemLoader->getItems())[i];
 
 		if (!currItem->getState())
 			continue;
@@ -292,8 +252,9 @@ void Player::processItemCollision()
 				{
 					_inventory->add(currItem);
 					currItem->setState(false);
-					_saveFile->mapItemChange(currItem, "hidden");
-					_saveFile->inventoryItemChange(currItem);
+
+					saveItem(currItem);
+
 				}
 				else
 				{
@@ -304,33 +265,147 @@ void Player::processItemCollision()
 			{
 				_inventory->add(currItem);
 				currItem->setState(false);
-				_saveFile->mapItemChange(currItem, "hidden");
-				_saveFile->inventoryItemChange(currItem);
+
+				saveItem(currItem);
 			}
 		}
 	}
 
-	for (unsigned int i = 0; i < _pTileMapLoader->getContainers()->size(); i++)
+	// проверяем взаимодействие с контейнером
+	for (unsigned int i = 0; i < _pItemLoader->getContainers()->size(); i++)
 	{
-		Container* currConteiner = &(*_pTileMapLoader->getContainers())[i];
+		Container* currConteiner = &(*_pItemLoader->getContainers())[i];
 
 		if (!currConteiner->container.getState())
 			continue;
 
 		if (_bounds.intersects(currConteiner->container.getBounds()))
 		{
-			for (unsigned int j = 0; j < currConteiner->items.size(); j++)
+			if (currConteiner->container.getDependence()->size() != 0)
 			{
-				Item* currContainerItem = &currConteiner->items[j];
+				bool flag = true;
 
-				if (!currContainerItem->getState())
-					continue;
+				for (unsigned int i = 0; i < currConteiner->container.getDependence()->size(); i++)
+				{
+					if (!_inventory->contains((*currConteiner->container.getDependence())[i], 1))
+						flag = false;
+				}
 
-				_inventory->add(currContainerItem);
-				currContainerItem->setState(false);
-				_saveFile->mapItemChange(currContainerItem, "hidden");
-				_saveFile->inventoryItemChange(currContainerItem);
+				if (flag)
+				{
+					for (unsigned int j = 0; j < currConteiner->items.size(); j++)
+					{
+						Item* currContainerItem = &currConteiner->items[j];
+
+						if (!currContainerItem->getState())
+							continue;
+
+						_inventory->add(currContainerItem);
+						currContainerItem->setState(false);
+
+						saveItem(currContainerItem);
+					}
+				}
+				else
+				{
+					std::cout << "You don't have required item!" << std::endl;
+				}
 			}
+			else
+			{
+				for (unsigned int j = 0; j < currConteiner->items.size(); j++)
+				{
+					Item* currContainerItem = &currConteiner->items[j];
+
+					if (!currContainerItem->getState())
+						continue;
+
+					_inventory->add(currContainerItem);
+					currContainerItem->setState(false);
+
+					saveItem(currContainerItem);
+				}
+			}
+			
 		}
 	}
+}
+
+Inventory* Player::getInventoryPointer()
+{
+	return _inventory;
+}
+
+void Player::initInventory(unsigned short size, float width, float height, std::string header, ItemLoader* itemLoader)
+{
+	_inventory = new Inventory(size, width, height, header, itemLoader);
+}
+
+void Player::saveItem(Item* item)
+{
+	SaveElement parentElement;
+	SaveElement childElement;
+
+	parentElement.name = "inventory";
+
+	childElement.name = "item";
+	childElement.attrForSearch.first = "id";
+	childElement.attrForSearch.second = item->getId();
+	childElement.attributes["id"] = item->getId();
+
+	_saveFile->addElement(parentElement, childElement);
+
+	parentElement.attributes.clear();
+	childElement.attributes.clear();
+
+	// ----
+
+	parentElement.name = "mapItems";
+	childElement.attributes["id"] = item->getId();
+	childElement.attributes["state"] = "0";
+
+	_saveFile->addElement(parentElement, childElement);
+}
+
+void Player::cameraCheck(sf::View& camera)
+{
+	sf::Vector2f cameraCenter = sf::Vector2f(_character.getPosition().x + _size.x / 2, _character.getPosition().y + _size.y / 2);
+	
+	if (_pTileMapLoader->getSize().x < camera.getSize().x)
+	{
+		cameraCenter.x = camera.getSize().x / 2 - (camera.getSize().x - _pTileMapLoader->getSize().x) / 2;
+	}
+	else
+	{
+		if ((cameraCenter.x - camera.getSize().x / 2) < 0)
+		{
+			cameraCenter.x = camera.getSize().x / 2;
+		}
+
+		if ((cameraCenter.x + camera.getSize().x / 2) >= _pTileMapLoader->getSize().x)
+		{
+			cameraCenter.x = _pTileMapLoader->getSize().x - camera.getSize().x / 2;
+		}
+
+	}
+
+	if (_pTileMapLoader->getSize().y < camera.getSize().y)
+	{
+		cameraCenter.y = camera.getSize().y / 2 - (camera.getSize().y - _pTileMapLoader->getSize().y) / 2;
+	}
+	else
+	{
+
+		if ((cameraCenter.y - camera.getSize().y / 2) < 0)
+		{
+			cameraCenter.y = camera.getSize().y / 2;
+		}
+
+		if ((cameraCenter.y + camera.getSize().y / 2) >= _pTileMapLoader->getSize().y)
+		{
+			cameraCenter.y = _pTileMapLoader->getSize().y - camera.getSize().y / 2;
+		}
+	}
+
+	camera.setCenter(cameraCenter.x, cameraCenter.y);
 }

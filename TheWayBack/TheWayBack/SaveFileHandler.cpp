@@ -3,15 +3,6 @@
 SaveFileHandler::SaveFileHandler(char* path)
 {
 	_path = path;
-}
-
-
-SaveFileHandler::~SaveFileHandler()
-{
-}
-
-bool SaveFileHandler::load()
-{
 	_document.LoadFile(_path);
 
 	if (_document.ErrorID() != 0)
@@ -19,113 +10,151 @@ bool SaveFileHandler::load()
 		tinyxml2::XMLNode* pRoot = _document.NewElement("saves");
 		_document.InsertEndChild(pRoot);
 
-		tinyxml2::XMLNode* pNewNode = _document.NewElement("inventory");
-		pRoot->InsertEndChild(pNewNode);
-
-		pNewNode = _document.NewElement("mapItems");
-		pRoot->InsertEndChild(pNewNode);
-
 		save();
 	}
 
-	return 0;
+	_pRootElement = _document.FirstChildElement("saves");
 }
 
-void SaveFileHandler::inventoryItemChange(Item* item)
-{
-	tinyxml2::XMLElement* pRootElement = _document.FirstChildElement("saves");
-	tinyxml2::XMLElement* pInventory = pRootElement->FirstChildElement("inventory");
 
-	tinyxml2::XMLElement* pItem = pInventory->FirstChildElement("item");
-	while (pItem != nullptr)
+SaveFileHandler::~SaveFileHandler()
+{
+}
+
+void SaveFileHandler::addElement(SaveElement parent, SaveElement child)
+{
+	tinyxml2::XMLElement* pParentElement = _pRootElement->FirstChildElement(parent.name);
+
+	if (!pParentElement)
 	{
-		if (pItem->Attribute("id") == item->getId())
+		tinyxml2::XMLElement* pItem = _document.NewElement(parent.name);
+
+		if (parent.attributes.size() > 0)
 		{
-			std::cout << "Exists!" << std::endl;
-			return;
+			for (const auto& elements : parent.attributes)
+			{
+				pItem->SetAttribute(elements.first.c_str(), elements.second.c_str());
+			}
 		}
 
-		pItem = pItem->NextSiblingElement("item");
+		_pRootElement->InsertEndChild(pItem);
 	}
 
-	tinyxml2::XMLElement* pNewItem = _document.NewElement("item");
-	pNewItem->SetAttribute("id", item->getId().c_str());
-	pInventory->InsertEndChild(pNewItem);
+	// -----------
+
+	if (child.name != "")
+	{
+		bool exists = false;
+
+		pParentElement = _pRootElement->FirstChildElement(parent.name);
+		tinyxml2::XMLElement* pChildElement = pParentElement->FirstChildElement(child.name);
+		while (pChildElement != nullptr)
+		{
+			// проверка на существование
+			if (pChildElement->Attribute(child.attrForSearch.first.c_str()))
+			{
+				if (!strcmp(pChildElement->Attribute(child.attrForSearch.first.c_str()), child.attrForSearch.second.c_str()))
+				{
+					exists = true;
+					break;
+				}
+			}
+
+			pChildElement = pChildElement->NextSiblingElement(child.name);
+		}
+
+		if (!exists)
+		{
+			tinyxml2::XMLElement* pItem = _document.NewElement(child.name);
+
+			if (child.attributes.size() > 0)
+			{
+				for (const auto& elements : child.attributes)
+				{
+					pItem->SetAttribute(elements.first.c_str(), elements.second.c_str());
+				}
+			}
+
+			pParentElement->InsertEndChild(pItem);
+		}
+	}
+
+	save();
+}
+
+bool SaveFileHandler::deleteElement(char* parentElement, char* childElement, std::pair<std::string, std::string> search)
+{
+	tinyxml2::XMLElement* pParentElement = _pRootElement->FirstChildElement(parentElement);
+
+	if (pParentElement)
+	{
+		if (!strcmp(childElement, ""))
+		{
+			if (search.first == "" & search.second == "")
+			{
+				_pRootElement->DeleteChild(pParentElement);
+				save();
+				return 0;
+			}
+			else if (!strcmp(pParentElement->Attribute(search.first.c_str()), search.second.c_str()))
+			{
+				_pRootElement->DeleteChild(pParentElement);
+				save();
+				return 0;
+			}
+		}
+		else
+		{
+			tinyxml2::XMLElement* pChildElement = pParentElement->FirstChildElement(childElement);
+
+			if (pChildElement)
+			{
+				while (pChildElement != nullptr)
+				{
+					if (!strcmp(pChildElement->Attribute(search.first.c_str()), search.second.c_str()))
+					{
+						pParentElement->DeleteChild(pChildElement);
+						save();
+						return 0;
+					}
+
+					pChildElement = pChildElement->NextSiblingElement(childElement);
+				}
+			}
+		}
+	}
 	
-	save();
-}
-
-void SaveFileHandler::mapItemChange(Item* item, char* state)
-{
-	tinyxml2::XMLElement* pRootElement = _document.FirstChildElement("saves");
-	tinyxml2::XMLElement* pMapItems = pRootElement->FirstChildElement("mapItems");
-
-	bool exists = false;
-
-	tinyxml2::XMLElement* pItem = pMapItems->FirstChildElement("item");
-	while (pItem != nullptr)
-	{
-		if (pItem->Attribute("id") == item->getId())
-		{
-			pItem->SetAttribute("id", item->getId().c_str());
-			pItem->SetAttribute("state", state);
-
-			exists = true;
-			break;
-		}
-
-		pItem = pItem->NextSiblingElement("item");
-	}
-
-	if (!exists)
-	{
-		tinyxml2::XMLElement* pItem = _document.NewElement("item");
-		pItem->SetAttribute("id", item->getId().c_str());
-		pItem->SetAttribute("state", state);
-		pMapItems->InsertEndChild(pItem);
-	}
-
-	save();
-}
-
-bool SaveFileHandler::del(char* element, std::string id)
-{
-	tinyxml2::XMLElement* pRootElement = _document.FirstChildElement("saves");
-	tinyxml2::XMLElement* pElement = pRootElement->FirstChildElement(element);
-	tinyxml2::XMLElement* pItem = pElement->FirstChildElement("item");
-
-	while (pItem != nullptr)
-	{
-		if (pItem->Attribute("id") == id)
-		{
-			pElement->DeleteChild(pItem);
-			save();
-			return 0;
-		}
-
-		pItem = pItem->NextSiblingElement("item");
-	}
-
 	return 1;
 }
 
-std::string SaveFileHandler::getElement(char* element, std::string id, char* attr)
+std::string SaveFileHandler::getElement(char* parentElement, char* childElement, std::pair<std::string, std::string> search, char* target)
+
 {
-	tinyxml2::XMLElement* pRootElement = _document.FirstChildElement("saves");
-	tinyxml2::XMLElement* pElement = pRootElement->FirstChildElement(element);
-	tinyxml2::XMLElement* pItem = pElement->FirstChildElement("item");
+	tinyxml2::XMLElement* pParentElement = _pRootElement->FirstChildElement(parentElement);
+	if (!pParentElement) return "";
 
-	while (pItem != nullptr)
+	tinyxml2::XMLElement* pChildElement = pParentElement->FirstChildElement(childElement);
+
+	if (pChildElement)
 	{
-		if (pItem->Attribute("id") == id)
+		while (pChildElement != nullptr)
 		{
-			return pItem->Attribute(attr) ? pItem->Attribute(attr) : "NO_ATTR";
-		}
+			if (!strcmp(pChildElement->Attribute(search.first.c_str()), search.second.c_str()))
+			{
+				return pChildElement->Attribute(target) ? pChildElement->Attribute(target) : "";
+			}
 
-		pItem = pItem->NextSiblingElement("item");
+			pChildElement = pChildElement->NextSiblingElement(childElement);
+		}
+	}
+	else
+	{
+		return pParentElement->Attribute(target) ? pParentElement->Attribute(target) : "";
 	}
 
-	return "NO_ITEM";
+	
+
+	return "";
 }
 
 bool SaveFileHandler::save()
@@ -140,3 +169,5 @@ bool SaveFileHandler::save()
 
 	return 0;
 }
+
+

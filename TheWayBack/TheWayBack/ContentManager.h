@@ -16,9 +16,7 @@ public:
 	void addTexture(std::string file, std::string name, sf::IntRect rect);
 
 	void addSound(std::string file, std::string name);
-
 	void addFont(std::string file, std::string name);
-
 	void loadContent(std::string screenName);
 
 	std::map <std::string, sf::Texture>* getTextures();

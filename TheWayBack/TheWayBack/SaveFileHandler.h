@@ -8,24 +8,30 @@
 #include "tinyxml\tinyxml2.h"
 #include "Item.h"
 
+struct SaveElement 
+{
+	char* name;
+	std::map<std::string, std::string> attributes;
+	std::pair<std::string, std::string> attrForSearch;
+};
+
 class SaveFileHandler
 {
 public:
 	SaveFileHandler(char* path);
 	~SaveFileHandler();
 
-	bool load();
-	bool del(char* element, std::string  id);
-	void inventoryItemChange(Item* item);
-	void mapItemChange(Item* item, char* state);
-	std::string getElement(char* element, std::string id, char* attr);
+	void addElement(SaveElement parent, SaveElement child);
+	bool deleteElement(char* parentElement, char* childElement, std::pair<std::string, std::string> search);
+	std::string getElement(char* parentElement, char* childElement, std::pair<std::string, std::string> search, char* target);
 
 private:
+	bool save();
+
 	char* _fileName;
 	char* _path;
 	const char* _charPath;
-
+	tinyxml2::XMLElement* _pRootElement;
 	tinyxml2::XMLDocument _document;
-	bool save();
 };
 
