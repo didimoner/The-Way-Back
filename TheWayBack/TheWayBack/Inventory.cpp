@@ -15,11 +15,10 @@ Inventory::Inventory(unsigned short size, float width, float height, std::string
 	_cells = (*_pItemLoader->getInventoryItems());
 }
 
-// TODO: загрузка инвентаря из файла
-
 Inventory::~Inventory()
 {
 	delete _window;
+	delete _grid;
 }
 
 void Inventory::update(float gameTime)

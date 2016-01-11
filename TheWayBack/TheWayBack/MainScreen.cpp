@@ -11,7 +11,7 @@ MainScreen::~MainScreen()
 {
 	if (_isActivated) delete _player;
 	if (_isActivated) delete _tileMapLoader;
-	if (_isActivated) delete _pInventory;
+	if (_isActivated) delete _itemLoader;
 
 	_animationManagers.clear();
 	_spriteManagers.clear();
@@ -240,8 +240,8 @@ void MainScreen::deactivate()
 	// -------------------
 
 	delete _tileMapLoader;
+	delete _itemLoader;
 	delete _player;
-	delete _pInventory;
 	_entities.clear();
 	_contentManager.clear();
 	_uiObjects.clear();

@@ -23,6 +23,8 @@ Player::Player(AnimationManager animationManager, SoundManager soundManager, flo
 
 Player::~Player(void)
 {
+	delete _saveFile;
+	delete _inventory;
 }
 
 // -----------------------------------------------------

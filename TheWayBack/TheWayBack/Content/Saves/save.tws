@@ -21,6 +21,6 @@
         <item id="09" state="0"/>
         <item id="08" state="0"/>
     </mapItems>
-    <playerPosition x="14.128029" y="6.658730"/>
+    <playerPosition x="10.000000" y="6.583932"/>
     <currentMap name="cave"/>
 </saves>
