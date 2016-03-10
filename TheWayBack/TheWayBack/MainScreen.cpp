@@ -143,7 +143,10 @@ void MainScreen::activate()
 
 	SoundManager* pPlayerSounds;
 	pPlayerSounds = new SoundManager();
-	pPlayerSounds->addSound((*_pSounds)["collect"], "jump");
+	pPlayerSounds->addSound((*_pSounds)["collect"], "collect");
+	pPlayerSounds->addSound((*_pSounds)["bounce"], "bounce");
+	pPlayerSounds->addSound((*_pSounds)["ding"], "ding");
+	
 
 	_tileMapLoader = new TileMapLoader("Content/Maps", 2, _pTextures);
 	_itemLoader = new ItemLoader("Content/Maps", _pTextures);
@@ -202,6 +205,13 @@ void MainScreen::activate()
 
 	// ------------------
 
+	// подключаем музыку
+	_bgMusic = new sf::Music();
+	_bgMusic->openFromFile("Content/Music/world1.ogg");
+	_bgMusic->setLoop(true);
+	_bgMusic->setVolume(30);
+	_bgMusic->play();
+	
 	std::cout << "MainScreen activated" << std::endl;
 	_isActivated = true;
 }
@@ -212,6 +222,8 @@ void MainScreen::deactivate()
 	std::pair<std::string, std::string> search;
 	search.first = "";
 	search.second = "";
+
+	_bgMusic->stop();
 
 	// сохраняем текущие координаты
 	saveFile.deleteElement("playerPosition", "", search);

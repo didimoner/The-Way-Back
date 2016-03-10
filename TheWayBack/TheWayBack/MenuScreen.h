@@ -1,6 +1,7 @@
 #pragma once
 #include "BaseScreen.h"
 #include "Button.h"
+#include "Animation.h"
 
 class MenuScreen :
 	public BaseScreen

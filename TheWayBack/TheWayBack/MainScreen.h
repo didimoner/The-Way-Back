@@ -41,4 +41,5 @@ private:
 	std::vector<std::vector<std::vector<sf::Sprite>>>* _currentMapSprites;
 	std::vector<Item>* _levelItems;
 	std::vector<Container>* _containers;
+	sf::Music* _bgMusic;
 };
