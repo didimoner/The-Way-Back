@@ -19,10 +19,14 @@ Player::Player(AnimationManager animationManager, SoundManager soundManager, flo
 	_isIntersecting = false;
 	_pTileMapLoader = pTileMapLoader;
 	_pItemLoader = pItemLoader;
+
+	_sounds.setVolume("bounce", 30);
 }
 
 Player::~Player(void)
 {
+	delete _saveFile;
+	delete _inventory;
 }
 
 // -----------------------------------------------------
@@ -94,7 +98,6 @@ void Player::handleKeyboard(sf::Keyboard::Key key, bool pressed)
 		switch (key)
 		{
 		case sf::Keyboard::B:
-			_sounds.play("jump");
 			break;
 		case sf::Keyboard::Space:
 			processItemCollision();
@@ -218,6 +221,7 @@ void Player::processMapCollisions()
 
 		if (_bounds.intersects(currentMapObject.rect))
 		{
+			_sounds.play("ding");
 			_pTileMapLoader->load(currentMapObject.name);
 			_pItemLoader->load(currentMapObject.name);
 			_position = currentMapObject.initPosition;
@@ -252,6 +256,7 @@ void Player::processItemCollision()
 				{
 					_inventory->add(currItem);
 					currItem->setState(false);
+					_sounds.play("collect");
 
 					saveItem(currItem);
 
@@ -259,12 +264,14 @@ void Player::processItemCollision()
 				else
 				{
 					std::cout << "You don't have required item!" << std::endl;
+					_sounds.play("bounce");
 				}
 			}
 			else
 			{
 				_inventory->add(currItem);
 				currItem->setState(false);
+				_sounds.play("collect");
 
 				saveItem(currItem);
 			}
@@ -302,6 +309,7 @@ void Player::processItemCollision()
 
 						_inventory->add(currContainerItem);
 						currContainerItem->setState(false);
+						_sounds.play("collect");
 
 						saveItem(currContainerItem);
 					}
@@ -309,6 +317,7 @@ void Player::processItemCollision()
 				else
 				{
 					std::cout << "You don't have required item!" << std::endl;
+					_sounds.play("bounce");
 				}
 			}
 			else
@@ -322,6 +331,7 @@ void Player::processItemCollision()
 
 					_inventory->add(currContainerItem);
 					currContainerItem->setState(false);
+					_sounds.play("collect");
 
 					saveItem(currContainerItem);
 				}

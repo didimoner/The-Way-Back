@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="58" height="36" tilewidth="32" tileheight="32" nextobjectid="174">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="58" height="36" tilewidth="32" tileheight="32" nextobjectid="177">
  <tileset firstgid="1" name="RPGmakerXPMegaTilesetByLmnopguy7" tilewidth="32" tileheight="32">
   <image source="../Images/RPGmakerXPMegaTilesetByLmnopguy7.png" width="256" height="15300"/>
  </tileset>
@@ -5078,7 +5078,7 @@
    <tile gid="0"/>
    <tile gid="337"/>
    <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="1022"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -7113,7 +7113,7 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="165"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="633"/>
@@ -10471,8 +10471,8 @@
  </layer>
  <objectgroup name="collision">
   <object id="1" x="231" y="288" width="43" height="30"/>
-  <object id="2" x="447" y="417" width="66" height="61"/>
-  <object id="5" x="544" y="382" width="63" height="28"/>
+  <object id="2" x="443" y="422" width="66" height="52"/>
+  <object id="5" x="555" y="382" width="46" height="28"/>
   <object id="6" x="711" y="255" width="45" height="32"/>
   <object id="7" x="905" y="219" width="39" height="33"/>
   <object id="11" x="769" y="128" width="28" height="28"/>
@@ -10610,6 +10610,7 @@
   <object id="171" x="1375.45" y="1024" width="2.18182" height="32.9091"/>
   <object id="172" x="227" y="885.5" width="91.5" height="11"/>
   <object id="173" x="656.333" y="835.667" width="28.6667" height="28"/>
+  <object id="174" x="425" y="732" width="43" height="34"/>
  </objectgroup>
  <objectgroup name="teleport" visible="0">
   <properties>
